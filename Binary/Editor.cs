@@ -407,6 +407,8 @@ namespace Binary
 
 		}
 
+		static string m_loadFilesLastDir = null;
+
 		private void EMSMainLoadFiles_Click(object sender, EventArgs e)
 		{
 			if (this._edited)
@@ -429,9 +431,14 @@ namespace Binary
 				Title = "Select Version 1 .end launcher to load",
 			};
 
+			if (!string.IsNullOrEmpty(m_loadFilesLastDir))
+			{
+				browser.InitialDirectory = m_loadFilesLastDir;
+			}
+
 			if (browser.ShowDialog() == DialogResult.OK)
 			{
-
+				m_loadFilesLastDir = Path.GetDirectoryName(browser.FileName);
 				this.LoadProfile(browser.FileName, true);
 
 			}
@@ -471,6 +478,8 @@ namespace Binary
 			this.SaveProfile();
 		}
 
+		static string m_importEndscriptLastDir = null;
+
 		private void EMSMainImportEndscript_Click(object sender, EventArgs e)
 		{
 			using var dialog = new OpenFileDialog()
@@ -481,9 +490,16 @@ namespace Binary
 				Title = "Select main Endscript (.end) file to import",
 			};
 
+			if (!string.IsNullOrEmpty(m_importEndscriptLastDir))
+			{
+				dialog.InitialDirectory = m_importEndscriptLastDir;
+			}
+
 			if (dialog.ShowDialog() != DialogResult.OK) return;
 			var parser = new EndScriptParser(dialog.FileName);
 			BaseCommand[] commands;
+
+			m_importEndscriptLastDir = Path.GetDirectoryName(dialog.FileName);
 
 			try
 			{
@@ -1169,6 +1185,7 @@ namespace Binary
 			}
 		}
 
+		static string m_exportNodeLastDir = null;
 		private void EditorButtonExportNode_Click(object sender, EventArgs e)
 		{
 			// This button is enabled only in collections, so it is 
@@ -1202,8 +1219,15 @@ namespace Binary
 					Title = "Select filename where collection should be exported",
 				};
 
+				if (!string.IsNullOrEmpty(m_exportNodeLastDir))
+				{
+					dialog.InitialDirectory = m_exportNodeLastDir;
+				}
+
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
+
+					m_exportNodeLastDir = Path.GetDirectoryName(dialog.FileName);
 
 					#if !DEBUG
 					try
@@ -1231,6 +1255,8 @@ namespace Binary
 			}
 		}
 
+
+		static string m_importNodeLastDir = null;
 		private void EditorButtonImportNode_Click(object sender, EventArgs e)
 		{
 			// This button is enabled only in managers, so it is 
@@ -1261,8 +1287,15 @@ namespace Binary
 					Title = "Select file with collection to import"
 				};
 
+				if (!string.IsNullOrEmpty(m_importNodeLastDir))
+				{
+					dialog.InitialDirectory = m_importNodeLastDir;
+				}
+
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
+
+					m_importNodeLastDir = Path.GetDirectoryName(dialog.FileName);
 
 					#if !DEBUG
 					try
