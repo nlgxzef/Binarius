@@ -36,8 +36,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Modules\Endscript\Endscript\Endscript.csproj" />
-    <ProjectReference Include="..\Modules\Endscript\Modules\Nikki\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj" />
-    <ProjectReference Include="..\Modules\Endscript\Modules\Nikki\Nikki\Nikki.csproj" />
+    <ProjectReference Include="..\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj" />
+    <ProjectReference Include="..\Modules\Nikki\Nikki\Nikki.csproj" />
     <ProjectReference Include="..\Modules\ILWrapper\ILWrapper\ILWrapper.csproj" />
   </ItemGroup>
 
