@@ -4,3 +4,9 @@
 [submodule "Modules/ILWrapper"]
 	path = Modules/ILWrapper
 	url = https://github.com/NFSCO/ILWrapper.git
+[submodule "Modules/Nikki"]
+	path = Modules/Nikki
+	url = https://github.com/NFSCO/Nikki
+[submodule "Modules/CoreExtensions"]
+	path = Modules/CoreExtensions
+	url = https://github.com/NFSCO/CoreExtensions
