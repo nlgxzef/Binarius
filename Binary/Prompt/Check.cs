@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 
@@ -25,6 +25,15 @@ namespace Binary.Prompt
 			this.ControlBox = !prompt;
 			this.CheckBoxSelection.Text = desc ?? String.Empty;
 			this.CheckBoxSelection.Checked = initiallyChecked;
+		}
+
+		public Check(string desc, string promptName, bool prompt, bool initiallyChecked) : this()
+		{
+			this.CheckButtonCancel.Enabled = !prompt;
+			this.ControlBox = !prompt;
+			this.CheckBoxSelection.Text = promptName ?? String.Empty;
+			this.CheckBoxSelection.Checked = initiallyChecked;
+			this.LabelDescription.Text = desc;
 		}
 
 		private void ToggleTheme()

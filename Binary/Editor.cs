@@ -567,10 +567,22 @@ namespace Binary
 			{
 
 				Utils.WriteErrorsToLog(manager.Errors, dialog.FileName);
-				MessageBox.Show($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
-					$"has been detected. Check EndError.log for more information. Do not forget to save changes!", 
-					"Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
+				using var prompt = new Check($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
+					$"have been detected. Check EndError.log for more information. Do not forget to save changes!",
+					"Open log", true, true);
+
+				prompt.ShowDialog();
+
+				if (prompt.Value)
+				{
+					var psi = new ProcessStartInfo("EndError.log")
+					{
+						UseShellExecute = true
+					};
+
+					Process.Start(psi);
+				}
 			}
 			else
 			{
