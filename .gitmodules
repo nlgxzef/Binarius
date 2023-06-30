@@ -1,12 +1,12 @@
 [submodule "Modules/Endscript"]
 	path = Modules/Endscript
-	url = git@github.com:NFSCO/Endscript.git
+	url = https://github.com/NFSCO/Endscript.git
 [submodule "Modules/ILWrapper"]
 	path = Modules/ILWrapper
-	url = git@github.com:NFSCO/ILWrapper.git
+	url = https://github.com/NFSCO/ILWrapper.git
 [submodule "Modules/Nikki"]
 	path = Modules/Nikki
-	url = git@github.com:NFSCO/Nikki.git
+	url = https://github.com/NFSCO/Nikki.git
 [submodule "Modules/CoreExtensions"]
 	path = Modules/CoreExtensions
-	url = git@github.com:NFSCO/CoreExtensions.git
+	url = https://github.com/NFSCO/CoreExtensions.git
