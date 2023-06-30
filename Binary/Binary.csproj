@@ -35,10 +35,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Modules\Endscript\Endscript\Endscript.csproj" />
     <ProjectReference Include="..\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj" />
-    <ProjectReference Include="..\Modules\Nikki\Nikki\Nikki.csproj" />
+    <ProjectReference Include="..\Modules\Endscript\Endscript\Endscript.csproj" />
     <ProjectReference Include="..\Modules\ILWrapper\ILWrapper\ILWrapper.csproj" />
+    <ProjectReference Include="..\Modules\Nikki\Nikki\Nikki.csproj" />
   </ItemGroup>
 
   <ItemGroup>
