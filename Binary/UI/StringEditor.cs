@@ -10,8 +10,7 @@ using Binary.Properties;
 using Endscript.Enums;
 using Nikki.Support.Shared.Class;
 using CoreExtensions.Management;
-
-
+using Nikki.Utils;
 
 namespace Binary.UI
 {
@@ -308,9 +307,12 @@ namespace Binary.UI
 						record.SetValue("Key", creator.Key);
 						record.SetValue("Label", creator.Label);
 						record.SetValue("Text", text);
-						this.GenerateUpdateStringCommand(prev, TText, text);
-						this.GenerateUpdateStringCommand(prev, Label, creator.Label);
-						this.GenerateUpdateStringCommand(prev, Key, creator.Key);
+
+                        var stringKey = Hashing.BinString(Convert.ToUInt32(prev, 16), LookupReturn.NULLREF);
+
+						this.GenerateUpdateStringCommand(stringKey ?? prev, TText, text);
+						this.GenerateUpdateStringCommand(stringKey ?? prev, Label, creator.Label);
+						this.GenerateUpdateStringCommand(stringKey ?? prev, Key, creator.Key);
 						this._modified.Add(creator.Key);
 
 						var item = this.StrEditorListView.SelectedItems[0];
