@@ -15,10 +15,10 @@ namespace Binary.Tools
             this.ColorPreview.BackColor = Color.Black;
         }
 
-		#region Theme
+        #region Theme
 
         private void ToggleTheme()
-		{
+        {
             this.BackColor = Theme.MainBackColor;
             this.ForeColor = Theme.MainForeColor;
 
@@ -64,9 +64,9 @@ namespace Binary.Tools
             sat = max == 0 ? 0 : dif / max; // set saturation
 
             if (max == min) hue = 0;
-            else if (max == red)   hue = (60 * ((green - blue) / dif) + 360) % 360;
+            else if (max == red) hue = (60 * ((green - blue) / dif) + 360) % 360;
             else if (max == green) hue = (60 * ((blue - red) / dif) + 120) % 360;
-            else if (max == blue)  hue = (60 * ((red - green) / dif) + 240) % 360;
+            else if (max == blue) hue = (60 * ((red - green) / dif) + 240) % 360;
 
             hue = 90 - (hue / 4);
 
@@ -132,8 +132,8 @@ namespace Binary.Tools
             Clipboard.SetText(this.TextBoxBrightness.Text);
         }
 
-		private void GroupBoxRGB_Paint(object sender, PaintEventArgs e)
-		{
+        private void GroupBoxRGB_Paint(object sender, PaintEventArgs e)
+        {
             var box = sender as GroupBox;
             this.DrawGroupBox(box, e.Graphics, Theme.LabelTextColor, Theme.LabelTextColor);
         }
@@ -170,5 +170,5 @@ namespace Binary.Tools
             g.DrawLine(border_p, new Point(rect.X, rect.Y), new Point(rect.X + box.Padding.Left, rect.Y));
             g.DrawLine(border_p, new Point(rect.X + box.Padding.Left + (int)size.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y));
         }
-	}
+    }
 }

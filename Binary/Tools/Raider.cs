@@ -17,7 +17,7 @@ namespace Binary.Tools
         }
 
         private void ToggleTheme()
-		{
+        {
             this.BackColor = Theme.MainBackColor;
             this.ForeColor = Theme.MainForeColor;
             this.ChooseSearchMode.BackColor = Theme.TextBoxBackColor;
