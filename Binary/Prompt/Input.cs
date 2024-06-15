@@ -51,7 +51,7 @@ namespace Binary.Prompt
             if (!this._input_check?.Invoke(this.InputTextBox.Text) ?? false)
             {
 
-                MessageBox.Show(this._error_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = MessageBox.Show(this._error_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
 
             }
@@ -60,9 +60,6 @@ namespace Binary.Prompt
             this.Close();
         }
 
-        private void InputButtonCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void InputButtonCancel_Click(object sender, EventArgs e) => this.Close();
     }
 }

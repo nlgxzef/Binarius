@@ -1,8 +1,10 @@
-﻿using System;
-using System.Windows.Forms;
-using Nikki.Core;
+﻿using CoreExtensions.Native;
 using CoreExtensions.Text;
-using CoreExtensions.Native;
+
+using Nikki.Core;
+
+using System;
+using System.Windows.Forms;
 
 
 
@@ -59,7 +61,7 @@ namespace Binary.Tools
 
         private void BinHashInput_TextChanged(object sender, EventArgs e)
         {
-            var value = this.BinHashInput.Text.StartsWith("0x")
+            string value = this.BinHashInput.Text.StartsWith("0x")
                 ? this.BinHashInput.Text
                 : $"0x{this.BinHashInput.Text}";
 
@@ -68,10 +70,10 @@ namespace Binary.Tools
 
                 if (value.Length > 10) { this.StringGuessed.Text = "N/A"; return; }
 
-                var key = Convert.ToUInt32(this.BinHashInput.Text, 16);
+                uint key = Convert.ToUInt32(this.BinHashInput.Text, 16);
                 this.BinFileInput.Text = $"0x{key.Reverse():X8}";
 
-                this.StringGuessed.Text = Map.BinKeys.TryGetValue(key, out var result)
+                this.StringGuessed.Text = Map.BinKeys.TryGetValue(key, out string result)
                     ? result
                     : "N/A";
 
@@ -80,7 +82,7 @@ namespace Binary.Tools
 
         private void BinFileInput_TextChanged(object sender, EventArgs e)
         {
-            var value = this.BinFileInput.Text.StartsWith("0x")
+            string value = this.BinFileInput.Text.StartsWith("0x")
                 ? this.BinFileInput.Text
                 : $"0x{this.BinFileInput.Text}";
 
@@ -89,11 +91,11 @@ namespace Binary.Tools
 
                 if (value.Length > 10) { this.StringGuessed.Text = "N/A"; return; }
 
-                var key = Convert.ToUInt32(this.BinFileInput.Text, 16);
+                uint key = Convert.ToUInt32(this.BinFileInput.Text, 16);
                 key = key.Reverse();
                 this.BinHashInput.Text = $"0x{key:X8}";
 
-                this.StringGuessed.Text = Map.BinKeys.TryGetValue(key, out var result)
+                this.StringGuessed.Text = Map.BinKeys.TryGetValue(key, out string result)
                     ? result
                     : "N/A";
             }

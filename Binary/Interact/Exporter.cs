@@ -22,7 +22,14 @@ namespace Binary.Interact
                 "is exported plainly as it is used in the game.";
             this.ExporterToolTip.SetToolTip(this.ExportSerialized, tip);
 
-            if (!allow_not_serialized) this.ExportSerialized.Enabled = false;
+            if (!allow_not_serialized)
+            {
+                this.ExportSerialized.Enabled = false;
+            }
+            else
+            {
+                this.Serialized = false;
+            }
         }
 
         private void ToggleTheme()

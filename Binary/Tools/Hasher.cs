@@ -1,7 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using CoreExtensions.Native;
+
 using Nikki.Utils;
-using CoreExtensions.Native;
+
+using System;
+using System.Windows.Forms;
 
 
 
@@ -53,15 +55,13 @@ namespace Binary.Tools
 
         private void StringTextbox_TextChanged(object sender, EventArgs e)
         {
-            var str = this.StringTextbox.Text;
-
-            uint result = 0;
+            string str = this.StringTextbox.Text;
             string _0x = "0x";
-            var state = Hashing.PauseHashSave;
+            bool state = Hashing.PauseHashSave;
             Hashing.PauseHashSave = true;
 
             // Bin memory hash
-            result = str.BinHash();
+            uint result = str.BinHash();
             this.BinHashTextbox.Text = $"{_0x}{result:X8}";
 
             // Bin file hash

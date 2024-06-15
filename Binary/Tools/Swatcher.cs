@@ -46,27 +46,31 @@ namespace Binary.Tools
         private void RGBtoHSV(float red, float green, float blue)
         {
             float hue = 0; // paintswatch
-            float sat = 0; // saturation
-            float brt = 0; // brightness
 
-            float min = 0; // min rgb value
-            float max = 0; // max rgb value
-            float dif = 0; // delta of max & min
-
-            max = (red > green) ? red : green;
+            float max = red > green ? red : green;
             max = (max > blue) ? max : blue;
-            min = (red < green) ? red : green;
+            float min = red < green ? red : green;
             min = (min < blue) ? min : blue;
+            float brt = max;
+            float dif = max - min;
+            float sat = max == 0 ? 0 : dif / max;
 
-            brt = max; // set brightness
-            dif = max - min;
-
-            sat = max == 0 ? 0 : dif / max; // set saturation
-
-            if (max == min) hue = 0;
-            else if (max == red) hue = (60 * ((green - blue) / dif) + 360) % 360;
-            else if (max == green) hue = (60 * ((blue - red) / dif) + 120) % 360;
-            else if (max == blue) hue = (60 * ((red - green) / dif) + 240) % 360;
+            if (max == min)
+            {
+                hue = 0;
+            }
+            else if (max == red)
+            {
+                hue = ((60 * ((green - blue) / dif)) + 360) % 360;
+            }
+            else if (max == green)
+            {
+                hue = ((60 * ((blue - red) / dif)) + 120) % 360;
+            }
+            else if (max == blue)
+            {
+                hue = ((60 * ((red - green) / dif)) + 240) % 360;
+            }
 
             hue = 90 - (hue / 4);
 
@@ -117,20 +121,11 @@ namespace Binary.Tools
             }
         }
 
-        private void CopyPaintSwatchValue_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(this.TextBoxPaintSwatch.Text);
-        }
+        private void CopyPaintSwatchValue_Click(object sender, EventArgs e) => Clipboard.SetText(this.TextBoxPaintSwatch.Text);
 
-        private void CopySaturationValue_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(this.TextBoxSaturation.Text);
-        }
+        private void CopySaturationValue_Click(object sender, EventArgs e) => Clipboard.SetText(this.TextBoxSaturation.Text);
 
-        private void CopyBrightnessValue_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(this.TextBoxBrightness.Text);
-        }
+        private void CopyBrightnessValue_Click(object sender, EventArgs e) => Clipboard.SetText(this.TextBoxBrightness.Text);
 
         private void GroupBoxRGB_Paint(object sender, PaintEventArgs e)
         {
@@ -146,7 +141,10 @@ namespace Binary.Tools
 
         private void DrawGroupBox(GroupBox box, Graphics g, Color fore, Color border)
         {
-            if (box is null) return;
+            if (box is null)
+            {
+                return;
+            }
 
             var fore_b = new SolidBrush(fore);
             var border_b = new SolidBrush(border);
@@ -154,10 +152,10 @@ namespace Binary.Tools
 
             var size = g.MeasureString(box.Text, box.Font);
 
-            var x = box.ClientRectangle.X;
-            var y = box.ClientRectangle.Y + (int)(size.Height / 2);
-            var width = box.ClientRectangle.Width - 1;
-            var height = box.ClientRectangle.Height - (int)(size.Height / 2) - 1;
+            int x = box.ClientRectangle.X;
+            int y = box.ClientRectangle.Y + (int)(size.Height / 2);
+            int width = box.ClientRectangle.Width - 1;
+            int height = box.ClientRectangle.Height - (int)(size.Height / 2) - 1;
 
             var rect = new Rectangle(x, y, width, height);
 

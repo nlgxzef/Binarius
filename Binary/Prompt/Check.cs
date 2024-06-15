@@ -55,9 +55,6 @@ namespace Binary.Prompt
             this.Close();
         }
 
-        private void CheckButtonCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void CheckButtonCancel_Click(object sender, EventArgs e) => this.Close();
     }
 }

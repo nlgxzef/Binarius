@@ -20,7 +20,11 @@ namespace Binary.Prompt
             this.ComboButtonCancel.Enabled = !prompt;
             this.ControlBox = !prompt;
             this.DescriptionLabel.Text = desc ?? String.Empty;
-            if (options == null) return;
+            if (options == null)
+            {
+                return;
+            }
+
             this.ComboBoxSelection.Items.AddRange(options);
             this.ComboBoxSelection.SelectedIndex = 0;
         }
@@ -46,9 +50,6 @@ namespace Binary.Prompt
             this.Close();
         }
 
-        private void ComboButtonCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void ComboButtonCancel_Click(object sender, EventArgs e) => this.Close();
     }
 }
