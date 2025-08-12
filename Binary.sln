@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILWrapper", "Modules\ILWrap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endscript", "Modules\Endscript\Endscript\Endscript.csproj", "{7479B652-51C8-4889-99AC-9DAA34827312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "Modules\Nikki\Nikki\Nikki.csproj", "{79E0E15F-02CB-4ACE-BC05-AD4293E971A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "Modules\Darius\Nikki\Nikki.csproj", "{79E0E15F-02CB-4ACE-BC05-AD4293E971A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreExtensions", "Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj", "{0B870C9E-1797-4E98-B888-87E56F0C6E6C}"
 EndProject

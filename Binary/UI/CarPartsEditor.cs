@@ -649,25 +649,23 @@ namespace Binary.UI
 
 		private void AddCustomAttributeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using var creator = new Input
-			(
-				"Input name of new custom attribute",
-				new Predicate<string>(_ => !String.IsNullOrEmpty(_)),
-				"Name of an attribute cannot be empty"
-			);
+			using var creator = new CustomAttribCreator(this.Model.GameINT)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
 
-			if (creator.ShowDialog() == DialogResult.OK)
-			{
+            if (creator.ShowDialog() == DialogResult.OK)
+            {
 
-				var node = this.CarPartsTreeView.SelectedNode;
-				var realpart = this.Model.GetRealPart(node.Index);
-				realpart.AddCustomAttribute(creator.Value);
-				var attribute = realpart.Attributes[^1];
-				node.Nodes.Add(attribute.ToString());
-				this.CarPartsPropertyGrid.Refresh();
+                var node = this.CarPartsTreeView.SelectedNode;
+                var realpart = this.Model.GetRealPart(node.Index);
+                realpart.AddCustomAttribute(creator.Value, creator.Type);
+                var attribute = realpart.Attributes[^1];
+                node.Nodes.Add(attribute.ToString());
+                this.CarPartsPropertyGrid.Refresh();
 
-			}
-		}
+            }
+        }
 
 		private void HasherToolStripMenuItem_Click(object sender, EventArgs e)
 		{

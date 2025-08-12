@@ -3,8 +3,6 @@ using Binary.Properties;
 using System.Drawing;
 using System.Windows.Forms;
 
-
-
 namespace Binary
 {
     internal static class Theme

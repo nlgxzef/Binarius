@@ -43,6 +43,7 @@ namespace Binary
             this.InitializeComponent();
             this.splitContainer2.FixedPanel = FixedPanel.Panel1;
             this.ToggleTheme();
+            this.Text = $"Binarius - v{this.ProductVersion}";
         }
 
         #region Theme
@@ -52,6 +53,7 @@ namespace Binary
             // Renderers
             this.EditorStatusStrip.Renderer = new Theme.StatStripRenderer();
             this.EditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
+            this.EditorContextMenu.Renderer = new Theme.MenuStripRenderer();
 
             // Primary colors and controls
             this.BackColor = Theme.MainBackColor;
@@ -148,6 +150,31 @@ namespace Binary
             this.EditorButtonScriptNode.ForeColor = Theme.ButtonForeColor;
             this.EditorButtonScriptNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
 
+            // Context menu
+            this.EditorContextMenu.ForeColor = Theme.LabelTextColor;
+            this.addNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.addNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.removeNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.removeNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.exportNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.exportNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.importNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.importNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.scriptNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.scriptNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.copyNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.copyNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.openEditorToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.openEditorToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
+            this.toolStripSeparator1.ForeColor = Theme.MenuItemForeColor;
+            this.toolStripSeparator1.BackColor = Theme.MenuItemBackColor;
+            this.toolStripSeparator2.ForeColor = Theme.MenuItemForeColor;
+            this.toolStripSeparator2.BackColor = Theme.MenuItemBackColor;
+            this.toolStripSeparator3.ForeColor = Theme.MenuItemForeColor;
+            this.toolStripSeparator3.BackColor = Theme.MenuItemBackColor;
+            this.toolStripSeparator4.ForeColor = Theme.MenuItemForeColor;
+            this.toolStripSeparator4.BackColor = Theme.MenuItemBackColor;
+
             // Textboxes
             this.EditorCommandPrompt.BackColor = Theme.PrimBackColor;
             this.EditorCommandPrompt.ForeColor = Theme.PrimForeColor;
@@ -233,6 +260,8 @@ namespace Binary
                 DBModelPart or
                 GCareer or
                 VectorVinyl;
+
+            this.openEditorToolStripMenuItem.Enabled = this.EditorButtonOpenEditor.Enabled;
         }
 
         private void ManageButtonAddNode(TreeNode node)
@@ -241,6 +270,7 @@ namespace Binary
             {
 
                 this.EditorButtonAddNode.Enabled = false;
+                this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
                 return;
 
             }
@@ -251,12 +281,14 @@ namespace Binary
             {
 
                 this.EditorButtonAddNode.Enabled = false;
+                this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Text);
             this.EditorButtonAddNode.Enabled = manager != null && !manager.IsReadOnly;
+            this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
         }
 
         private void ManageButtonRemoveNode(TreeNode node)
@@ -265,6 +297,7 @@ namespace Binary
             {
 
                 this.EditorButtonRemoveNode.Enabled = false;
+                this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
                 return;
 
             }
@@ -275,12 +308,14 @@ namespace Binary
             {
 
                 this.EditorButtonRemoveNode.Enabled = false;
+                this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
             this.EditorButtonRemoveNode.Enabled = manager != null && !manager.IsReadOnly;
+            this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
         }
 
         private void ManageButtonCopyNode(TreeNode node)
@@ -289,6 +324,7 @@ namespace Binary
             {
 
                 this.EditorButtonCopyNode.Enabled = false;
+                this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
                 return;
 
             }
@@ -299,12 +335,14 @@ namespace Binary
             {
 
                 this.EditorButtonCopyNode.Enabled = false;
+                this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
             this.EditorButtonCopyNode.Enabled = manager != null && !manager.IsReadOnly;
+            this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
         }
 
         private void ManageButtonExportNode(TreeNode node)
@@ -313,6 +351,7 @@ namespace Binary
             {
 
                 this.EditorButtonExportNode.Enabled = false;
+                this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
                 return;
 
             }
@@ -323,12 +362,14 @@ namespace Binary
             {
 
                 this.EditorButtonExportNode.Enabled = false;
+                this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
             this.EditorButtonExportNode.Enabled = manager != null;
+            this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
         }
 
         private void ManageButtonImportNode(TreeNode node)
@@ -337,6 +378,7 @@ namespace Binary
             {
 
                 this.EditorButtonImportNode.Enabled = false;
+                this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
                 return;
 
             }
@@ -347,12 +389,14 @@ namespace Binary
             {
 
                 this.EditorButtonImportNode.Enabled = false;
+                this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Text);
             this.EditorButtonImportNode.Enabled = manager != null;
+            this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
         }
 
         private void ManageButtonScriptNode(TreeNode node)
@@ -361,6 +405,7 @@ namespace Binary
             {
 
                 this.EditorButtonScriptNode.Enabled = false;
+                this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
                 return;
 
             }
@@ -371,6 +416,7 @@ namespace Binary
             {
 
                 this.EditorButtonScriptNode.Enabled = false;
+                this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
                 return;
 
             }
@@ -381,6 +427,7 @@ namespace Binary
                 !typeof(DBModelPart).IsAssignableFrom(manager.CollectionType) &&
                 !typeof(FNGroup).IsAssignableFrom(manager.CollectionType) &&
                 !typeof(STRBlock).IsAssignableFrom(manager.CollectionType);
+            this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
         }
 
         #endregion
@@ -538,7 +585,14 @@ namespace Binary
 
                     var command = manager.CurrentCommand;
 
-                    if (command is CheckboxCommand checkbox)
+                    if (command is InfoboxCommand infobox)
+                    {
+
+                        using var input = new Info(infobox.Description);
+                        _ = input.ShowDialog();
+
+                    }
+                    else if (command is CheckboxCommand checkbox)
                     {
 
                         using var input = new Check(checkbox.Description, true);
@@ -579,7 +633,7 @@ namespace Binary
 
                 Utils.WriteErrorsToLog(manager.Errors, dialog.FileName);
 
-                using var prompt = new Check($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
+                using var prompt = new CheckError($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
                     $"have been detected. Check EndError.log for more information. Do not forget to save changes!",
                     "Open log", true, true);
 
@@ -922,7 +976,12 @@ namespace Binary
             _ = Process.Start(new ProcessStartInfo() { FileName = path });
         }
 
-        private void EMSHelpAbout_Click(object sender, EventArgs e) => MessageBox.Show("Binary by MaxHwoy v" + this.ProductVersion, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void EMSHelpAbout_Click(object sender, EventArgs e)
+        {
+            var about = new About() { StartPosition = FormStartPosition.CenterScreen };
+            this._openforms.Add(about);
+            about.Show();
+        }
 
         private void EMSHelpTutorials_Click(object sender, EventArgs e) => MessageBox.Show("Join Discord server at the start page to get help and full tool documentation!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
@@ -1141,10 +1200,10 @@ namespace Binary
             }
             else if (collection is FNGroup fng)
             {
-                if (MessageBox.Show("Binary cannot edit FNGroups, but can import and delete them. To edit FNGroups, use FEngLib by heyitsleo. Would you like to open the GitHub page?",
+                if (MessageBox.Show("Binary cannot edit FNGroups, but can import and delete them. To edit FNGroups, use Felipe379's fork of FEngLib by heyitsleo. Would you like to open the GitHub page?",
                     "Binary", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
-                    Utils.OpenBrowser("https://github.com/NFSTools/FEngLib");
+                    Utils.OpenBrowser("https://github.com/Felipe379/FEngLib");
                 }
             }
             else if (collection is TPKBlock tpk)
@@ -1540,7 +1599,7 @@ namespace Binary
 
             Configurations.Default.LaunchFile = filename;
             Configurations.Default.Save();
-            this.Text = $"Binary by MaxHwoy - {this.Profile.GameSTR}";
+            this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}";
 
 #if !DEBUG
 			}
@@ -1705,7 +1764,7 @@ namespace Binary
 
         private void EditorTreeView_DoubleClick(object sender, EventArgs e)
         {
-            if (this.EditorButtonOpenEditor.Enabled)
+            if (this.EditorButtonOpenEditor.Enabled && this.openEditorToolStripMenuItem.Enabled)
             {
 
                 this.EditorButtonOpenEditor_Click(null, EventArgs.Empty);

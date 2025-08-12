@@ -5,26 +5,35 @@ using System.Windows.Forms;
 
 namespace Binary.Prompt
 {
-    public partial class Check : Form
+    public partial class CheckError : Form
     {
         public bool Value { get; private set; } = false;
 
-        public Check()
+        public CheckError()
         {
             this.InitializeComponent();
             this.ToggleTheme();
         }
 
-        public Check(string desc, bool prompt) : this(desc, prompt, false)
+        public CheckError(string desc, bool prompt) : this(desc, prompt, false)
         {
         }
 
-        public Check(string desc, bool prompt, bool initiallyChecked) : this()
+        public CheckError(string desc, bool prompt, bool initiallyChecked) : this()
         {
             this.CheckButtonCancel.Enabled = !prompt;
             this.ControlBox = !prompt;
             this.CheckBoxSelection.Text = desc ?? String.Empty;
             this.CheckBoxSelection.Checked = initiallyChecked;
+        }
+
+        public CheckError(string desc, string promptName, bool prompt, bool initiallyChecked) : this()
+        {
+            this.CheckButtonCancel.Enabled = !prompt;
+            this.ControlBox = !prompt;
+            this.CheckBoxSelection.Text = promptName ?? String.Empty;
+            this.CheckBoxSelection.Checked = initiallyChecked;
+            this.LabelDescription.Text = desc;
         }
 
         private void ToggleTheme()

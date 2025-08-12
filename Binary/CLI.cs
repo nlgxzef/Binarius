@@ -1,4 +1,6 @@
-﻿using CoreExtensions.Management;
+﻿using Binary.Prompt;
+
+using CoreExtensions.Management;
 
 using Endscript.Commands;
 using Endscript.Core;
@@ -113,7 +115,13 @@ namespace Binary
 
                     var command = manager.CurrentCommand;
 
-                    if (command is CheckboxCommand checkbox)
+                    if (command is InfoboxCommand infobox)
+                    {
+
+                        Console.WriteLine(infobox.Description);
+
+                    }
+                    else if (command is CheckboxCommand checkbox)
                     {
 
                         Console.WriteLine(checkbox.Description);

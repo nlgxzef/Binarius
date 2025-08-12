@@ -1,17 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Diagnostics;
-using System.Windows.Forms;
-using Binary.Interact;
-using Binary.Properties;
+﻿using Binary.Interact;
 using Binary.Prompt;
+using Binary.Properties;
+using Binary.UI;
+
+using CoreExtensions.Management;
+
+using Endscript.Commands;
 using Endscript.Core;
 using Endscript.Enums;
 using Endscript.Profiles;
-using Endscript.Commands;
+
 using Nikki.Core;
-using CoreExtensions.Management;
+
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 
 
@@ -49,7 +54,8 @@ namespace Binary
 			this.IntroToolTip.SetToolTip(this.PictureBoxSoon, "Coming Soon TM");
 
 			this.ToggleTheme();
-		}
+            this.Text = $"Binarius - v{this.ProductVersion}";
+        }
 
 		#region Theme
 
@@ -205,7 +211,18 @@ namespace Binary
 
 					var command = manager.CurrentCommand;
 
-					if (command is CheckboxCommand checkbox)
+                    if (command is InfoboxCommand infobox)
+                    {
+
+                        using var input = new Info(infobox.Description);
+                        input.ShowDialog();
+
+                        #if DEBUG
+                        Console.WriteLine($"Infobox pending");
+                        #endif
+
+                    }
+                    else if (command is CheckboxCommand checkbox)
 					{
 
 						using var input = new Check(checkbox.Description, true);
@@ -368,7 +385,7 @@ namespace Binary
 
 		private void PictureBoxUpdates_Click(object sender, EventArgs e)
 		{
-			Utils.OpenBrowser("https://github.com/SpeedReflect/Binary/tags");
+			Utils.OpenBrowser("https://github.com/nlgxzef/Binarius/releases");
 		}
 
 		private void PictureBoxAutoBackups_Click(object sender, EventArgs e)
@@ -406,7 +423,8 @@ namespace Binary
 
 		private void LabelBinary_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("Binary by MaxHwoy v" + this.ProductVersion, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
-		}
+            var about = new About() { StartPosition = FormStartPosition.CenterScreen };
+            about.Show();
+        }
 	}
 }

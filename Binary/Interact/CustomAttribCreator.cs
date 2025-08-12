@@ -1,13 +1,17 @@
-﻿using System;
-using System.Windows.Forms;
-using Nikki.Core;
+﻿using Nikki.Core;
+using Nikki.Reflection.Enum;
 using Nikki.Reflection.Enum.CP;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
 
 
 
 namespace Binary.Interact
 {
-	public partial class AttribCreator : Form
+	public partial class CustomAttribCreator : Form
 	{
 		private const string Boolean = "Boolean";
 		private const string Color = "Color";
@@ -19,16 +23,80 @@ namespace Binary.Interact
 		private const string String = "String";
 		private const string TwoString = "TwoString";
 
-		public uint KeyChosen { get; private set; }
+		public CarPartAttribType Type { get; private set; }
+        public string Value { get; private set; }
+        public List<string> CustomAttribKeys { get; private set; }
 
-		public AttribCreator(GameINT game)
+        public CustomAttribCreator(GameINT game)
 		{
 			this.InitializeComponent();
 			this.ToggleTheme();
 			this.PopulateAttribTypesBasedOnGame(game);
+			this.LoadHashList();
 		}
 
-		private void ToggleTheme()
+        public void LoadHashList()
+        {
+            if (File.Exists(Map.CustomAttribFile)) try
+            {
+
+                var lines = File.ReadAllLines(Map.CustomAttribFile);
+
+                this.CustomAttribKeys = new List<string>(lines.Length);
+
+                foreach (var line in lines)
+                {
+
+                    if (line.StartsWith("//") || line.StartsWith("#")) continue;
+                    else this.CustomAttribKeys.Add(line);
+
+                }
+
+            }
+            catch { }
+
+            this.AttribKeyComboBox.Items.Clear();
+            this.CustomAttribKeys.Sort();
+            foreach (var label in this.CustomAttribKeys)
+            {
+                this.AttribKeyComboBox.Items.Add(label);
+            }
+
+        }
+
+        public void SaveHashList()
+        {
+            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(Map.CustomAttribFile));
+
+            if (File.Exists(Map.CustomAttribFile))
+            {
+
+                var lines = File.ReadAllLines(Map.CustomAttribFile);
+                var set = new HashSet<string>(lines.Length + 1);
+
+                foreach (var line in lines)
+                {
+
+                    if (line.StartsWith("//") || line.StartsWith("#")) continue;
+                    else set.Add(line);
+
+                }
+
+                using var sw = new StreamWriter(File.Open(Map.CustomAttribFile, FileMode.Create));
+                foreach (var line in set) sw.WriteLine(line);
+                if (!set.Contains(this.Value)) sw.WriteLine(this.Value);
+
+            }
+            else
+            {
+
+                System.IO.Directory.CreateDirectory(Path.GetDirectoryName(Map.CustomAttribFile));
+                using var sw = new StreamWriter(File.Open(Map.CustomAttribFile, FileMode.Create));
+                sw.WriteLine(this.Value);
+            }
+        }
+
+        private void ToggleTheme()
 		{
 			this.BackColor = Theme.MainBackColor;
 			this.ForeColor = Theme.MainForeColor;
@@ -137,37 +205,10 @@ namespace Binary.Interact
 			}
 		}
 
-		private void PopulateAttribKeysBasedOnType()
-		{
-			string[] values = (this.AttribTypeComboBox.SelectedItem.ToString()) switch
-			{
-				Boolean => Enum.GetNames(typeof(eAttribBool)),
-				Color => Enum.GetNames(typeof(eAttribColor)),
-				Floating => Enum.GetNames(typeof(eAttribFloat)),
-				Integer => Enum.GetNames(typeof(eAttribInt)),
-				Key => Enum.GetNames(typeof(eAttribKey)),
-				ModelTable => Enum.GetNames(typeof(eAttribModelTable)),
-				PartID => Enum.GetNames(typeof(eAttribPartID)),
-				String => Enum.GetNames(typeof(eAttribString)),
-				TwoString => Enum.GetNames(typeof(eAttribTwoString)),
-				_ => new string[0],
-			};
-
-			this.AttribKeyComboBox.Items.Clear();
-			Array.Sort(values);
-			this.AttribKeyComboBox.Items.AddRange(values);
-		}
-
-		private void AttribTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			this.PopulateAttribKeysBasedOnType();
-			this.AttribKeyComboBox.SelectedIndex = 0;
-		}
-
 		private void AttribButtonHelp_Click(object sender, EventArgs e)
 		{
 			MessageBox.Show("Choose attribute type that is going to be applied to a car part. " +
-				"Then, based on the type chosen, select attribute key that describes what " +
+				"Then, based on the type chosen, type the attribute key that describes what " +
 				"attribute is for.", "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
@@ -175,21 +216,23 @@ namespace Binary.Interact
 		{
 			var type = (this.AttribTypeComboBox.SelectedItem.ToString()) switch
 			{
-				Boolean => typeof(eAttribBool),
-				Color => typeof(eAttribColor),
-				Floating => typeof(eAttribFloat),
-				Integer => typeof(eAttribInt),
-				Key => typeof(eAttribKey),
-				ModelTable => typeof(eAttribModelTable),
-				PartID => typeof(eAttribPartID),
-				String => typeof(eAttribString),
-				TwoString => typeof(eAttribTwoString),
-				_ => typeof(object),
-			};
+				Boolean => CarPartAttribType.Boolean,
+				Color => CarPartAttribType.Color,
+				Floating => CarPartAttribType.Floating,
+				Integer => CarPartAttribType.Integer,
+				Key => CarPartAttribType.Key,
+                ModelTable => CarPartAttribType.ModelTable,
+				PartID => CarPartAttribType.CarPartID,
+				String => CarPartAttribType.String,
+				TwoString => CarPartAttribType.TwoString,
+				_ => CarPartAttribType.Integer,
+            };
 
-			this.KeyChosen = (uint)Enum.Parse(type, this.AttribKeyComboBox.SelectedItem.ToString());
-			this.DialogResult = DialogResult.OK;
-			this.Close();
+			this.Value = this.AttribKeyComboBox.Text.ToString();
+            this.Type = type;
+            this.DialogResult = DialogResult.OK;
+            this.SaveHashList();
+            this.Close();
 		}
 	}
 }
