@@ -1,8 +1,11 @@
 ﻿![](https://cdn.discordapp.com/attachments/696160463192326154/697376548894015528/binary_logo.png)
 
+# Fork Note
+Binarius is a fork that's created to improve Binary with QoL improvements and new features.  
+The main library used by this application called Nikki also got forked and renamed to Darius.
 
-# Binary
-Binary is a tool for editing Black Box Need for Speed games binary files, powered by [Nikki](https://github.com/SpeedReflect/Nikki "Nikki") and [Endscript](https://github.com/SpeedReflect/Endscript "Endscript").
+# Binarius
+Binarius is a tool for editing Black Box Need for Speed games binary files, powered by [Darius](https://github.com/nlgxzef/Darius "Darius") and [Endscript](https://github.com/nlgxzef/Endscript "Endscript").
 
 
 ## Features
@@ -18,14 +21,4 @@ Binary is a tool for editing Black Box Need for Speed games binary files, powere
   - String Editor
   - CarPart Editor
   - Career Editor
-  - FEng Editor (WIP)
 - User configuration settings that can be changed and applied any time
-
-## Motivation
-- Lack of tools with UI to edit Need for Speed binary (.BIN, .BUN, .LZC) files
-- Desire to build a universal tool for the reason stated above
-- Desire to build a tool similar to process BIN data, similar to those that process VLT data
-
-﻿![](https://cdn.discordapp.com/attachments/696160463192326154/796941629847633930/image1.PNG)
-﻿![](https://cdn.discordapp.com/attachments/696160463192326154/796941634125430834/image2.PNG)
-﻿![](https://cdn.discordapp.com/attachments/696160463192326154/796941639150469140/image3.PNG)
