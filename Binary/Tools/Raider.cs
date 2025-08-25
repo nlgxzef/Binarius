@@ -1,9 +1,12 @@
-﻿using CoreExtensions.Native;
+﻿using Binary.Properties;
+
+using CoreExtensions.Native;
 using CoreExtensions.Text;
 
 using Nikki.Core;
 
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -20,29 +23,31 @@ namespace Binary.Tools
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.ChooseSearchMode.BackColor = Theme.TextBoxBackColor;
-            this.ChooseSearchMode.ForeColor = Theme.TextBoxForeColor;
-            this.BinHashInput.BackColor = Theme.TextBoxBackColor;
-            this.BinHashInput.ForeColor = Theme.TextBoxForeColor;
-            this.BinFileInput.BackColor = Theme.TextBoxBackColor;
-            this.BinFileInput.ForeColor = Theme.TextBoxForeColor;
-            this.StringGuessed.BackColor = Theme.TextBoxBackColor;
-            this.StringGuessed.ForeColor = Theme.TextBoxForeColor;
-            this.CopyBinHash.BackColor = Theme.ButtonBackColor;
-            this.CopyBinHash.ForeColor = Theme.ButtonForeColor;
-            this.CopyBinHash.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CopyBinFile.BackColor = Theme.ButtonBackColor;
-            this.CopyBinFile.ForeColor = Theme.ButtonForeColor;
-            this.CopyBinFile.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CopyString.BackColor = Theme.ButtonBackColor;
-            this.CopyString.ForeColor = Theme.ButtonForeColor;
-            this.CopyString.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.label1.ForeColor = Theme.LabelTextColor;
-            this.label2.ForeColor = Theme.LabelTextColor;
-            this.label3.ForeColor = Theme.LabelTextColor;
-            this.label4.ForeColor = Theme.LabelTextColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.ChooseSearchMode.BackColor = theme.Colors.TextBoxBackColor;
+            this.ChooseSearchMode.ForeColor = theme.Colors.TextBoxForeColor;
+            this.BinHashInput.BackColor = theme.Colors.TextBoxBackColor;
+            this.BinHashInput.ForeColor = theme.Colors.TextBoxForeColor;
+            this.BinFileInput.BackColor = theme.Colors.TextBoxBackColor;
+            this.BinFileInput.ForeColor = theme.Colors.TextBoxForeColor;
+            this.StringGuessed.BackColor = theme.Colors.TextBoxBackColor;
+            this.StringGuessed.ForeColor = theme.Colors.TextBoxForeColor;
+            this.CopyBinHash.BackColor = theme.Colors.ButtonBackColor;
+            this.CopyBinHash.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopyBinHash.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CopyBinFile.BackColor = theme.Colors.ButtonBackColor;
+            this.CopyBinFile.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopyBinFile.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CopyString.BackColor = theme.Colors.ButtonBackColor;
+            this.CopyString.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopyString.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.label1.ForeColor = theme.Colors.LabelTextColor;
+            this.label2.ForeColor = theme.Colors.LabelTextColor;
+            this.label3.ForeColor = theme.Colors.LabelTextColor;
+            this.label4.ForeColor = theme.Colors.LabelTextColor;
         }
 
         private void ChooseSearchMode_SelectedIndexChanged(object sender, EventArgs e)

@@ -4,17 +4,19 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>binary.ico</ApplicationIcon>
-    <Version>2.10.0</Version>
+    <ApplicationIcon>binarius.ico</ApplicationIcon>
+    <Version>2.10.1</Version>
     <Authors>MaxHwoy</Authors>
-    <PublisherName>MaxHwoy, rx, Sh2dow and nlgxzef</PublisherName>
+    <PublisherName>MaxHwoy, rx, avail, Sh2dow and nlgxzef</PublisherName>
     <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and various forks of it by rx and Sh2dow.</Description>
-    <Copyright>© 2025 MaxHwoy, rx, Sh2dow and nlgxzef. No rights reserved.</Copyright>
-    <AssemblyVersion>2.10.0.0</AssemblyVersion>
-    <FileVersion>2.10.0.0</FileVersion>
+    <Copyright>© 2025 MaxHwoy, rx, avail, Sh2dow and nlgxzef. No rights reserved.</Copyright>
+    <AssemblyVersion>2.10.1.0</AssemblyVersion>
+    <FileVersion>2.10.1.0</FileVersion>
     <Platforms>AnyCPU;x64</Platforms>
     <PlatformTarget>x86</PlatformTarget>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	<Product>Binarius</Product>
+	<AssemblyName>Binarius</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,14 +38,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="binarius.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj" />
-    <ProjectReference Include="..\Modules\Endscript\Endscript\Endscript.csproj" />
-    <ProjectReference Include="..\Modules\ILWrapper\ILWrapper\ILWrapper.csproj" />
-    <ProjectReference Include="..\Modules\Darius\Nikki\Nikki.csproj" />
+    <ProjectReference Include="..\..\CoreExtensions\CoreExtensions\CoreExtensions.csproj" />
+    <ProjectReference Include="..\..\Endscript\Endscript\Endscript.csproj" />
+    <ProjectReference Include="..\..\ILWrapper\ILWrapper\ILWrapper.csproj" />
+    <ProjectReference Include="..\..\Darius\Nikki\Nikki.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,6 +75,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -83,6 +94,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Configurations.Designer.cs</LastGenOutput>
     </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)Data\*.*&quot; &quot;$(TargetDir)&quot; /Y /I /E" />
+  </Target>
 
 </Project>

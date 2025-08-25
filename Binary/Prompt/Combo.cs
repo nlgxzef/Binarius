@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -31,17 +34,19 @@ namespace Binary.Prompt
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.ComboButtonOK.BackColor = Theme.ButtonBackColor;
-            this.ComboButtonOK.ForeColor = Theme.ButtonForeColor;
-            this.ComboButtonOK.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.ComboButtonCancel.BackColor = Theme.ButtonBackColor;
-            this.ComboButtonCancel.ForeColor = Theme.ButtonForeColor;
-            this.ComboButtonCancel.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.ComboBoxSelection.BackColor = Theme.TextBoxBackColor;
-            this.ComboBoxSelection.ForeColor = Theme.TextBoxForeColor;
-            this.DescriptionLabel.ForeColor = Theme.LabelTextColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.ComboButtonOK.BackColor = theme.Colors.ButtonBackColor;
+            this.ComboButtonOK.ForeColor = theme.Colors.ButtonForeColor;
+            this.ComboButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.ComboButtonCancel.BackColor = theme.Colors.ButtonBackColor;
+            this.ComboButtonCancel.ForeColor = theme.Colors.ButtonForeColor;
+            this.ComboButtonCancel.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.ComboBoxSelection.BackColor = theme.Colors.TextBoxBackColor;
+            this.ComboBoxSelection.ForeColor = theme.Colors.TextBoxForeColor;
+            this.DescriptionLabel.ForeColor = theme.Colors.LabelTextColor;
         }
 
         private void ComboButtonOK_Click(object sender, EventArgs e)

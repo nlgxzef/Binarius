@@ -1,7 +1,11 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using Binary.Properties;
+
 using Nikki.Core;
 using Nikki.Reflection.Enum.CP;
+
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 
 
@@ -28,24 +32,26 @@ namespace Binary.Interact
 			this.PopulateAttribTypesBasedOnGame(game);
 		}
 
-		private void ToggleTheme()
-		{
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
-			this.AttribTypeComboBox.BackColor = Theme.TextBoxBackColor;
-			this.AttribTypeComboBox.ForeColor = Theme.TextBoxForeColor;
-			this.AttribKeyComboBox.BackColor = Theme.TextBoxBackColor;
-			this.AttribKeyComboBox.ForeColor = Theme.TextBoxForeColor;
-			this.AttribButtonCreate.BackColor = Theme.ButtonBackColor;
-			this.AttribButtonCreate.ForeColor = Theme.ButtonForeColor;
-			this.AttribButtonCreate.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-			this.AttribButtonHelp.BackColor = Theme.ButtonBackColor;
-			this.AttribButtonHelp.ForeColor = Theme.ButtonForeColor;
-			this.AttribButtonHelp.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-			this.label1.BackColor = Theme.MainBackColor;
-			this.label1.ForeColor = Theme.LabelTextColor;
-			this.label2.BackColor = Theme.MainBackColor;
-			this.label2.ForeColor = Theme.LabelTextColor;
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
+			this.AttribTypeComboBox.BackColor = theme.Colors.TextBoxBackColor;
+			this.AttribTypeComboBox.ForeColor = theme.Colors.TextBoxForeColor;
+			this.AttribKeyComboBox.BackColor = theme.Colors.TextBoxBackColor;
+			this.AttribKeyComboBox.ForeColor = theme.Colors.TextBoxForeColor;
+			this.AttribButtonCreate.BackColor = theme.Colors.ButtonBackColor;
+			this.AttribButtonCreate.ForeColor = theme.Colors.ButtonForeColor;
+			this.AttribButtonCreate.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+			this.AttribButtonHelp.BackColor = theme.Colors.ButtonBackColor;
+			this.AttribButtonHelp.ForeColor = theme.Colors.ButtonForeColor;
+			this.AttribButtonHelp.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+			this.label1.BackColor = theme.Colors.MainBackColor;
+			this.label1.ForeColor = theme.Colors.LabelTextColor;
+			this.label2.BackColor = theme.Colors.MainBackColor;
+			this.label2.ForeColor = theme.Colors.LabelTextColor;
 		}
 
 		private void PopulateAttribTypesBasedOnGame(GameINT game)

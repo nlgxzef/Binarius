@@ -1,15 +1,20 @@
-﻿using System;
-using System.Linq;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using Binary.Tools;
-using Binary.Prompt;
+﻿using Binary.Prompt;
 using Binary.Properties;
+using Binary.Tools;
+
+using CoreExtensions.Management;
+
 using Endscript.Enums;
+
 using Nikki.Reflection.Abstract;
 using Nikki.Support.Shared.Class;
-using CoreExtensions.Management;
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 
 
@@ -37,57 +42,59 @@ namespace Binary.UI
 			this.ToggleMenuStripControls(null);
 		}
 
-		#region Theme
+        #region Theme
 
-		private void ToggleTheme()
-		{
-			// Renderers
-			this.CareerEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            // Renderers
+            this.CareerEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
+			this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
 
 			// Tree view
-			this.CareerTreeView.BackColor = Theme.PrimBackColor;
-			this.CareerTreeView.ForeColor = Theme.PrimForeColor;
+			this.CareerTreeView.BackColor = theme.Colors.PrimBackColor;
+			this.CareerTreeView.ForeColor = theme.Colors.PrimForeColor;
 
 			// Property grid
-			this.CareerPropertyGrid.BackColor = Theme.PrimBackColor;
-			this.CareerPropertyGrid.CategorySplitterColor = Theme.ButtonBackColor;
-			this.CareerPropertyGrid.CategoryForeColor = Theme.TextBoxForeColor;
-			this.CareerPropertyGrid.CommandsBackColor = Theme.PrimBackColor;
-			this.CareerPropertyGrid.CommandsForeColor = Theme.PrimForeColor;
-			this.CareerPropertyGrid.CommandsBorderColor = Theme.PrimBackColor;
-			this.CareerPropertyGrid.DisabledItemForeColor = Theme.LabelTextColor;
-			this.CareerPropertyGrid.LineColor = Theme.ButtonBackColor;
-			this.CareerPropertyGrid.SelectedItemWithFocusBackColor = Theme.FocusedBackColor;
-			this.CareerPropertyGrid.SelectedItemWithFocusForeColor = Theme.FocusedForeColor;
-			this.CareerPropertyGrid.ViewBorderColor = Theme.RegBorderColor;
-			this.CareerPropertyGrid.ViewBackColor = Theme.PrimBackColor;
-			this.CareerPropertyGrid.ViewForeColor = Theme.PrimForeColor;
-			this.CareerPropertyGrid.HelpBackColor = Theme.PrimBackColor;
-			this.CareerPropertyGrid.HelpForeColor = Theme.PrimForeColor;
-			this.CareerPropertyGrid.HelpBorderColor = Theme.RegBorderColor;
+			this.CareerPropertyGrid.BackColor = theme.Colors.PrimBackColor;
+			this.CareerPropertyGrid.CategorySplitterColor = theme.Colors.ButtonBackColor;
+			this.CareerPropertyGrid.CategoryForeColor = theme.Colors.TextBoxForeColor;
+			this.CareerPropertyGrid.CommandsBackColor = theme.Colors.PrimBackColor;
+			this.CareerPropertyGrid.CommandsForeColor = theme.Colors.PrimForeColor;
+			this.CareerPropertyGrid.CommandsBorderColor = theme.Colors.PrimBackColor;
+			this.CareerPropertyGrid.DisabledItemForeColor = theme.Colors.LabelTextColor;
+			this.CareerPropertyGrid.LineColor = theme.Colors.ButtonBackColor;
+			this.CareerPropertyGrid.SelectedItemWithFocusBackColor = theme.Colors.FocusedBackColor;
+			this.CareerPropertyGrid.SelectedItemWithFocusForeColor = theme.Colors.FocusedForeColor;
+			this.CareerPropertyGrid.ViewBorderColor = theme.Colors.RegBorderColor;
+			this.CareerPropertyGrid.ViewBackColor = theme.Colors.PrimBackColor;
+			this.CareerPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
+			this.CareerPropertyGrid.HelpBackColor = theme.Colors.PrimBackColor;
+			this.CareerPropertyGrid.HelpForeColor = theme.Colors.PrimForeColor;
+			this.CareerPropertyGrid.HelpBorderColor = theme.Colors.RegBorderColor;
 
 			// Search bar
-			this.CareerSearchBar.BackColor = Theme.TextBoxBackColor;
-			this.CareerSearchBar.ForeColor = Theme.TextBoxForeColor;
+			this.CareerSearchBar.BackColor = theme.Colors.TextBoxBackColor;
+			this.CareerSearchBar.ForeColor = theme.Colors.TextBoxForeColor;
 
 			// Menu strip and menu items
-			this.CareerEditorMenuStrip.ForeColor = Theme.LabelTextColor;
-			this.AddCollectionToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.AddCollectionToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RemoveCollectionToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RemoveCollectionToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.CopyCollectionToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.CopyCollectionToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.ScriptCollectionToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.ScriptCollectionToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.HasherToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.HasherToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RaiderToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RaiderToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+			this.CareerEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+			this.AddCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.AddCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RemoveCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RemoveCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.CopyCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.CopyCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.ScriptCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.ScriptCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.HasherToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 		}
 
 		#endregion

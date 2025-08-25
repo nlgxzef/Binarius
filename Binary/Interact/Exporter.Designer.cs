@@ -28,52 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Exporter));
-            ExportSerialized = new System.Windows.Forms.CheckBox();
-            ExporterButton = new System.Windows.Forms.Button();
-            ExporterToolTip = new System.Windows.Forms.ToolTip(components);
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Exporter));
+            this.ExportSerialized = new System.Windows.Forms.CheckBox();
+            this.ExporterButton = new System.Windows.Forms.Button();
+            this.ExporterToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.SuspendLayout();
             // 
             // ExportSerialized
             // 
-            ExportSerialized.Checked = true;
-            ExportSerialized.CheckState = System.Windows.Forms.CheckState.Checked;
-            ExportSerialized.Location = new System.Drawing.Point(13, 14);
-            ExportSerialized.Name = "ExportSerialized";
-            ExportSerialized.Size = new System.Drawing.Size(89, 23);
-            ExportSerialized.TabIndex = 0;
-            ExportSerialized.Text = "Serialized";
+            this.ExportSerialized.Checked = true;
+            this.ExportSerialized.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ExportSerialized.Location = new System.Drawing.Point(13, 14);
+            this.ExportSerialized.Name = "ExportSerialized";
+            this.ExportSerialized.Size = new System.Drawing.Size(89, 23);
+            this.ExportSerialized.TabIndex = 0;
+            this.ExportSerialized.Text = "Serialized";
             // 
             // ExporterButton
             // 
-            ExporterButton.AutoSize = true;
-            ExporterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            ExporterButton.Location = new System.Drawing.Point(108, 12);
-            ExporterButton.Name = "ExporterButton";
-            ExporterButton.Size = new System.Drawing.Size(94, 27);
-            ExporterButton.TabIndex = 1;
-            ExporterButton.Text = "Export";
-            ExporterButton.UseVisualStyleBackColor = true;
-            ExporterButton.Click += ExporterButton_Click;
+            this.ExporterButton.AutoSize = true;
+            this.ExporterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExporterButton.Location = new System.Drawing.Point(108, 12);
+            this.ExporterButton.Name = "ExporterButton";
+            this.ExporterButton.Size = new System.Drawing.Size(94, 27);
+            this.ExporterButton.TabIndex = 1;
+            this.ExporterButton.Text = "Export";
+            this.ExporterButton.UseVisualStyleBackColor = true;
+            this.ExporterButton.Click += this.ExporterButton_Click;
             // 
             // Exporter
             // 
-            AcceptButton = ExporterButton;
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            ClientSize = new System.Drawing.Size(214, 48);
-            Controls.Add(ExporterButton);
-            Controls.Add(ExportSerialized);
-            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MaximizeBox = false;
-            Name = "Exporter";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Exporter";
-            ResumeLayout(false);
-            PerformLayout();
+            this.AcceptButton = this.ExporterButton;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(214, 48);
+            this.Controls.Add(this.ExporterButton);
+            this.Controls.Add(this.ExportSerialized);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            this.MaximizeBox = false;
+            this.Name = "Exporter";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Exporter";
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         #endregion

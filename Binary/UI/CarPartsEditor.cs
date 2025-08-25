@@ -1,15 +1,18 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Binary.Tools;
+﻿using Binary.Interact;
 using Binary.Prompt;
-using Binary.Interact;
 using Binary.Properties;
+using Binary.Tools;
+
 using Nikki.Core;
 using Nikki.Support.Shared.Class;
 using Nikki.Support.Shared.Parts.CarParts;
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 
 
@@ -33,79 +36,81 @@ namespace Binary.UI
 			this.FindAndReplaceToolStripMenuItem.Enabled = true;
 		}
 
-		#region Theme
+        #region Theme
 
-		private void ToggleTheme()
-		{
-			// Renderers
-			this.CarPartsEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            // Renderers
+            this.CarPartsEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
+			this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
 
 			// Tree view
-			this.CarPartsTreeView.BackColor = Theme.PrimBackColor;
-			this.CarPartsTreeView.ForeColor = Theme.PrimForeColor;
+			this.CarPartsTreeView.BackColor = theme.Colors.PrimBackColor;
+			this.CarPartsTreeView.ForeColor = theme.Colors.PrimForeColor;
 
 			// Property grid
-			this.CarPartsPropertyGrid.BackColor = Theme.PrimBackColor;
-			this.CarPartsPropertyGrid.CategorySplitterColor = Theme.ButtonBackColor;
-			this.CarPartsPropertyGrid.CategoryForeColor = Theme.TextBoxForeColor;
-			this.CarPartsPropertyGrid.CommandsBackColor = Theme.PrimBackColor;
-			this.CarPartsPropertyGrid.CommandsForeColor = Theme.PrimForeColor;
-			this.CarPartsPropertyGrid.CommandsBorderColor = Theme.PrimBackColor;
-			this.CarPartsPropertyGrid.DisabledItemForeColor = Theme.LabelTextColor;
-			this.CarPartsPropertyGrid.LineColor = Theme.ButtonBackColor;
-			this.CarPartsPropertyGrid.SelectedItemWithFocusBackColor = Theme.FocusedBackColor;
-			this.CarPartsPropertyGrid.SelectedItemWithFocusForeColor = Theme.FocusedForeColor;
-			this.CarPartsPropertyGrid.ViewBorderColor = Theme.RegBorderColor;
-			this.CarPartsPropertyGrid.ViewBackColor = Theme.PrimBackColor;
-			this.CarPartsPropertyGrid.ViewForeColor = Theme.PrimForeColor;
-			this.CarPartsPropertyGrid.HelpBackColor = Theme.PrimBackColor;
-			this.CarPartsPropertyGrid.HelpForeColor = Theme.PrimForeColor;
-			this.CarPartsPropertyGrid.HelpBorderColor = Theme.RegBorderColor;
+			this.CarPartsPropertyGrid.BackColor = theme.Colors.PrimBackColor;
+			this.CarPartsPropertyGrid.CategorySplitterColor = theme.Colors.ButtonBackColor;
+			this.CarPartsPropertyGrid.CategoryForeColor = theme.Colors.TextBoxForeColor;
+			this.CarPartsPropertyGrid.CommandsBackColor = theme.Colors.PrimBackColor;
+			this.CarPartsPropertyGrid.CommandsForeColor = theme.Colors.PrimForeColor;
+			this.CarPartsPropertyGrid.CommandsBorderColor = theme.Colors.PrimBackColor;
+			this.CarPartsPropertyGrid.DisabledItemForeColor = theme.Colors.LabelTextColor;
+			this.CarPartsPropertyGrid.LineColor = theme.Colors.ButtonBackColor;
+			this.CarPartsPropertyGrid.SelectedItemWithFocusBackColor = theme.Colors.FocusedBackColor;
+			this.CarPartsPropertyGrid.SelectedItemWithFocusForeColor = theme.Colors.FocusedForeColor;
+			this.CarPartsPropertyGrid.ViewBorderColor = theme.Colors.RegBorderColor;
+			this.CarPartsPropertyGrid.ViewBackColor = theme.Colors.PrimBackColor;
+			this.CarPartsPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
+			this.CarPartsPropertyGrid.HelpBackColor = theme.Colors.PrimBackColor;
+			this.CarPartsPropertyGrid.HelpForeColor = theme.Colors.PrimForeColor;
+			this.CarPartsPropertyGrid.HelpBorderColor = theme.Colors.RegBorderColor;
 
 			// Menu strip and menu items
-			this.CarPartsEditorMenuStrip.ForeColor = Theme.LabelTextColor;
-			this.AddPartToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.AddPartToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RemovePartToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RemovePartToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.CopyPartToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.CopyPartToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveUpPartsToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.MoveUpPartsToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveDownPartsToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.MoveDownPartsToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveFirstPartsToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.MoveFirstPartsToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveLastPartsToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.MoveLastPartsToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.ReversePartsToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.ReversePartsToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.SortPartsByNameToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.SortPartsByNameToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.FindAndReplaceToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.FindAndReplaceToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.AddAttributeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.AddAttributeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RemoveAttributeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;			
-			this.RemoveAttributeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveUpAttributesToolStripMenuItem.BackColor = Theme.MenuItemBackColor;			
-			this.MoveUpAttributesToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.MoveDownAttributesToolStripMenuItem.BackColor = Theme.MenuItemBackColor;			
-			this.MoveDownAttributesToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.ReverseAttributesToolStripMenuItem.BackColor = Theme.MenuItemBackColor;			
-			this.ReverseAttributesToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.SortAttributesByKeyToolStripMenuItem.BackColor = Theme.MenuItemBackColor;			
-			this.SortAttributesByKeyToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.AddCustomAttributeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.AddCustomAttributeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.HasherToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.HasherToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RaiderToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RaiderToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+			this.CarPartsEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+			this.AddPartToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.AddPartToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RemovePartToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RemovePartToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.CopyPartToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.CopyPartToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveUpPartsToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.MoveUpPartsToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveDownPartsToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.MoveDownPartsToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveFirstPartsToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.MoveFirstPartsToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveLastPartsToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.MoveLastPartsToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.ReversePartsToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.ReversePartsToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.SortPartsByNameToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.SortPartsByNameToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.FindAndReplaceToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.FindAndReplaceToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.AddAttributeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.AddAttributeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RemoveAttributeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;			
+			this.RemoveAttributeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveUpAttributesToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;			
+			this.MoveUpAttributesToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.MoveDownAttributesToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;			
+			this.MoveDownAttributesToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.ReverseAttributesToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;			
+			this.ReverseAttributesToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.SortAttributesByKeyToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;			
+			this.SortAttributesByKeyToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.AddCustomAttributeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.AddCustomAttributeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.HasherToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 		}
 
 		#endregion

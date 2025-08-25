@@ -28,73 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Check));
-            CheckBoxSelection = new System.Windows.Forms.CheckBox();
-            CheckButtonCancel = new System.Windows.Forms.Button();
-            CheckButtonOK = new System.Windows.Forms.Button();
-            LabelDescription = new System.Windows.Forms.Label();
-            SuspendLayout();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CheckError));
+            this.CheckBoxSelection = new System.Windows.Forms.CheckBox();
+            this.CheckButtonCancel = new System.Windows.Forms.Button();
+            this.CheckButtonOK = new System.Windows.Forms.Button();
+            this.LabelDescription = new System.Windows.Forms.Label();
+            this.SuspendLayout();
             // 
             // CheckBoxSelection
             // 
-            CheckBoxSelection.Location = new System.Drawing.Point(12, 63);
-            CheckBoxSelection.Name = "CheckBoxSelection";
-            CheckBoxSelection.Size = new System.Drawing.Size(344, 30);
-            CheckBoxSelection.TabIndex = 0;
-            CheckBoxSelection.Text = "Custom Text";
+            this.CheckBoxSelection.Location = new System.Drawing.Point(12, 63);
+            this.CheckBoxSelection.Name = "CheckBoxSelection";
+            this.CheckBoxSelection.Size = new System.Drawing.Size(344, 30);
+            this.CheckBoxSelection.TabIndex = 0;
+            this.CheckBoxSelection.Text = "Custom Text";
             // 
             // CheckButtonCancel
             // 
-            CheckButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            CheckButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CheckButtonCancel.Location = new System.Drawing.Point(262, 99);
-            CheckButtonCancel.Name = "CheckButtonCancel";
-            CheckButtonCancel.Size = new System.Drawing.Size(96, 25);
-            CheckButtonCancel.TabIndex = 1;
-            CheckButtonCancel.Text = "Cancel";
-            CheckButtonCancel.UseVisualStyleBackColor = true;
-            CheckButtonCancel.Click += CheckButtonCancel_Click;
+            this.CheckButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CheckButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CheckButtonCancel.Location = new System.Drawing.Point(262, 99);
+            this.CheckButtonCancel.Name = "CheckButtonCancel";
+            this.CheckButtonCancel.Size = new System.Drawing.Size(96, 25);
+            this.CheckButtonCancel.TabIndex = 1;
+            this.CheckButtonCancel.Text = "Cancel";
+            this.CheckButtonCancel.UseVisualStyleBackColor = true;
+            this.CheckButtonCancel.Click += this.CheckButtonCancel_Click;
             // 
             // CheckButtonOK
             // 
-            CheckButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            CheckButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CheckButtonOK.Location = new System.Drawing.Point(160, 99);
-            CheckButtonOK.Name = "CheckButtonOK";
-            CheckButtonOK.Size = new System.Drawing.Size(96, 25);
-            CheckButtonOK.TabIndex = 1;
-            CheckButtonOK.Text = "OK";
-            CheckButtonOK.UseVisualStyleBackColor = true;
-            CheckButtonOK.Click += CheckButtonOK_Click;
+            this.CheckButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.CheckButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CheckButtonOK.Location = new System.Drawing.Point(160, 99);
+            this.CheckButtonOK.Name = "CheckButtonOK";
+            this.CheckButtonOK.Size = new System.Drawing.Size(96, 25);
+            this.CheckButtonOK.TabIndex = 1;
+            this.CheckButtonOK.Text = "OK";
+            this.CheckButtonOK.UseVisualStyleBackColor = true;
+            this.CheckButtonOK.Click += this.CheckButtonOK_Click;
             // 
             // LabelDescription
             // 
-            LabelDescription.Location = new System.Drawing.Point(12, 9);
-            LabelDescription.MaximumSize = new System.Drawing.Size(344, 0);
-            LabelDescription.Name = "LabelDescription";
-            LabelDescription.Size = new System.Drawing.Size(344, 51);
-            LabelDescription.TabIndex = 2;
-            LabelDescription.Text = "Description label";
+            this.LabelDescription.Location = new System.Drawing.Point(12, 9);
+            this.LabelDescription.MaximumSize = new System.Drawing.Size(344, 0);
+            this.LabelDescription.Name = "LabelDescription";
+            this.LabelDescription.Size = new System.Drawing.Size(344, 51);
+            this.LabelDescription.TabIndex = 2;
+            this.LabelDescription.Text = "Description label";
             // 
-            // Check
+            // CheckError
             // 
-            AcceptButton = CheckButtonOK;
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            CancelButton = CheckButtonCancel;
-            ClientSize = new System.Drawing.Size(368, 138);
-            Controls.Add(LabelDescription);
-            Controls.Add(CheckButtonOK);
-            Controls.Add(CheckButtonCancel);
-            Controls.Add(CheckBoxSelection);
-            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MaximizeBox = false;
-            Name = "Check";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Prompt Selection";
-            ResumeLayout(false);
+            this.AcceptButton = this.CheckButtonOK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.CancelButton = this.CheckButtonCancel;
+            this.ClientSize = new System.Drawing.Size(368, 138);
+            this.Controls.Add(this.LabelDescription);
+            this.Controls.Add(this.CheckButtonOK);
+            this.Controls.Add(this.CheckButtonCancel);
+            this.Controls.Add(this.CheckBoxSelection);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            this.MaximizeBox = false;
+            this.Name = "CheckError";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Prompt Selection";
+            this.ResumeLayout(false);
         }
 
         #endregion

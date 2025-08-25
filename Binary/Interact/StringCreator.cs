@@ -1,10 +1,15 @@
-﻿using System;
-using System.Windows.Forms;
-using System.ComponentModel;
-using Nikki.Utils;
-using Nikki.Support.Shared.Parts.STRParts;
-using CoreExtensions.Text;
+﻿using Binary.Properties;
+
 using CoreExtensions.Native;
+using CoreExtensions.Text;
+
+using Nikki.Support.Shared.Parts.STRParts;
+using Nikki.Utils;
+
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Windows.Forms;
 
 
 
@@ -41,24 +46,26 @@ namespace Binary.Interact
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.StringButtonOK.BackColor = Theme.ButtonBackColor;
-            this.StringButtonOK.ForeColor = Theme.ButtonForeColor;
-            this.StringButtonOK.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.StringButtonCancel.BackColor = Theme.ButtonBackColor;
-            this.StringButtonCancel.ForeColor = Theme.ButtonForeColor;
-            this.StringButtonCancel.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.StringTextBoxKey.BackColor = Theme.TextBoxBackColor;
-            this.StringTextBoxKey.ForeColor = Theme.TextBoxForeColor;
-            this.StringTextBoxLabel.BackColor = Theme.TextBoxBackColor;
-            this.StringTextBoxLabel.ForeColor = Theme.TextBoxForeColor;
-            this.StringTextBoxText.BackColor = Theme.TextBoxBackColor;
-            this.StringTextBoxText.ForeColor = Theme.TextBoxForeColor;
-            this.StringCheckBoxCustom.ForeColor = Theme.LabelTextColor;
-            this.StringCheckBoxReversed.ForeColor = Theme.LabelTextColor;
-            this.label1.ForeColor = Theme.LabelTextColor;
-            this.label2.ForeColor = Theme.LabelTextColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.StringButtonOK.BackColor = theme.Colors.ButtonBackColor;
+            this.StringButtonOK.ForeColor = theme.Colors.ButtonForeColor;
+            this.StringButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.StringButtonCancel.BackColor = theme.Colors.ButtonBackColor;
+            this.StringButtonCancel.ForeColor = theme.Colors.ButtonForeColor;
+            this.StringButtonCancel.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.StringTextBoxKey.BackColor = theme.Colors.TextBoxBackColor;
+            this.StringTextBoxKey.ForeColor = theme.Colors.TextBoxForeColor;
+            this.StringTextBoxLabel.BackColor = theme.Colors.TextBoxBackColor;
+            this.StringTextBoxLabel.ForeColor = theme.Colors.TextBoxForeColor;
+            this.StringTextBoxText.BackColor = theme.Colors.TextBoxBackColor;
+            this.StringTextBoxText.ForeColor = theme.Colors.TextBoxForeColor;
+            this.StringCheckBoxCustom.ForeColor = theme.Colors.LabelTextColor;
+            this.StringCheckBoxReversed.ForeColor = theme.Colors.LabelTextColor;
+            this.label1.ForeColor = theme.Colors.LabelTextColor;
+            this.label2.ForeColor = theme.Colors.LabelTextColor;
         }
 
         #endregion

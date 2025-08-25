@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Check));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Info));
             this.InfoLabel = new System.Windows.Forms.Label();
             this.InfoButtonOK = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -41,20 +41,20 @@
             this.InfoLabel.TabIndex = 0;
             this.InfoLabel.Text = "Custom Text";
             // 
-            // ComboButtonOK
+            // InfoButtonOK
             // 
             this.InfoButtonOK.AutoSize = true;
             this.InfoButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.InfoButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoButtonOK.Location = new System.Drawing.Point(162, 62);
-            this.InfoButtonOK.Name = "ComboButtonOK";
+            this.InfoButtonOK.Name = "InfoButtonOK";
             this.InfoButtonOK.Size = new System.Drawing.Size(94, 27);
             this.InfoButtonOK.TabIndex = 1;
             this.InfoButtonOK.Text = "OK";
             this.InfoButtonOK.UseVisualStyleBackColor = true;
-            this.InfoButtonOK.Click += new System.EventHandler(this.InfoButtonOK_Click);
+            this.InfoButtonOK.Click += this.InfoButtonOK_Click;
             // 
-            // Check
+            // Info
             // 
             this.AcceptButton = this.InfoButtonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -64,7 +64,7 @@
             this.Controls.Add(this.InfoLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             this.MaximizeBox = false;
             this.Name = "Info";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

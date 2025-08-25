@@ -1,16 +1,21 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Binary.Tools;
+﻿using Binary.Interact;
 using Binary.Prompt;
-using Binary.Interact;
 using Binary.Properties;
-using Endscript.Enums;
-using Nikki.Support.Shared.Class;
+using Binary.Tools;
+
 using CoreExtensions.Management;
+
+using Endscript.Enums;
+
+using Nikki.Support.Shared.Class;
 using Nikki.Utils;
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Binary.UI
 {
@@ -46,55 +51,57 @@ namespace Binary.UI
 			this.ToggleMenuStripControls();
 		}
 
-		#region Theme
+        #region Theme
 
-		private void ToggleTheme()
-		{
-			// Renderers
-			this.StrEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            // Renderers
+            this.StrEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
+			this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
 
 			// List view
-			this.StrEditorListView.BackColor = Theme.PrimBackColor;
-			this.StrEditorListView.ForeColor = Theme.PrimForeColor;
+			this.StrEditorListView.BackColor = theme.Colors.PrimBackColor;
+			this.StrEditorListView.ForeColor = theme.Colors.PrimForeColor;
 
 			// Labels
-			this.label1.ForeColor = Theme.LabelTextColor;
-			this.label2.ForeColor = Theme.LabelTextColor;
-			this.label3.ForeColor = Theme.LabelTextColor;
+			this.label1.ForeColor = theme.Colors.LabelTextColor;
+			this.label2.ForeColor = theme.Colors.LabelTextColor;
+			this.label3.ForeColor = theme.Colors.LabelTextColor;
 
 			// Text boxes
-			this.TextBoxKey.BackColor = Theme.TextBoxBackColor;
-			this.TextBoxKey.ForeColor = Theme.TextBoxForeColor;
-			this.TextBoxLabel.BackColor = Theme.TextBoxBackColor;
-			this.TextBoxLabel.ForeColor = Theme.TextBoxForeColor;
-			this.TextBoxText.BackColor = Theme.TextBoxBackColor;
-			this.TextBoxText.ForeColor = Theme.TextBoxForeColor;
-			this.StringEditorTextBox.BackColor = Theme.TextBoxBackColor;
-			this.StringEditorTextBox.ForeColor = Theme.TextBoxForeColor;
+			this.TextBoxKey.BackColor = theme.Colors.TextBoxBackColor;
+			this.TextBoxKey.ForeColor = theme.Colors.TextBoxForeColor;
+			this.TextBoxLabel.BackColor = theme.Colors.TextBoxBackColor;
+			this.TextBoxLabel.ForeColor = theme.Colors.TextBoxForeColor;
+			this.TextBoxText.BackColor = theme.Colors.TextBoxBackColor;
+			this.TextBoxText.ForeColor = theme.Colors.TextBoxForeColor;
+			this.StringEditorTextBox.BackColor = theme.Colors.TextBoxBackColor;
+			this.StringEditorTextBox.ForeColor = theme.Colors.TextBoxForeColor;
 
 			// Menu strip and menu items
-			this.StrEditorMenuStrip.ForeColor = Theme.LabelTextColor;
+			this.StrEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
 
-			this.AddStringToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.AddStringToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RemoveStringToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RemoveStringToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.EditStringToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.EditStringToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.ReplaceStringToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.ReplaceStringToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.FindPreviousToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.FindPreviousToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.FindNextToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.FindNextToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.HasherToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.HasherToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-			this.RaiderToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-			this.RaiderToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+			this.AddStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.AddStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RemoveStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RemoveStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.EditStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.EditStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.ReplaceStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.ReplaceStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.FindPreviousToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.FindPreviousToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.FindNextToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.FindNextToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.HasherToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 		}
 
 		#endregion
@@ -517,7 +524,8 @@ namespace Binary.UI
 
 		private void StrEditorListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
 		{
-			var brush = new SolidBrush(Theme.TextBoxBackColor);
+            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            var brush = new SolidBrush(theme.Colors.TextBoxBackColor);
 			e.Graphics.FillRectangle(brush, e.Bounds);
 			e.DrawText();
 		}

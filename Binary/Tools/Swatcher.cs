@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using Nikki.Reflection.Abstract;
+
+using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -19,26 +24,28 @@ namespace Binary.Tools
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
 
-            this.CopyBrightnessValue.BackColor = Theme.ButtonBackColor;
-            this.CopyBrightnessValue.ForeColor = Theme.ButtonForeColor;
-            this.CopyBrightnessValue.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CopySaturationValue.BackColor = Theme.ButtonBackColor;
-            this.CopySaturationValue.ForeColor = Theme.ButtonForeColor;
-            this.CopySaturationValue.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CopyPaintSwatchValue.BackColor = Theme.ButtonBackColor;
-            this.CopyPaintSwatchValue.ForeColor = Theme.ButtonForeColor;
-            this.CopyPaintSwatchValue.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.TextBoxBrightness.BackColor = Theme.TextBoxBackColor;
-            this.TextBoxBrightness.ForeColor = Theme.TextBoxForeColor;
-            this.TextBoxSaturation.BackColor = Theme.TextBoxBackColor;
-            this.TextBoxSaturation.ForeColor = Theme.TextBoxForeColor;
-            this.TextBoxPaintSwatch.BackColor = Theme.TextBoxBackColor;
-            this.TextBoxPaintSwatch.ForeColor = Theme.TextBoxForeColor;
-            this.GroupBoxRGB.ForeColor = Theme.LabelTextColor;
-            this.GroupBoxSwatch.ForeColor = Theme.LabelTextColor;
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+
+            this.CopyBrightnessValue.BackColor = theme.Colors.ButtonBackColor;
+            this.CopyBrightnessValue.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopyBrightnessValue.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CopySaturationValue.BackColor = theme.Colors.ButtonBackColor;
+            this.CopySaturationValue.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopySaturationValue.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CopyPaintSwatchValue.BackColor = theme.Colors.ButtonBackColor;
+            this.CopyPaintSwatchValue.ForeColor = theme.Colors.ButtonForeColor;
+            this.CopyPaintSwatchValue.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.TextBoxBrightness.BackColor = theme.Colors.TextBoxBackColor;
+            this.TextBoxBrightness.ForeColor = theme.Colors.TextBoxForeColor;
+            this.TextBoxSaturation.BackColor = theme.Colors.TextBoxBackColor;
+            this.TextBoxSaturation.ForeColor = theme.Colors.TextBoxForeColor;
+            this.TextBoxPaintSwatch.BackColor = theme.Colors.TextBoxBackColor;
+            this.TextBoxPaintSwatch.ForeColor = theme.Colors.TextBoxForeColor;
+            this.GroupBoxRGB.ForeColor = theme.Colors.LabelTextColor;
+            this.GroupBoxSwatch.ForeColor = theme.Colors.LabelTextColor;
         }
 
         #endregion
@@ -130,13 +137,17 @@ namespace Binary.Tools
         private void GroupBoxRGB_Paint(object sender, PaintEventArgs e)
         {
             var box = sender as GroupBox;
-            this.DrawGroupBox(box, e.Graphics, Theme.LabelTextColor, Theme.LabelTextColor);
+
+            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            this.DrawGroupBox(box, e.Graphics, theme.Colors.LabelTextColor, theme.Colors.LabelTextColor);
         }
 
         private void GroupBoxSwatch_Paint(object sender, PaintEventArgs e)
         {
-            var box = sender as GroupBox;
-            this.DrawGroupBox(box, e.Graphics, Theme.LabelTextColor, Theme.LabelTextColor);
+            var box = sender as GroupBox; 
+            
+            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            this.DrawGroupBox(box, e.Graphics, theme.Colors.LabelTextColor, theme.Colors.LabelTextColor);
         }
 
         private void DrawGroupBox(GroupBox box, Graphics g, Color fore, Color border)

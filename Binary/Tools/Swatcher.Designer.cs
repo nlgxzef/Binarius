@@ -28,289 +28,289 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Swatcher));
-            GroupBoxRGB = new System.Windows.Forms.GroupBox();
-            LabelBlue = new System.Windows.Forms.Label();
-            LabelGreen = new System.Windows.Forms.Label();
-            LabelRed = new System.Windows.Forms.Label();
-            TrackBar_Blue = new System.Windows.Forms.TrackBar();
-            TrackBar_Green = new System.Windows.Forms.TrackBar();
-            TrackBar_Red = new System.Windows.Forms.TrackBar();
-            OpenWindowsColorForm = new System.Windows.Forms.Button();
-            ColorPreview = new System.Windows.Forms.PictureBox();
-            SwatchDialog = new System.Windows.Forms.ColorDialog();
-            GroupBoxSwatch = new System.Windows.Forms.GroupBox();
-            CopyBrightnessValue = new System.Windows.Forms.Button();
-            CopySaturationValue = new System.Windows.Forms.Button();
-            CopyPaintSwatchValue = new System.Windows.Forms.Button();
-            TextBoxBrightness = new System.Windows.Forms.TextBox();
-            TextBoxSaturation = new System.Windows.Forms.TextBox();
-            TextBoxPaintSwatch = new System.Windows.Forms.TextBox();
-            LabelBrightness = new System.Windows.Forms.Label();
-            LabelSaturation = new System.Windows.Forms.Label();
-            LabelPaintSwatch = new System.Windows.Forms.Label();
-            GroupBoxRGB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Blue).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Green).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Red).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ColorPreview).BeginInit();
-            GroupBoxSwatch.SuspendLayout();
-            SuspendLayout();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Swatcher));
+            this.GroupBoxRGB = new System.Windows.Forms.GroupBox();
+            this.LabelBlue = new System.Windows.Forms.Label();
+            this.LabelGreen = new System.Windows.Forms.Label();
+            this.LabelRed = new System.Windows.Forms.Label();
+            this.TrackBar_Blue = new System.Windows.Forms.TrackBar();
+            this.TrackBar_Green = new System.Windows.Forms.TrackBar();
+            this.TrackBar_Red = new System.Windows.Forms.TrackBar();
+            this.OpenWindowsColorForm = new System.Windows.Forms.Button();
+            this.ColorPreview = new System.Windows.Forms.PictureBox();
+            this.SwatchDialog = new System.Windows.Forms.ColorDialog();
+            this.GroupBoxSwatch = new System.Windows.Forms.GroupBox();
+            this.CopyBrightnessValue = new System.Windows.Forms.Button();
+            this.CopySaturationValue = new System.Windows.Forms.Button();
+            this.CopyPaintSwatchValue = new System.Windows.Forms.Button();
+            this.TextBoxBrightness = new System.Windows.Forms.TextBox();
+            this.TextBoxSaturation = new System.Windows.Forms.TextBox();
+            this.TextBoxPaintSwatch = new System.Windows.Forms.TextBox();
+            this.LabelBrightness = new System.Windows.Forms.Label();
+            this.LabelSaturation = new System.Windows.Forms.Label();
+            this.LabelPaintSwatch = new System.Windows.Forms.Label();
+            this.GroupBoxRGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Blue).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Green).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Red).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.ColorPreview).BeginInit();
+            this.GroupBoxSwatch.SuspendLayout();
+            this.SuspendLayout();
             // 
             // GroupBoxRGB
             // 
-            GroupBoxRGB.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            GroupBoxRGB.Controls.Add(LabelBlue);
-            GroupBoxRGB.Controls.Add(LabelGreen);
-            GroupBoxRGB.Controls.Add(LabelRed);
-            GroupBoxRGB.Controls.Add(TrackBar_Blue);
-            GroupBoxRGB.Controls.Add(TrackBar_Green);
-            GroupBoxRGB.Controls.Add(TrackBar_Red);
-            GroupBoxRGB.Location = new System.Drawing.Point(29, 21);
-            GroupBoxRGB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            GroupBoxRGB.Name = "GroupBoxRGB";
-            GroupBoxRGB.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            GroupBoxRGB.Size = new System.Drawing.Size(416, 228);
-            GroupBoxRGB.TabIndex = 1;
-            GroupBoxRGB.TabStop = false;
-            GroupBoxRGB.Text = "RGB Value Picker";
-            GroupBoxRGB.Paint += GroupBoxRGB_Paint;
+            this.GroupBoxRGB.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.GroupBoxRGB.Controls.Add(this.LabelBlue);
+            this.GroupBoxRGB.Controls.Add(this.LabelGreen);
+            this.GroupBoxRGB.Controls.Add(this.LabelRed);
+            this.GroupBoxRGB.Controls.Add(this.TrackBar_Blue);
+            this.GroupBoxRGB.Controls.Add(this.TrackBar_Green);
+            this.GroupBoxRGB.Controls.Add(this.TrackBar_Red);
+            this.GroupBoxRGB.Location = new System.Drawing.Point(29, 21);
+            this.GroupBoxRGB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.GroupBoxRGB.Name = "GroupBoxRGB";
+            this.GroupBoxRGB.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.GroupBoxRGB.Size = new System.Drawing.Size(416, 228);
+            this.GroupBoxRGB.TabIndex = 1;
+            this.GroupBoxRGB.TabStop = false;
+            this.GroupBoxRGB.Text = "RGB Value Picker";
+            this.GroupBoxRGB.Paint += this.GroupBoxRGB_Paint;
             // 
             // LabelBlue
             // 
-            LabelBlue.AutoSize = true;
-            LabelBlue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelBlue.Location = new System.Drawing.Point(22, 151);
-            LabelBlue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelBlue.Name = "LabelBlue";
-            LabelBlue.Size = new System.Drawing.Size(41, 20);
-            LabelBlue.TabIndex = 26;
-            LabelBlue.Text = "Blue";
+            this.LabelBlue.AutoSize = true;
+            this.LabelBlue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelBlue.Location = new System.Drawing.Point(22, 151);
+            this.LabelBlue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelBlue.Name = "LabelBlue";
+            this.LabelBlue.Size = new System.Drawing.Size(41, 20);
+            this.LabelBlue.TabIndex = 26;
+            this.LabelBlue.Text = "Blue";
             // 
             // LabelGreen
             // 
-            LabelGreen.AutoSize = true;
-            LabelGreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelGreen.Location = new System.Drawing.Point(7, 92);
-            LabelGreen.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelGreen.Name = "LabelGreen";
-            LabelGreen.Size = new System.Drawing.Size(54, 20);
-            LabelGreen.TabIndex = 25;
-            LabelGreen.Text = "Green";
+            this.LabelGreen.AutoSize = true;
+            this.LabelGreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelGreen.Location = new System.Drawing.Point(7, 92);
+            this.LabelGreen.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelGreen.Name = "LabelGreen";
+            this.LabelGreen.Size = new System.Drawing.Size(54, 20);
+            this.LabelGreen.TabIndex = 25;
+            this.LabelGreen.Text = "Green";
             // 
             // LabelRed
             // 
-            LabelRed.AutoSize = true;
-            LabelRed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelRed.Location = new System.Drawing.Point(24, 39);
-            LabelRed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelRed.Name = "LabelRed";
-            LabelRed.Size = new System.Drawing.Size(39, 20);
-            LabelRed.TabIndex = 24;
-            LabelRed.Text = "Red";
+            this.LabelRed.AutoSize = true;
+            this.LabelRed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelRed.Location = new System.Drawing.Point(24, 39);
+            this.LabelRed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelRed.Name = "LabelRed";
+            this.LabelRed.Size = new System.Drawing.Size(39, 20);
+            this.LabelRed.TabIndex = 24;
+            this.LabelRed.Text = "Red";
             // 
             // TrackBar_Blue
             // 
-            TrackBar_Blue.Location = new System.Drawing.Point(77, 157);
-            TrackBar_Blue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TrackBar_Blue.Maximum = 255;
-            TrackBar_Blue.Name = "TrackBar_Blue";
-            TrackBar_Blue.Size = new System.Drawing.Size(326, 45);
-            TrackBar_Blue.TabIndex = 16;
-            TrackBar_Blue.Scroll += TrackBar_Blue_Scroll;
+            this.TrackBar_Blue.Location = new System.Drawing.Point(77, 157);
+            this.TrackBar_Blue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TrackBar_Blue.Maximum = 255;
+            this.TrackBar_Blue.Name = "TrackBar_Blue";
+            this.TrackBar_Blue.Size = new System.Drawing.Size(326, 45);
+            this.TrackBar_Blue.TabIndex = 16;
+            this.TrackBar_Blue.Scroll += this.TrackBar_Blue_Scroll;
             // 
             // TrackBar_Green
             // 
-            TrackBar_Green.Location = new System.Drawing.Point(77, 98);
-            TrackBar_Green.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TrackBar_Green.Maximum = 255;
-            TrackBar_Green.Name = "TrackBar_Green";
-            TrackBar_Green.Size = new System.Drawing.Size(326, 45);
-            TrackBar_Green.TabIndex = 15;
-            TrackBar_Green.Scroll += TrackBar_Green_Scroll;
+            this.TrackBar_Green.Location = new System.Drawing.Point(77, 98);
+            this.TrackBar_Green.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TrackBar_Green.Maximum = 255;
+            this.TrackBar_Green.Name = "TrackBar_Green";
+            this.TrackBar_Green.Size = new System.Drawing.Size(326, 45);
+            this.TrackBar_Green.TabIndex = 15;
+            this.TrackBar_Green.Scroll += this.TrackBar_Green_Scroll;
             // 
             // TrackBar_Red
             // 
-            TrackBar_Red.Location = new System.Drawing.Point(77, 39);
-            TrackBar_Red.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TrackBar_Red.Maximum = 255;
-            TrackBar_Red.Name = "TrackBar_Red";
-            TrackBar_Red.Size = new System.Drawing.Size(326, 45);
-            TrackBar_Red.TabIndex = 14;
-            TrackBar_Red.Scroll += TrackBar_Red_Scroll;
+            this.TrackBar_Red.Location = new System.Drawing.Point(77, 39);
+            this.TrackBar_Red.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TrackBar_Red.Maximum = 255;
+            this.TrackBar_Red.Name = "TrackBar_Red";
+            this.TrackBar_Red.Size = new System.Drawing.Size(326, 45);
+            this.TrackBar_Red.TabIndex = 14;
+            this.TrackBar_Red.Scroll += this.TrackBar_Red_Scroll;
             // 
             // OpenWindowsColorForm
             // 
-            OpenWindowsColorForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            OpenWindowsColorForm.Location = new System.Drawing.Point(370, 293);
-            OpenWindowsColorForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            OpenWindowsColorForm.Name = "OpenWindowsColorForm";
-            OpenWindowsColorForm.Size = new System.Drawing.Size(306, 30);
-            OpenWindowsColorForm.TabIndex = 27;
-            OpenWindowsColorForm.Text = "Use Windows Color Picker";
-            OpenWindowsColorForm.UseVisualStyleBackColor = false;
-            OpenWindowsColorForm.Click += OpenWindowsColorForm_Click;
+            this.OpenWindowsColorForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenWindowsColorForm.Location = new System.Drawing.Point(370, 293);
+            this.OpenWindowsColorForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.OpenWindowsColorForm.Name = "OpenWindowsColorForm";
+            this.OpenWindowsColorForm.Size = new System.Drawing.Size(306, 30);
+            this.OpenWindowsColorForm.TabIndex = 27;
+            this.OpenWindowsColorForm.Text = "Use Windows Color Picker";
+            this.OpenWindowsColorForm.UseVisualStyleBackColor = false;
+            this.OpenWindowsColorForm.Click += this.OpenWindowsColorForm_Click;
             // 
             // ColorPreview
             // 
-            ColorPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            ColorPreview.Location = new System.Drawing.Point(182, 276);
-            ColorPreview.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            ColorPreview.Name = "ColorPreview";
-            ColorPreview.Size = new System.Drawing.Size(162, 59);
-            ColorPreview.TabIndex = 23;
-            ColorPreview.TabStop = false;
+            this.ColorPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ColorPreview.Location = new System.Drawing.Point(182, 276);
+            this.ColorPreview.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ColorPreview.Name = "ColorPreview";
+            this.ColorPreview.Size = new System.Drawing.Size(162, 59);
+            this.ColorPreview.TabIndex = 23;
+            this.ColorPreview.TabStop = false;
             // 
             // GroupBoxSwatch
             // 
-            GroupBoxSwatch.Controls.Add(CopyBrightnessValue);
-            GroupBoxSwatch.Controls.Add(CopySaturationValue);
-            GroupBoxSwatch.Controls.Add(CopyPaintSwatchValue);
-            GroupBoxSwatch.Controls.Add(TextBoxBrightness);
-            GroupBoxSwatch.Controls.Add(TextBoxSaturation);
-            GroupBoxSwatch.Controls.Add(TextBoxPaintSwatch);
-            GroupBoxSwatch.Controls.Add(LabelBrightness);
-            GroupBoxSwatch.Controls.Add(LabelSaturation);
-            GroupBoxSwatch.Controls.Add(LabelPaintSwatch);
-            GroupBoxSwatch.Location = new System.Drawing.Point(453, 21);
-            GroupBoxSwatch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            GroupBoxSwatch.Name = "GroupBoxSwatch";
-            GroupBoxSwatch.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            GroupBoxSwatch.Size = new System.Drawing.Size(346, 228);
-            GroupBoxSwatch.TabIndex = 28;
-            GroupBoxSwatch.TabStop = false;
-            GroupBoxSwatch.Text = "Swatch Color";
-            GroupBoxSwatch.Paint += GroupBoxSwatch_Paint;
+            this.GroupBoxSwatch.Controls.Add(this.CopyBrightnessValue);
+            this.GroupBoxSwatch.Controls.Add(this.CopySaturationValue);
+            this.GroupBoxSwatch.Controls.Add(this.CopyPaintSwatchValue);
+            this.GroupBoxSwatch.Controls.Add(this.TextBoxBrightness);
+            this.GroupBoxSwatch.Controls.Add(this.TextBoxSaturation);
+            this.GroupBoxSwatch.Controls.Add(this.TextBoxPaintSwatch);
+            this.GroupBoxSwatch.Controls.Add(this.LabelBrightness);
+            this.GroupBoxSwatch.Controls.Add(this.LabelSaturation);
+            this.GroupBoxSwatch.Controls.Add(this.LabelPaintSwatch);
+            this.GroupBoxSwatch.Location = new System.Drawing.Point(453, 21);
+            this.GroupBoxSwatch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.GroupBoxSwatch.Name = "GroupBoxSwatch";
+            this.GroupBoxSwatch.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.GroupBoxSwatch.Size = new System.Drawing.Size(346, 228);
+            this.GroupBoxSwatch.TabIndex = 28;
+            this.GroupBoxSwatch.TabStop = false;
+            this.GroupBoxSwatch.Text = "Swatch Color";
+            this.GroupBoxSwatch.Paint += this.GroupBoxSwatch_Paint;
             // 
             // CopyBrightnessValue
             // 
-            CopyBrightnessValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CopyBrightnessValue.Location = new System.Drawing.Point(230, 159);
-            CopyBrightnessValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            CopyBrightnessValue.Name = "CopyBrightnessValue";
-            CopyBrightnessValue.Size = new System.Drawing.Size(96, 25);
-            CopyBrightnessValue.TabIndex = 35;
-            CopyBrightnessValue.Text = "Copy";
-            CopyBrightnessValue.UseVisualStyleBackColor = false;
-            CopyBrightnessValue.Click += CopyBrightnessValue_Click;
+            this.CopyBrightnessValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CopyBrightnessValue.Location = new System.Drawing.Point(230, 159);
+            this.CopyBrightnessValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.CopyBrightnessValue.Name = "CopyBrightnessValue";
+            this.CopyBrightnessValue.Size = new System.Drawing.Size(96, 25);
+            this.CopyBrightnessValue.TabIndex = 35;
+            this.CopyBrightnessValue.Text = "Copy";
+            this.CopyBrightnessValue.UseVisualStyleBackColor = false;
+            this.CopyBrightnessValue.Click += this.CopyBrightnessValue_Click;
             // 
             // CopySaturationValue
             // 
-            CopySaturationValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CopySaturationValue.Location = new System.Drawing.Point(230, 106);
-            CopySaturationValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            CopySaturationValue.Name = "CopySaturationValue";
-            CopySaturationValue.Size = new System.Drawing.Size(96, 25);
-            CopySaturationValue.TabIndex = 34;
-            CopySaturationValue.Text = "Copy";
-            CopySaturationValue.UseVisualStyleBackColor = false;
-            CopySaturationValue.Click += CopySaturationValue_Click;
+            this.CopySaturationValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CopySaturationValue.Location = new System.Drawing.Point(230, 106);
+            this.CopySaturationValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.CopySaturationValue.Name = "CopySaturationValue";
+            this.CopySaturationValue.Size = new System.Drawing.Size(96, 25);
+            this.CopySaturationValue.TabIndex = 34;
+            this.CopySaturationValue.Text = "Copy";
+            this.CopySaturationValue.UseVisualStyleBackColor = false;
+            this.CopySaturationValue.Click += this.CopySaturationValue_Click;
             // 
             // CopyPaintSwatchValue
             // 
-            CopyPaintSwatchValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            CopyPaintSwatchValue.Location = new System.Drawing.Point(230, 50);
-            CopyPaintSwatchValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            CopyPaintSwatchValue.Name = "CopyPaintSwatchValue";
-            CopyPaintSwatchValue.Size = new System.Drawing.Size(96, 25);
-            CopyPaintSwatchValue.TabIndex = 33;
-            CopyPaintSwatchValue.Text = "Copy";
-            CopyPaintSwatchValue.UseVisualStyleBackColor = false;
-            CopyPaintSwatchValue.Click += CopyPaintSwatchValue_Click;
+            this.CopyPaintSwatchValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CopyPaintSwatchValue.Location = new System.Drawing.Point(230, 50);
+            this.CopyPaintSwatchValue.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.CopyPaintSwatchValue.Name = "CopyPaintSwatchValue";
+            this.CopyPaintSwatchValue.Size = new System.Drawing.Size(96, 25);
+            this.CopyPaintSwatchValue.TabIndex = 33;
+            this.CopyPaintSwatchValue.Text = "Copy";
+            this.CopyPaintSwatchValue.UseVisualStyleBackColor = false;
+            this.CopyPaintSwatchValue.Click += this.CopyPaintSwatchValue_Click;
             // 
             // TextBoxBrightness
             // 
-            TextBoxBrightness.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TextBoxBrightness.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            TextBoxBrightness.Location = new System.Drawing.Point(128, 159);
-            TextBoxBrightness.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TextBoxBrightness.Name = "TextBoxBrightness";
-            TextBoxBrightness.ReadOnly = true;
-            TextBoxBrightness.Size = new System.Drawing.Size(94, 22);
-            TextBoxBrightness.TabIndex = 32;
-            TextBoxBrightness.Text = "0";
+            this.TextBoxBrightness.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBoxBrightness.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TextBoxBrightness.Location = new System.Drawing.Point(128, 159);
+            this.TextBoxBrightness.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TextBoxBrightness.Name = "TextBoxBrightness";
+            this.TextBoxBrightness.ReadOnly = true;
+            this.TextBoxBrightness.Size = new System.Drawing.Size(94, 22);
+            this.TextBoxBrightness.TabIndex = 32;
+            this.TextBoxBrightness.Text = "0";
             // 
             // TextBoxSaturation
             // 
-            TextBoxSaturation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TextBoxSaturation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            TextBoxSaturation.Location = new System.Drawing.Point(128, 106);
-            TextBoxSaturation.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TextBoxSaturation.Name = "TextBoxSaturation";
-            TextBoxSaturation.ReadOnly = true;
-            TextBoxSaturation.Size = new System.Drawing.Size(94, 22);
-            TextBoxSaturation.TabIndex = 31;
-            TextBoxSaturation.Text = "0";
+            this.TextBoxSaturation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBoxSaturation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TextBoxSaturation.Location = new System.Drawing.Point(128, 106);
+            this.TextBoxSaturation.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TextBoxSaturation.Name = "TextBoxSaturation";
+            this.TextBoxSaturation.ReadOnly = true;
+            this.TextBoxSaturation.Size = new System.Drawing.Size(94, 22);
+            this.TextBoxSaturation.TabIndex = 31;
+            this.TextBoxSaturation.Text = "0";
             // 
             // TextBoxPaintSwatch
             // 
-            TextBoxPaintSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TextBoxPaintSwatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            TextBoxPaintSwatch.Location = new System.Drawing.Point(128, 50);
-            TextBoxPaintSwatch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            TextBoxPaintSwatch.Name = "TextBoxPaintSwatch";
-            TextBoxPaintSwatch.ReadOnly = true;
-            TextBoxPaintSwatch.Size = new System.Drawing.Size(94, 22);
-            TextBoxPaintSwatch.TabIndex = 30;
-            TextBoxPaintSwatch.Text = "0";
+            this.TextBoxPaintSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBoxPaintSwatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TextBoxPaintSwatch.Location = new System.Drawing.Point(128, 50);
+            this.TextBoxPaintSwatch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TextBoxPaintSwatch.Name = "TextBoxPaintSwatch";
+            this.TextBoxPaintSwatch.ReadOnly = true;
+            this.TextBoxPaintSwatch.Size = new System.Drawing.Size(94, 22);
+            this.TextBoxPaintSwatch.TabIndex = 30;
+            this.TextBoxPaintSwatch.Text = "0";
             // 
             // LabelBrightness
             // 
-            LabelBrightness.AutoSize = true;
-            LabelBrightness.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelBrightness.Location = new System.Drawing.Point(7, 159);
-            LabelBrightness.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelBrightness.Name = "LabelBrightness";
-            LabelBrightness.Size = new System.Drawing.Size(85, 20);
-            LabelBrightness.TabIndex = 29;
-            LabelBrightness.Text = "Brightness";
+            this.LabelBrightness.AutoSize = true;
+            this.LabelBrightness.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelBrightness.Location = new System.Drawing.Point(7, 159);
+            this.LabelBrightness.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelBrightness.Name = "LabelBrightness";
+            this.LabelBrightness.Size = new System.Drawing.Size(85, 20);
+            this.LabelBrightness.TabIndex = 29;
+            this.LabelBrightness.Text = "Brightness";
             // 
             // LabelSaturation
             // 
-            LabelSaturation.AutoSize = true;
-            LabelSaturation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelSaturation.Location = new System.Drawing.Point(7, 106);
-            LabelSaturation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelSaturation.Name = "LabelSaturation";
-            LabelSaturation.Size = new System.Drawing.Size(83, 20);
-            LabelSaturation.TabIndex = 28;
-            LabelSaturation.Text = "Saturation";
+            this.LabelSaturation.AutoSize = true;
+            this.LabelSaturation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelSaturation.Location = new System.Drawing.Point(7, 106);
+            this.LabelSaturation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelSaturation.Name = "LabelSaturation";
+            this.LabelSaturation.Size = new System.Drawing.Size(83, 20);
+            this.LabelSaturation.TabIndex = 28;
+            this.LabelSaturation.Text = "Saturation";
             // 
             // LabelPaintSwatch
             // 
-            LabelPaintSwatch.AutoSize = true;
-            LabelPaintSwatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            LabelPaintSwatch.Location = new System.Drawing.Point(7, 50);
-            LabelPaintSwatch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            LabelPaintSwatch.Name = "LabelPaintSwatch";
-            LabelPaintSwatch.Size = new System.Drawing.Size(98, 20);
-            LabelPaintSwatch.TabIndex = 27;
-            LabelPaintSwatch.Text = "PaintSwatch";
+            this.LabelPaintSwatch.AutoSize = true;
+            this.LabelPaintSwatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelPaintSwatch.Location = new System.Drawing.Point(7, 50);
+            this.LabelPaintSwatch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelPaintSwatch.Name = "LabelPaintSwatch";
+            this.LabelPaintSwatch.Size = new System.Drawing.Size(98, 20);
+            this.LabelPaintSwatch.TabIndex = 27;
+            this.LabelPaintSwatch.Text = "PaintSwatch";
             // 
             // Swatcher
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            ClientSize = new System.Drawing.Size(830, 361);
-            Controls.Add(GroupBoxSwatch);
-            Controls.Add(OpenWindowsColorForm);
-            Controls.Add(GroupBoxRGB);
-            Controls.Add(ColorPreview);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            MaximizeBox = false;
-            Name = "Swatcher";
-            Text = "Swatcher by MaxHwoy";
-            GroupBoxRGB.ResumeLayout(false);
-            GroupBoxRGB.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Blue).EndInit();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Green).EndInit();
-            ((System.ComponentModel.ISupportInitialize)TrackBar_Red).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ColorPreview).EndInit();
-            GroupBoxSwatch.ResumeLayout(false);
-            GroupBoxSwatch.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(830, 361);
+            this.Controls.Add(this.GroupBoxSwatch);
+            this.Controls.Add(this.OpenWindowsColorForm);
+            this.Controls.Add(this.GroupBoxRGB);
+            this.Controls.Add(this.ColorPreview);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MaximizeBox = false;
+            this.Name = "Swatcher";
+            this.Text = "Swatcher by MaxHwoy";
+            this.GroupBoxRGB.ResumeLayout(false);
+            this.GroupBoxRGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Blue).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Green).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.TrackBar_Red).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.ColorPreview).EndInit();
+            this.GroupBoxSwatch.ResumeLayout(false);
+            this.GroupBoxSwatch.PerformLayout();
+            this.ResumeLayout(false);
         }
 
         #endregion

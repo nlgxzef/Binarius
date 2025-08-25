@@ -28,136 +28,136 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StringCreator));
-            StringTextBoxText = new System.Windows.Forms.TextBox();
-            StringTextBoxLabel = new System.Windows.Forms.TextBox();
-            StringTextBoxKey = new System.Windows.Forms.TextBox();
-            label1 = new System.Windows.Forms.Label();
-            label2 = new System.Windows.Forms.Label();
-            StringCheckBoxCustom = new System.Windows.Forms.CheckBox();
-            StringCheckBoxReversed = new System.Windows.Forms.CheckBox();
-            StringButtonCancel = new System.Windows.Forms.Button();
-            StringButtonOK = new System.Windows.Forms.Button();
-            SuspendLayout();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(StringCreator));
+            this.StringTextBoxText = new System.Windows.Forms.TextBox();
+            this.StringTextBoxLabel = new System.Windows.Forms.TextBox();
+            this.StringTextBoxKey = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.StringCheckBoxCustom = new System.Windows.Forms.CheckBox();
+            this.StringCheckBoxReversed = new System.Windows.Forms.CheckBox();
+            this.StringButtonCancel = new System.Windows.Forms.Button();
+            this.StringButtonOK = new System.Windows.Forms.Button();
+            this.SuspendLayout();
             // 
             // StringTextBoxText
             // 
-            StringTextBoxText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            StringTextBoxText.Location = new System.Drawing.Point(12, 70);
-            StringTextBoxText.Multiline = true;
-            StringTextBoxText.Name = "StringTextBoxText";
-            StringTextBoxText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            StringTextBoxText.Size = new System.Drawing.Size(501, 132);
-            StringTextBoxText.TabIndex = 0;
+            this.StringTextBoxText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StringTextBoxText.Location = new System.Drawing.Point(12, 70);
+            this.StringTextBoxText.Multiline = true;
+            this.StringTextBoxText.Name = "StringTextBoxText";
+            this.StringTextBoxText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.StringTextBoxText.Size = new System.Drawing.Size(501, 132);
+            this.StringTextBoxText.TabIndex = 0;
             // 
             // StringTextBoxLabel
             // 
-            StringTextBoxLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            StringTextBoxLabel.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            StringTextBoxLabel.Location = new System.Drawing.Point(53, 41);
-            StringTextBoxLabel.Name = "StringTextBoxLabel";
-            StringTextBoxLabel.Size = new System.Drawing.Size(294, 22);
-            StringTextBoxLabel.TabIndex = 1;
-            StringTextBoxLabel.TextChanged += StringTextBoxLabel_TextChanged;
+            this.StringTextBoxLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StringTextBoxLabel.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.StringTextBoxLabel.Location = new System.Drawing.Point(53, 41);
+            this.StringTextBoxLabel.Name = "StringTextBoxLabel";
+            this.StringTextBoxLabel.Size = new System.Drawing.Size(294, 22);
+            this.StringTextBoxLabel.TabIndex = 1;
+            this.StringTextBoxLabel.TextChanged += this.StringTextBoxLabel_TextChanged;
             // 
             // StringTextBoxKey
             // 
-            StringTextBoxKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            StringTextBoxKey.Enabled = false;
-            StringTextBoxKey.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            StringTextBoxKey.Location = new System.Drawing.Point(53, 12);
-            StringTextBoxKey.Name = "StringTextBoxKey";
-            StringTextBoxKey.Size = new System.Drawing.Size(294, 22);
-            StringTextBoxKey.TabIndex = 1;
-            StringTextBoxKey.Validating += StringTextBoxKey_Validating;
+            this.StringTextBoxKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StringTextBoxKey.Enabled = false;
+            this.StringTextBoxKey.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.StringTextBoxKey.Location = new System.Drawing.Point(53, 12);
+            this.StringTextBoxKey.Name = "StringTextBoxKey";
+            this.StringTextBoxKey.Size = new System.Drawing.Size(294, 22);
+            this.StringTextBoxKey.TabIndex = 1;
+            this.StringTextBoxKey.Validating += this.StringTextBoxKey_Validating;
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(21, 15);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(26, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Key";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Key";
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(12, 44);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(35, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Label";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 44);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 15);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Label";
             // 
             // StringCheckBoxCustom
             // 
-            StringCheckBoxCustom.Location = new System.Drawing.Point(353, 12);
-            StringCheckBoxCustom.Name = "StringCheckBoxCustom";
-            StringCheckBoxCustom.Size = new System.Drawing.Size(151, 23);
-            StringCheckBoxCustom.TabIndex = 3;
-            StringCheckBoxCustom.Text = "Enable Custom Key";
-            StringCheckBoxCustom.CheckedChanged += StringCheckBoxCustom_CheckedChanged;
+            this.StringCheckBoxCustom.Location = new System.Drawing.Point(353, 12);
+            this.StringCheckBoxCustom.Name = "StringCheckBoxCustom";
+            this.StringCheckBoxCustom.Size = new System.Drawing.Size(151, 23);
+            this.StringCheckBoxCustom.TabIndex = 3;
+            this.StringCheckBoxCustom.Text = "Enable Custom Key";
+            this.StringCheckBoxCustom.CheckedChanged += this.StringCheckBoxCustom_CheckedChanged;
             // 
             // StringCheckBoxReversed
             // 
-            StringCheckBoxReversed.Location = new System.Drawing.Point(353, 41);
-            StringCheckBoxReversed.Name = "StringCheckBoxReversed";
-            StringCheckBoxReversed.Size = new System.Drawing.Size(151, 23);
-            StringCheckBoxReversed.TabIndex = 3;
-            StringCheckBoxReversed.Text = "Show Reversed Key";
-            StringCheckBoxReversed.CheckedChanged += StringCheckBoxReversed_CheckedChanged;
+            this.StringCheckBoxReversed.Location = new System.Drawing.Point(353, 41);
+            this.StringCheckBoxReversed.Name = "StringCheckBoxReversed";
+            this.StringCheckBoxReversed.Size = new System.Drawing.Size(151, 23);
+            this.StringCheckBoxReversed.TabIndex = 3;
+            this.StringCheckBoxReversed.Text = "Show Reversed Key";
+            this.StringCheckBoxReversed.CheckedChanged += this.StringCheckBoxReversed_CheckedChanged;
             // 
             // StringButtonCancel
             // 
-            StringButtonCancel.AutoSize = true;
-            StringButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            StringButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            StringButtonCancel.Location = new System.Drawing.Point(413, 210);
-            StringButtonCancel.Name = "StringButtonCancel";
-            StringButtonCancel.Size = new System.Drawing.Size(96, 27);
-            StringButtonCancel.TabIndex = 4;
-            StringButtonCancel.Text = "Cancel";
-            StringButtonCancel.UseVisualStyleBackColor = true;
-            StringButtonCancel.Click += StringButtonCancel_Click;
+            this.StringButtonCancel.AutoSize = true;
+            this.StringButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.StringButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StringButtonCancel.Location = new System.Drawing.Point(413, 210);
+            this.StringButtonCancel.Name = "StringButtonCancel";
+            this.StringButtonCancel.Size = new System.Drawing.Size(96, 27);
+            this.StringButtonCancel.TabIndex = 4;
+            this.StringButtonCancel.Text = "Cancel";
+            this.StringButtonCancel.UseVisualStyleBackColor = true;
+            this.StringButtonCancel.Click += this.StringButtonCancel_Click;
             // 
             // StringButtonOK
             // 
-            StringButtonOK.AutoSize = true;
-            StringButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            StringButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            StringButtonOK.Location = new System.Drawing.Point(307, 210);
-            StringButtonOK.Name = "StringButtonOK";
-            StringButtonOK.Size = new System.Drawing.Size(96, 27);
-            StringButtonOK.TabIndex = 4;
-            StringButtonOK.Text = "OK";
-            StringButtonOK.UseVisualStyleBackColor = true;
-            StringButtonOK.Click += StringButtonOK_Click;
+            this.StringButtonOK.AutoSize = true;
+            this.StringButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.StringButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StringButtonOK.Location = new System.Drawing.Point(307, 210);
+            this.StringButtonOK.Name = "StringButtonOK";
+            this.StringButtonOK.Size = new System.Drawing.Size(96, 27);
+            this.StringButtonOK.TabIndex = 4;
+            this.StringButtonOK.Text = "OK";
+            this.StringButtonOK.UseVisualStyleBackColor = true;
+            this.StringButtonOK.Click += this.StringButtonOK_Click;
             // 
             // StringCreator
             // 
-            AcceptButton = StringButtonOK;
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            CancelButton = StringButtonCancel;
-            ClientSize = new System.Drawing.Size(529, 244);
-            Controls.Add(StringButtonOK);
-            Controls.Add(StringButtonCancel);
-            Controls.Add(StringCheckBoxReversed);
-            Controls.Add(StringCheckBoxCustom);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(StringTextBoxKey);
-            Controls.Add(StringTextBoxLabel);
-            Controls.Add(StringTextBoxText);
-            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MaximizeBox = false;
-            Name = "StringCreator";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "StringCreator";
-            ResumeLayout(false);
-            PerformLayout();
+            this.AcceptButton = this.StringButtonOK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.CancelButton = this.StringButtonCancel;
+            this.ClientSize = new System.Drawing.Size(529, 244);
+            this.Controls.Add(this.StringButtonOK);
+            this.Controls.Add(this.StringButtonCancel);
+            this.Controls.Add(this.StringCheckBoxReversed);
+            this.Controls.Add(this.StringCheckBoxCustom);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.StringTextBoxKey);
+            this.Controls.Add(this.StringTextBoxLabel);
+            this.Controls.Add(this.StringTextBoxText);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            this.MaximizeBox = false;
+            this.Name = "StringCreator";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "StringCreator";
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         #endregion

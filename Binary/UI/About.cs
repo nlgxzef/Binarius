@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -29,17 +32,19 @@ namespace Binary.UI
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
 
-            this.okButton.BackColor = Theme.ButtonBackColor;
-            this.okButton.ForeColor = Theme.ButtonForeColor;
-            this.okButton.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.textBoxDescription.BackColor = Theme.TextBoxBackColor;
-            this.textBoxDescription.ForeColor = Theme.TextBoxForeColor;
-            this.labelProductName.ForeColor = Theme.LabelTextColor;
-            this.labelVersion.ForeColor = Theme.LabelTextColor;
-            this.labelCopyright.ForeColor = Theme.LabelTextColor;
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+
+            this.okButton.BackColor = theme.Colors.ButtonBackColor;
+            this.okButton.ForeColor = theme.Colors.ButtonForeColor;
+            this.okButton.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.textBoxDescription.BackColor = theme.Colors.TextBoxBackColor;
+            this.textBoxDescription.ForeColor = theme.Colors.TextBoxForeColor;
+            this.labelProductName.ForeColor = theme.Colors.LabelTextColor;
+            this.labelVersion.ForeColor = theme.Colors.LabelTextColor;
+            this.labelCopyright.ForeColor = theme.Colors.LabelTextColor;
         }
 
         private void okButton_Click(object sender, EventArgs e)

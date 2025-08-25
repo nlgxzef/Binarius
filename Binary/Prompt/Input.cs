@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -33,17 +36,19 @@ namespace Binary.Prompt
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.InputButtonOK.BackColor = Theme.ButtonBackColor;
-            this.InputButtonOK.ForeColor = Theme.ButtonForeColor;
-            this.InputButtonOK.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.InputButtonCancel.BackColor = Theme.ButtonBackColor;
-            this.InputButtonCancel.ForeColor = Theme.ButtonForeColor;
-            this.InputButtonCancel.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.InputTextBox.BackColor = Theme.TextBoxBackColor;
-            this.InputTextBox.ForeColor = Theme.TextBoxForeColor;
-            this.InputLabel.ForeColor = Theme.LabelTextColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.InputButtonOK.BackColor = theme.Colors.ButtonBackColor;
+            this.InputButtonOK.ForeColor = theme.Colors.ButtonForeColor;
+            this.InputButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.InputButtonCancel.BackColor = theme.Colors.ButtonBackColor;
+            this.InputButtonCancel.ForeColor = theme.Colors.ButtonForeColor;
+            this.InputButtonCancel.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.InputTextBox.BackColor = theme.Colors.TextBoxBackColor;
+            this.InputTextBox.ForeColor = theme.Colors.TextBoxForeColor;
+            this.InputLabel.ForeColor = theme.Colors.LabelTextColor;
         }
 
         private void InputButtonOK_Click(object sender, EventArgs e)

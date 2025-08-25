@@ -37,13 +37,13 @@ namespace Binary.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool PassPassed {
+        [global::System.Configuration.DefaultSettingValueAttribute("BinaryLight.json")]
+        public string ThemeFile {
             get {
-                return ((bool)(this["PassPassed"]));
+                return ((string)(this["ThemeFile"]));
             }
             set {
-                this["PassPassed"] = value;
+                this["ThemeFile"] = value;
             }
         }
         
@@ -104,6 +104,18 @@ namespace Binary.Properties {
             }
             set {
                 this["SoonFeature"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CurrentGame {
+            get {
+                return ((int)(this["CurrentGame"]));
+            }
+            set {
+                this["CurrentGame"] = value;
             }
         }
     }

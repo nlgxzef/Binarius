@@ -5,8 +5,8 @@
     <Setting Name="DarkTheme" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="PassPassed" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="ThemeFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BinaryLight.json</Value>
     </Setting>
     <Setting Name="LaunchFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -22,6 +22,9 @@
     </Setting>
     <Setting Name="SoonFeature" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CurrentGame" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -4,14 +4,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32505.426
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binary", "Binary\Binary.csproj", "{94A62F05-0ABF-4FBD-BBC5-B3D0E355F35A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0B870C9E-1797-4E98-B888-87E56F0C6E6C} = {0B870C9E-1797-4E98-B888-87E56F0C6E6C}
+		{444B4A65-D50B-4E7E-8496-EC2CFF07678B} = {444B4A65-D50B-4E7E-8496-EC2CFF07678B}
+		{7479B652-51C8-4889-99AC-9DAA34827312} = {7479B652-51C8-4889-99AC-9DAA34827312}
+		{79E0E15F-02CB-4ACE-BC05-AD4293E971A2} = {79E0E15F-02CB-4ACE-BC05-AD4293E971A2}
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILWrapper", "Modules\ILWrapper\ILWrapper\ILWrapper.csproj", "{444B4A65-D50B-4E7E-8496-EC2CFF07678B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILWrapper", "..\ILWrapper\ILWrapper\ILWrapper.csproj", "{444B4A65-D50B-4E7E-8496-EC2CFF07678B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endscript", "Modules\Endscript\Endscript\Endscript.csproj", "{7479B652-51C8-4889-99AC-9DAA34827312}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endscript", "..\Endscript\Endscript\Endscript.csproj", "{7479B652-51C8-4889-99AC-9DAA34827312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "Modules\Darius\Nikki\Nikki.csproj", "{79E0E15F-02CB-4ACE-BC05-AD4293E971A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "..\Darius\Nikki\Nikki.csproj", "{79E0E15F-02CB-4ACE-BC05-AD4293E971A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreExtensions", "Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj", "{0B870C9E-1797-4E98-B888-87E56F0C6E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreExtensions", "..\CoreExtensions\CoreExtensions\CoreExtensions.csproj", "{0B870C9E-1797-4E98-B888-87E56F0C6E6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

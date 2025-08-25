@@ -50,63 +50,65 @@ namespace Binary.UI
 			
 		}
 
-		#region Theme
+        #region Theme
 
-		private void ToggleTheme()
-		{
-			// Renderers
-			this.TexEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            // Renderers
+            this.TexEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
+			this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
 
 			// Image
 			this.panel1.BackgroundImage = Configurations.Default.DarkTheme
 				? Resources.DarkTransparent : Resources.LightTransparent;
 
 			// List view
-			this.TexEditorListView.BackColor = Theme.PrimBackColor;
-			this.TexEditorListView.ForeColor = Theme.PrimForeColor;
+			this.TexEditorListView.BackColor = theme.Colors.PrimBackColor;
+			this.TexEditorListView.ForeColor = theme.Colors.PrimForeColor;
 
 			// Property grid
-			this.TexEditorPropertyGrid.BackColor = Theme.PrimBackColor;
-			this.TexEditorPropertyGrid.CategorySplitterColor = Theme.ButtonBackColor;
-			this.TexEditorPropertyGrid.CategoryForeColor = Theme.TextBoxForeColor;
-			this.TexEditorPropertyGrid.CommandsBackColor = Theme.PrimBackColor;
-			this.TexEditorPropertyGrid.CommandsForeColor = Theme.PrimForeColor;
-			this.TexEditorPropertyGrid.CommandsBorderColor = Theme.PrimBackColor;
-			this.TexEditorPropertyGrid.DisabledItemForeColor = Theme.LabelTextColor;
-			this.TexEditorPropertyGrid.LineColor = Theme.ButtonBackColor;
-			this.TexEditorPropertyGrid.SelectedItemWithFocusBackColor = Theme.FocusedBackColor;
-			this.TexEditorPropertyGrid.SelectedItemWithFocusForeColor = Theme.FocusedForeColor;
-			this.TexEditorPropertyGrid.ViewBorderColor = Theme.RegBorderColor;
-			this.TexEditorPropertyGrid.ViewBackColor = Theme.PrimBackColor;
-			this.TexEditorPropertyGrid.ViewForeColor = Theme.PrimForeColor;
+			this.TexEditorPropertyGrid.BackColor = theme.Colors.PrimBackColor;
+			this.TexEditorPropertyGrid.CategorySplitterColor = theme.Colors.ButtonBackColor;
+			this.TexEditorPropertyGrid.CategoryForeColor = theme.Colors.TextBoxForeColor;
+			this.TexEditorPropertyGrid.CommandsBackColor = theme.Colors.PrimBackColor;
+			this.TexEditorPropertyGrid.CommandsForeColor = theme.Colors.PrimForeColor;
+			this.TexEditorPropertyGrid.CommandsBorderColor = theme.Colors.PrimBackColor;
+			this.TexEditorPropertyGrid.DisabledItemForeColor = theme.Colors.LabelTextColor;
+			this.TexEditorPropertyGrid.LineColor = theme.Colors.ButtonBackColor;
+			this.TexEditorPropertyGrid.SelectedItemWithFocusBackColor = theme.Colors.FocusedBackColor;
+			this.TexEditorPropertyGrid.SelectedItemWithFocusForeColor = theme.Colors.FocusedForeColor;
+			this.TexEditorPropertyGrid.ViewBorderColor = theme.Colors.RegBorderColor;
+			this.TexEditorPropertyGrid.ViewBackColor = theme.Colors.PrimBackColor;
+			this.TexEditorPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
 
 			// Menu strip and menu items
-			this.TexEditorMenuStrip.ForeColor = Theme.LabelTextColor;
+			this.TexEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
 			
-			this.TexEditorAddTextureItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorAddTextureItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorCopyTextureItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorCopyTextureItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorExportAllItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorExportAllItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorExportTextureItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorExportTextureItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorFindReplaceItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorFindReplaceItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorImportFromItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorImportFromItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorHasherItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorHasherItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorRaiderItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorRaiderItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorRemoveTextureItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorRemoveTextureItem.ForeColor = Theme.MenuItemForeColor;
-			this.TexEditorReplaceTextureItem.BackColor = Theme.MenuItemBackColor;
-			this.TexEditorReplaceTextureItem.ForeColor = Theme.MenuItemForeColor;
+			this.TexEditorAddTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorAddTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorCopyTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorCopyTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorExportAllItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorExportAllItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorExportTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorExportTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorFindReplaceItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorFindReplaceItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorImportFromItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorImportFromItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorHasherItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorHasherItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorRaiderItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorRaiderItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorRemoveTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorRemoveTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
+			this.TexEditorReplaceTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+			this.TexEditorReplaceTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
 		}
 
 		#endregion
@@ -612,8 +614,9 @@ namespace Binary.UI
 
 		private void TexEditorListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
 		{
-			var brush = new SolidBrush(Theme.TextBoxBackColor);
-			e.Graphics.FillRectangle(brush, e.Bounds);
+            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            var brush = new SolidBrush(theme.Colors.TextBoxBackColor);
+            e.Graphics.FillRectangle(brush, e.Bounds);
 			e.DrawText();
 		}
 

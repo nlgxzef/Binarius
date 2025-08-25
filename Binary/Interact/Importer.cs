@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -20,17 +23,19 @@ namespace Binary.Interact
 			this.ImporterToolTip.SetToolTip(this.ImporterType, tip);
 		}
 
-		private void ToggleTheme()
-		{
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
-			this.ImporterButton.BackColor = Theme.ButtonBackColor;
-			this.ImporterButton.ForeColor = Theme.ButtonForeColor;
-			this.ImporterButton.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-			this.ImporterLabel.BackColor = Theme.MainBackColor;
-			this.ImporterLabel.ForeColor = Theme.LabelTextColor;
-			this.ImporterType.BackColor = Theme.TextBoxBackColor;
-			this.ImporterType.ForeColor = Theme.TextBoxForeColor;
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
+			this.ImporterButton.BackColor = theme.Colors.ButtonBackColor;
+			this.ImporterButton.ForeColor = theme.Colors.ButtonForeColor;
+			this.ImporterButton.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+			this.ImporterLabel.BackColor = theme.Colors.MainBackColor;
+			this.ImporterLabel.ForeColor = theme.Colors.LabelTextColor;
+			this.ImporterType.BackColor = theme.Colors.TextBoxBackColor;
+			this.ImporterType.ForeColor = theme.Colors.TextBoxForeColor;
 		}
 
 		private void ImporterButton_Click(object sender, EventArgs e)

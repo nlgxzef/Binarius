@@ -1,12 +1,12 @@
 [submodule "Modules/Endscript"]
-	path = Modules/Endscript
+	path = ../Endscript
 	url = https://github.com/nlgxzef/Endscript.git
 [submodule "Modules/ILWrapper"]
-	path = Modules/ILWrapper
+	path = ../ILWrapper
 	url = https://github.com/nlgxzef/ILWrapper.git
 [submodule "Modules/Nikki"]
-	path = Modules/Darius
+	path = ../Darius
 	url = https://github.com/nlgxzef/Darius.git
 [submodule "Modules/CoreExtensions"]
-	path = Modules/CoreExtensions
+	path = ../CoreExtensions
 	url = https://github.com/nlgxzef/CoreExtensions.git

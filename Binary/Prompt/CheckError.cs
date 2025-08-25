@@ -1,4 +1,7 @@
+using Binary.Properties;
+
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -38,15 +41,17 @@ namespace Binary.Prompt
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.CheckButtonOK.BackColor = Theme.ButtonBackColor;
-            this.CheckButtonOK.ForeColor = Theme.ButtonForeColor;
-            this.CheckButtonOK.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CheckButtonCancel.BackColor = Theme.ButtonBackColor;
-            this.CheckButtonCancel.ForeColor = Theme.ButtonForeColor;
-            this.CheckButtonCancel.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.CheckBoxSelection.ForeColor = Theme.LabelTextColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.CheckButtonOK.BackColor = theme.Colors.ButtonBackColor;
+            this.CheckButtonOK.ForeColor = theme.Colors.ButtonForeColor;
+            this.CheckButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CheckButtonCancel.BackColor = theme.Colors.ButtonBackColor;
+            this.CheckButtonCancel.ForeColor = theme.Colors.ButtonForeColor;
+            this.CheckButtonCancel.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.CheckBoxSelection.ForeColor = theme.Colors.LabelTextColor;
         }
 
         private void CheckButtonOK_Click(object sender, EventArgs e)

@@ -44,142 +44,151 @@ namespace Binary
             this.splitContainer2.FixedPanel = FixedPanel.Panel1;
             this.ToggleTheme();
             this.Text = $"Binarius - v{this.ProductVersion}";
+            //Configurations.Default.CurrentGame = 0;
         }
 
         #region Theme
 
         private void ToggleTheme()
         {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
             // Renderers
             this.EditorStatusStrip.Renderer = new Theme.StatStripRenderer();
             this.EditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
             this.EditorContextMenu.Renderer = new Theme.MenuStripRenderer();
 
             // Primary colors and controls
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
 
             // Tree view
-            this.EditorTreeView.BackColor = Theme.PrimBackColor;
-            this.EditorTreeView.ForeColor = Theme.PrimForeColor;
-            this.EditorTreeView.SelectedImageIndex = Configurations.Default.DarkTheme ? 3 : 2;
-            this.EditorTreeView.ImageIndex = Configurations.Default.DarkTheme ? 1 : 0;
+            this.EditorTreeView.BackColor = theme.Colors.PrimBackColor;
+            this.EditorTreeView.ForeColor = theme.Colors.PrimForeColor;
+            this.EditorTreeView.SelectedImageIndex = theme.DarkTheme ? 3 : 2;
+            this.EditorTreeView.ImageIndex = theme.DarkTheme ? 1 : 0;
 
             // Property grid
-            this.EditorPropertyGrid.BackColor = Theme.PrimBackColor;
-            this.EditorPropertyGrid.CategorySplitterColor = Theme.ButtonBackColor;
-            this.EditorPropertyGrid.CategoryForeColor = Theme.TextBoxForeColor;
-            this.EditorPropertyGrid.CommandsBackColor = Theme.PrimBackColor;
-            this.EditorPropertyGrid.CommandsForeColor = Theme.PrimForeColor;
-            this.EditorPropertyGrid.CommandsBorderColor = Theme.PrimBackColor;
-            this.EditorPropertyGrid.DisabledItemForeColor = Theme.LabelTextColor;
-            this.EditorPropertyGrid.LineColor = Theme.ButtonBackColor;
-            this.EditorPropertyGrid.SelectedItemWithFocusBackColor = Theme.FocusedBackColor;
-            this.EditorPropertyGrid.SelectedItemWithFocusForeColor = Theme.FocusedForeColor;
-            this.EditorPropertyGrid.ViewBorderColor = Theme.RegBorderColor;
-            this.EditorPropertyGrid.ViewBackColor = Theme.PrimBackColor;
-            this.EditorPropertyGrid.ViewForeColor = Theme.PrimForeColor;
+            this.EditorPropertyGrid.BackColor = theme.Colors.PrimBackColor;
+            this.EditorPropertyGrid.CategorySplitterColor = theme.Colors.ButtonBackColor;
+            this.EditorPropertyGrid.CategoryForeColor = theme.Colors.TextBoxForeColor;
+            this.EditorPropertyGrid.CommandsBackColor = theme.Colors.PrimBackColor;
+            this.EditorPropertyGrid.CommandsForeColor = theme.Colors.PrimForeColor;
+            this.EditorPropertyGrid.CommandsBorderColor = theme.Colors.PrimBackColor;
+            this.EditorPropertyGrid.DisabledItemForeColor = theme.Colors.LabelTextColor;
+            this.EditorPropertyGrid.LineColor = theme.Colors.ButtonBackColor;
+            this.EditorPropertyGrid.SelectedItemWithFocusBackColor = theme.Colors.FocusedBackColor;
+            this.EditorPropertyGrid.SelectedItemWithFocusForeColor = theme.Colors.FocusedForeColor;
+            this.EditorPropertyGrid.ViewBorderColor = theme.Colors.RegBorderColor;
+            this.EditorPropertyGrid.ViewBackColor = theme.Colors.PrimBackColor;
+            this.EditorPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
 
             // Menu strip and menu items
-            this.EditorMenuStrip.ForeColor = Theme.LabelTextColor;
-            this.EMSMainNewLauncher.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainNewLauncher.ForeColor = Theme.MenuItemForeColor;
-            this.EMSMainLoadFiles.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainLoadFiles.ForeColor = Theme.MenuItemForeColor;
-            this.EMSMainReloadFiles.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainReloadFiles.ForeColor = Theme.MenuItemForeColor;
-            this.EMSMainSaveFiles.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainSaveFiles.ForeColor = Theme.MenuItemForeColor;
-            this.EMSMainImportEndscript.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainImportEndscript.ForeColor = Theme.MenuItemForeColor;
-            this.EMSMainExit.BackColor = Theme.MenuItemBackColor;
-            this.EMSMainExit.ForeColor = Theme.MenuItemForeColor;
-            this.EMSToolsHasher.BackColor = Theme.MenuItemBackColor;
-            this.EMSToolsHasher.ForeColor = Theme.MenuItemForeColor;
-            this.EMSToolsRaider.BackColor = Theme.MenuItemBackColor;
-            this.EMSToolsRaider.ForeColor = Theme.MenuItemForeColor;
-            this.EMSToolsSwatcher.BackColor = Theme.MenuItemBackColor;
-            this.EMSToolsSwatcher.ForeColor = Theme.MenuItemForeColor;
-            this.EMSOptionsCreate.BackColor = Theme.MenuItemBackColor;
-            this.EMSOptionsCreate.ForeColor = Theme.MenuItemForeColor;
-            this.EMSOptionsRestore.BackColor = Theme.MenuItemBackColor;
-            this.EMSOptionsRestore.ForeColor = Theme.MenuItemForeColor;
-            this.EMSOptionsUnlock.BackColor = Theme.MenuItemBackColor;
-            this.EMSOptionsUnlock.ForeColor = Theme.MenuItemForeColor;
-            this.EMSOptionsSpeedReflect.BackColor = Theme.MenuItemBackColor;
-            this.EMSOptionsSpeedReflect.ForeColor = Theme.MenuItemForeColor;
-            this.EMSOptionsToggle.BackColor = Theme.MenuItemBackColor;
-            this.EMSOptionsToggle.ForeColor = Theme.MenuItemForeColor;
-            this.EMSScriptingProcess.BackColor = Theme.MenuItemBackColor;
-            this.EMSScriptingProcess.ForeColor = Theme.MenuItemForeColor;
-            this.EMSScriptingRunAll.BackColor = Theme.MenuItemBackColor;
-            this.EMSScriptingRunAll.ForeColor = Theme.MenuItemForeColor;
-            this.EMSScriptingGenerate.BackColor = Theme.MenuItemBackColor;
-            this.EMSScriptingGenerate.ForeColor = Theme.MenuItemForeColor;
-            this.EMSScriptingClear.BackColor = Theme.MenuItemBackColor;
-            this.EMSScriptingClear.ForeColor = Theme.MenuItemForeColor;
-            this.EMSWindowsRun.BackColor = Theme.MenuItemBackColor;
-            this.EMSWindowsRun.ForeColor = Theme.MenuItemForeColor;
-            this.EMSWindowsNew.BackColor = Theme.MenuItemBackColor;
-            this.EMSWindowsNew.ForeColor = Theme.MenuItemForeColor;
-            this.EMSHelpAbout.BackColor = Theme.MenuItemBackColor;
-            this.EMSHelpAbout.ForeColor = Theme.MenuItemForeColor;
-            this.EMSHelpTutorials.BackColor = Theme.MenuItemBackColor;
-            this.EMSHelpTutorials.ForeColor = Theme.MenuItemForeColor;
+            this.EditorMenuStrip.BackColor = theme.Colors.MainBackColor;
+            this.EditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.EMSMainNewLauncher.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainNewLauncher.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSMainLoadFiles.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainLoadFiles.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSMainReloadFiles.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainReloadFiles.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSMainSaveFiles.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainSaveFiles.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSMainImportEndscript.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainImportEndscript.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSMainExit.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSMainExit.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSToolsHasher.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSToolsHasher.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSToolsRaider.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSToolsRaider.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSToolsSwatcher.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSToolsSwatcher.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsCreate.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsCreate.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsRestore.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsRestore.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsUnlock.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsUnlock.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsSpeedReflect.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsSpeedReflect.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsToggle.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsToggle.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSScriptingProcess.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSScriptingProcess.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSScriptingRunAll.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSScriptingRunAll.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSScriptingGenerate.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSScriptingGenerate.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSScriptingClear.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSScriptingClear.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSWindowsRun.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSWindowsRun.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSWindowsNew.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSWindowsNew.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSHelpAbout.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSHelpAbout.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSHelpTutorials.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSHelpTutorials.ForeColor = theme.Colors.MenuItemForeColor;
 
             // Buttons
-            this.EditorButtonOpenEditor.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonOpenEditor.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonOpenEditor.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonAddNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonAddNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonAddNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonRemoveNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonRemoveNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonRemoveNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonCopyNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonCopyNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonCopyNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonExportNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonExportNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonExportNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonImportNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonImportNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonImportNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
-            this.EditorButtonScriptNode.BackColor = Theme.ButtonBackColor;
-            this.EditorButtonScriptNode.ForeColor = Theme.ButtonForeColor;
-            this.EditorButtonScriptNode.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
+            this.EditorButtonOpenEditor.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonOpenEditor.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonOpenEditor.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonAddNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonAddNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonAddNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonRemoveNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonRemoveNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonRemoveNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonCopyNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonCopyNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonCopyNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonExportNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonExportNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonExportNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonImportNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonImportNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonImportNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.EditorButtonScriptNode.BackColor = theme.Colors.ButtonBackColor;
+            this.EditorButtonScriptNode.ForeColor = theme.Colors.ButtonForeColor;
+            this.EditorButtonScriptNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
 
             // Context menu
-            this.EditorContextMenu.ForeColor = Theme.LabelTextColor;
-            this.addNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.addNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.removeNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.removeNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.exportNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.exportNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.importNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.importNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.scriptNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.scriptNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.copyNodeToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.copyNodeToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.openEditorToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.openEditorToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.toolStripSeparator1.ForeColor = Theme.MenuItemForeColor;
-            this.toolStripSeparator1.BackColor = Theme.MenuItemBackColor;
-            this.toolStripSeparator2.ForeColor = Theme.MenuItemForeColor;
-            this.toolStripSeparator2.BackColor = Theme.MenuItemBackColor;
-            this.toolStripSeparator3.ForeColor = Theme.MenuItemForeColor;
-            this.toolStripSeparator3.BackColor = Theme.MenuItemBackColor;
-            this.toolStripSeparator4.ForeColor = Theme.MenuItemForeColor;
-            this.toolStripSeparator4.BackColor = Theme.MenuItemBackColor;
+            this.EditorContextMenu.BackColor = theme.Colors.MainBackColor;
+            this.EditorContextMenu.ForeColor = theme.Colors.LabelTextColor;
+            this.addNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.addNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.removeNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.removeNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.exportNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.exportNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.importNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.importNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.scriptNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.scriptNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.copyNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.copyNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.openEditorToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.openEditorToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.toolStripSeparator1.ForeColor = theme.Colors.MenuItemForeColor;
+            this.toolStripSeparator1.BackColor = theme.Colors.MenuItemBackColor;
+            this.toolStripSeparator2.ForeColor = theme.Colors.MenuItemForeColor;
+            this.toolStripSeparator2.BackColor = theme.Colors.MenuItemBackColor;
+            this.toolStripSeparator3.ForeColor = theme.Colors.MenuItemForeColor;
+            this.toolStripSeparator3.BackColor = theme.Colors.MenuItemBackColor;
+            this.toolStripSeparator4.ForeColor = theme.Colors.MenuItemForeColor;
+            this.toolStripSeparator4.BackColor = theme.Colors.MenuItemBackColor;
+
+            // Status strip
+            this.EditorStatusStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.EditorStatusStrip.BackColor = theme.Colors.StatusStripGradientBegin;
 
             // Textboxes
-            this.EditorCommandPrompt.BackColor = Theme.PrimBackColor;
-            this.EditorCommandPrompt.ForeColor = Theme.PrimForeColor;
-            this.EditorFindTextBox.BackColor = Theme.TextBoxBackColor;
-            this.EditorFindTextBox.ForeColor = Theme.TextBoxForeColor;
+            this.EditorCommandPrompt.BackColor = theme.Colors.PrimBackColor;
+            this.EditorCommandPrompt.ForeColor = theme.Colors.PrimForeColor;
+            this.EditorFindTextBox.BackColor = theme.Colors.TextBoxBackColor;
+            this.EditorFindTextBox.ForeColor = theme.Colors.TextBoxForeColor;
         }
 
         #endregion
@@ -776,9 +785,14 @@ namespace Binary
 
         private void EMSOptionsToggle_Click(object sender, EventArgs e)
         {
-            Configurations.Default.DarkTheme = !Configurations.Default.DarkTheme;
-            Configurations.Default.Save();
-            this.ToggleTheme();
+            var themes = new ThemeSelector() { StartPosition = FormStartPosition.CenterScreen };
+            this._openforms.Add(themes);
+            themes.Show();
+
+            if (themes.DialogResult == DialogResult.OK)
+            {
+                this.ToggleTheme();
+            }
         }
 
         private void EMSScriptingProcess_Click(object sender, EventArgs e)
@@ -1298,7 +1312,7 @@ namespace Binary
                     AutoUpgradeEnabled = true,
                     CheckPathExists = true,
                     DefaultExt = ".BIN",
-                    Filter = "Binary Files|*.BIN|Any Files|*.*",
+                    Filter = "Binary Files|*.BIN|All Files|*.*",
                     FileName = cname,
                     OverwritePrompt = true,
                     SupportMultiDottedExtensions = true,
@@ -1598,11 +1612,13 @@ namespace Binary
             }
 
             Configurations.Default.LaunchFile = filename;
+            Configurations.Default.CurrentGame = (int)this.Profile.GameINT;
             Configurations.Default.Save();
             this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}";
+            this.ToggleTheme();
 
 #if !DEBUG
-			}
+            }
 			catch (Exception e)
 			{
 			

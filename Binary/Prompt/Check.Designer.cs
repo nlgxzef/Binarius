@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Check));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Check));
             this.CheckBoxSelection = new System.Windows.Forms.CheckBox();
             this.CheckButtonCancel = new System.Windows.Forms.Button();
             this.CheckButtonOK = new System.Windows.Forms.Button();
@@ -42,31 +42,31 @@
             this.CheckBoxSelection.TabIndex = 0;
             this.CheckBoxSelection.Text = "Custom Text";
             // 
-            // ComboButtonCancel
+            // CheckButtonCancel
             // 
             this.CheckButtonCancel.AutoSize = true;
             this.CheckButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CheckButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CheckButtonCancel.Location = new System.Drawing.Point(262, 62);
-            this.CheckButtonCancel.Name = "ComboButtonCancel";
+            this.CheckButtonCancel.Name = "CheckButtonCancel";
             this.CheckButtonCancel.Size = new System.Drawing.Size(94, 27);
             this.CheckButtonCancel.TabIndex = 1;
             this.CheckButtonCancel.Text = "Cancel";
             this.CheckButtonCancel.UseVisualStyleBackColor = true;
-            this.CheckButtonCancel.Click += new System.EventHandler(this.CheckButtonCancel_Click);
+            this.CheckButtonCancel.Click += this.CheckButtonCancel_Click;
             // 
-            // ComboButtonOK
+            // CheckButtonOK
             // 
             this.CheckButtonOK.AutoSize = true;
             this.CheckButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.CheckButtonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CheckButtonOK.Location = new System.Drawing.Point(162, 62);
-            this.CheckButtonOK.Name = "ComboButtonOK";
+            this.CheckButtonOK.Name = "CheckButtonOK";
             this.CheckButtonOK.Size = new System.Drawing.Size(94, 27);
             this.CheckButtonOK.TabIndex = 1;
             this.CheckButtonOK.Text = "OK";
             this.CheckButtonOK.UseVisualStyleBackColor = true;
-            this.CheckButtonOK.Click += new System.EventHandler(this.CheckButtonOK_Click);
+            this.CheckButtonOK.Click += this.CheckButtonOK_Click;
             // 
             // Check
             // 
@@ -80,7 +80,7 @@
             this.Controls.Add(this.CheckBoxSelection);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             this.MaximizeBox = false;
             this.Name = "Check";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

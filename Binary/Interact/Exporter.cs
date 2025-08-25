@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Binary.Properties;
+
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -34,13 +37,15 @@ namespace Binary.Interact
 
         private void ToggleTheme()
         {
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
-            this.ExportSerialized.BackColor = Theme.MainBackColor;
-            this.ExportSerialized.ForeColor = Theme.LabelTextColor;
-            this.ExporterButton.BackColor = Theme.ButtonBackColor;
-            this.ExporterButton.ForeColor = Theme.ButtonForeColor;
-            this.ExporterButton.FlatAppearance.BorderColor = Theme.ButtonFlatColor;
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.ExportSerialized.BackColor = theme.Colors.MainBackColor;
+            this.ExportSerialized.ForeColor = theme.Colors.LabelTextColor;
+            this.ExporterButton.BackColor = theme.Colors.ButtonBackColor;
+            this.ExporterButton.ForeColor = theme.Colors.ButtonForeColor;
+            this.ExporterButton.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
         }
 
         private void ExporterButton_Click(object sender, EventArgs e)

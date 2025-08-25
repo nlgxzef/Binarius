@@ -32,51 +32,53 @@ namespace Binary.UI
 
         private void ToggleTheme()
         {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
             // Renderers
             this.VectorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
             // Primary colors and controls
-            this.BackColor = Theme.MainBackColor;
-            this.ForeColor = Theme.MainForeColor;
+            this.BackColor = theme.Colors.MainBackColor;
+            this.ForeColor = theme.Colors.MainForeColor;
 
             // Tree view
-            this.VectorTreeView.BackColor = Theme.PrimBackColor;
-            this.VectorTreeView.ForeColor = Theme.PrimForeColor;
+            this.VectorTreeView.BackColor = theme.Colors.PrimBackColor;
+            this.VectorTreeView.ForeColor = theme.Colors.PrimForeColor;
 
             // Property grid
-            this.VectorPropertyGrid.BackColor = Theme.PrimBackColor;
-            this.VectorPropertyGrid.CategorySplitterColor = Theme.ButtonBackColor;
-            this.VectorPropertyGrid.CategoryForeColor = Theme.TextBoxForeColor;
-            this.VectorPropertyGrid.CommandsBackColor = Theme.PrimBackColor;
-            this.VectorPropertyGrid.CommandsForeColor = Theme.PrimForeColor;
-            this.VectorPropertyGrid.CommandsBorderColor = Theme.PrimBackColor;
-            this.VectorPropertyGrid.DisabledItemForeColor = Theme.LabelTextColor;
-            this.VectorPropertyGrid.LineColor = Theme.ButtonBackColor;
-            this.VectorPropertyGrid.SelectedItemWithFocusBackColor = Theme.FocusedBackColor;
-            this.VectorPropertyGrid.SelectedItemWithFocusForeColor = Theme.FocusedForeColor;
-            this.VectorPropertyGrid.ViewBorderColor = Theme.RegBorderColor;
-            this.VectorPropertyGrid.ViewBackColor = Theme.PrimBackColor;
-            this.VectorPropertyGrid.ViewForeColor = Theme.PrimForeColor;
-            this.VectorPropertyGrid.HelpBackColor = Theme.PrimBackColor;
-            this.VectorPropertyGrid.HelpForeColor = Theme.PrimForeColor;
-            this.VectorPropertyGrid.HelpBorderColor = Theme.RegBorderColor;
+            this.VectorPropertyGrid.BackColor = theme.Colors.PrimBackColor;
+            this.VectorPropertyGrid.CategorySplitterColor = theme.Colors.ButtonBackColor;
+            this.VectorPropertyGrid.CategoryForeColor = theme.Colors.TextBoxForeColor;
+            this.VectorPropertyGrid.CommandsBackColor = theme.Colors.PrimBackColor;
+            this.VectorPropertyGrid.CommandsForeColor = theme.Colors.PrimForeColor;
+            this.VectorPropertyGrid.CommandsBorderColor = theme.Colors.PrimBackColor;
+            this.VectorPropertyGrid.DisabledItemForeColor = theme.Colors.LabelTextColor;
+            this.VectorPropertyGrid.LineColor = theme.Colors.ButtonBackColor;
+            this.VectorPropertyGrid.SelectedItemWithFocusBackColor = theme.Colors.FocusedBackColor;
+            this.VectorPropertyGrid.SelectedItemWithFocusForeColor = theme.Colors.FocusedForeColor;
+            this.VectorPropertyGrid.ViewBorderColor = theme.Colors.RegBorderColor;
+            this.VectorPropertyGrid.ViewBackColor = theme.Colors.PrimBackColor;
+            this.VectorPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
+            this.VectorPropertyGrid.HelpBackColor = theme.Colors.PrimBackColor;
+            this.VectorPropertyGrid.HelpForeColor = theme.Colors.PrimForeColor;
+            this.VectorPropertyGrid.HelpBorderColor = theme.Colors.RegBorderColor;
 
             // Menu strip and menu items
-            this.VectorMenuStrip.ForeColor = Theme.LabelTextColor;
-            this.ImportSVGToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.ImportSVGToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.ExportSVGToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.ExportSVGToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.PreviewToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.PreviewToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.AddPathSetToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.AddPathSetToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.RemovePathSetToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.RemovePathSetToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.MoveUpPathSetToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.MoveUpPathSetToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
-            this.MoveDownPathSetToolStripMenuItem.BackColor = Theme.MenuItemBackColor;
-            this.MoveDownPathSetToolStripMenuItem.ForeColor = Theme.MenuItemForeColor;
+            this.VectorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.ImportSVGToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.ImportSVGToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.ExportSVGToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.ExportSVGToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.PreviewToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.PreviewToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.AddPathSetToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.AddPathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.RemovePathSetToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.RemovePathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.MoveUpPathSetToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.MoveUpPathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.MoveDownPathSetToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.MoveDownPathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
         }
 
         #endregion

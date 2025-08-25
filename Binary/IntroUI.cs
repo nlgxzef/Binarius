@@ -18,6 +18,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using static System.Windows.Forms.AxHost;
+
 
 
 namespace Binary
@@ -57,15 +59,17 @@ namespace Binary
             this.Text = $"Binarius - v{this.ProductVersion}";
         }
 
-		#region Theme
+        #region Theme
 
-		private void ToggleTheme()
-		{
-			this.BackColor = Theme.MainBackColor;
-			this.ForeColor = Theme.MainForeColor;
-			this.IntroPanelModder.BackColor = Theme.ButtonBackColor;
-			this.IntroPanelUser.BackColor = Theme.ButtonBackColor;
-			this.LabelBinary.ForeColor = Theme.LabelTextColor;
+        private void ToggleTheme()
+        {
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
+
+            this.BackColor = theme.Colors.MainBackColor;
+			this.ForeColor = theme.Colors.MainForeColor;
+			this.IntroPanelModder.BackColor = theme.Colors.ButtonBackColor;
+			this.IntroPanelUser.BackColor = theme.Colors.ButtonBackColor;
+			this.LabelBinary.ForeColor = theme.Colors.LabelTextColor;
 		}
 
 		#endregion
@@ -325,7 +329,8 @@ namespace Binary
 			}
 
 			this.Show();
-		}
+            this.ToggleTheme();
+        }
 	
 		private void EnsureBackups(BaseProfile profile)
 		{
@@ -406,12 +411,14 @@ namespace Binary
 
 		private void PictureBoxTheme_Click(object sender, EventArgs e)
 		{
-			Configurations.Default.DarkTheme = !Configurations.Default.DarkTheme;
-			Configurations.Default.Save();
-			this.ToggleTheme();
-			this.PictureBoxTheme.Image = Configurations.Default.DarkTheme
-				? Resources.EnableTheme : Resources.DisableTheme;
-		}
+            var themes = new ThemeSelector() { StartPosition = FormStartPosition.CenterScreen };
+            themes.ShowDialog();
+
+            if (themes.DialogResult == DialogResult.OK)
+            {
+                this.ToggleTheme();
+            }
+        }
 
 		private void PictureBoxSoon_Click(object sender, EventArgs e)
 		{
