@@ -28,7 +28,11 @@ namespace Binary.UI
 		private const string empty = "\"\"";
 		public List<string> Commands { get; }
 
-		public CareerEditor(GCareer career, string path)
+        private Color HighlightColor1 { get; set; }
+        private Color HighlightColor2 { get; set; }
+        private Color HighlightColor3 { get; set; }
+
+        public CareerEditor(GCareer career, string path)
 		{
 			this._openforms = new List<Form>();
 			this.Commands = new List<string>();
@@ -36,7 +40,7 @@ namespace Binary.UI
 			this._careerpath = path;
 			this.InitializeComponent();
 			this.splitContainer2.FixedPanel = FixedPanel.Panel1;
-			this.Text = $"{this.Career.CollectionName} Editor";
+			this.Text = $"Career Editor : {this.Career.CollectionName}";
 			this.ToggleTheme();
 			this.LoadTreeView();
 			this.ToggleMenuStripControls(null);
@@ -48,11 +52,8 @@ namespace Binary.UI
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
 
-            // Renderers
-            this.CareerEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
-
-			// Primary colors and controls
-			this.BackColor = theme.Colors.MainBackColor;
+            // Primary colors and controls
+            this.BackColor = theme.Colors.MainBackColor;
 			this.ForeColor = theme.Colors.MainForeColor;
 
 			// Tree view
@@ -81,9 +82,22 @@ namespace Binary.UI
 			this.CareerSearchBar.BackColor = theme.Colors.TextBoxBackColor;
 			this.CareerSearchBar.ForeColor = theme.Colors.TextBoxForeColor;
 
-			// Menu strip and menu items
-			this.CareerEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
-			this.AddCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            // Menu strip and menu items
+            this.CareerEditorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.CareerEditorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.CareerEditorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.CareerEditorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.CareerEditorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.CareerEditorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.CareerEditorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.CareerEditorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.CareerEditorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.CareerEditorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.CareerEditorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.CareerEditorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.CareerEditorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.CareerEditorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.AddCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.AddCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RemoveCollectionToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RemoveCollectionToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
@@ -95,7 +109,20 @@ namespace Binary.UI
 			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
-		}
+
+            // Highlight colors
+            this.HighlightColor1 = theme.DarkTheme
+                        ? Color.FromArgb(160, 20, 30)
+                        : Color.FromArgb(60, 255, 60);
+
+            this.HighlightColor2 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 20, 20);
+
+            this.HighlightColor3 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 90, 0);
+        }
 
 		#endregion
 
@@ -192,11 +219,9 @@ namespace Binary.UI
 			foreach (TreeNode node in nodes)
 			{
 
-				node.BackColor = String.IsNullOrEmpty(match) || !node.Text.Contains(match, StringComparison.OrdinalIgnoreCase)
-					? this.CareerTreeView.BackColor
-					: Configurations.Default.DarkTheme
-						? Color.FromArgb(160, 20, 30)
-						: Color.FromArgb(60, 255, 60);
+                node.BackColor = String.IsNullOrEmpty(match) || !node.Text.Contains(match, StringComparison.OrdinalIgnoreCase)
+                    ? this.CareerTreeView.BackColor
+                    : this.HighlightColor1;
 
 				if (node.Nodes.Count > 0) this.RecursiveTreeHiglights(match, node.Nodes);
 
@@ -254,19 +279,15 @@ namespace Binary.UI
 
 				this.CareerTreeView.SelectedNode.ForeColor = this.CareerTreeView.ForeColor;
 
-				e.Node.ForeColor = Configurations.Default.DarkTheme
-					? Color.FromArgb(255, 230, 0)
-					: Color.FromArgb(255, 20, 20);
+                e.Node.ForeColor = this.HighlightColor2;
 
 			}
 			else
 			{
 
-				e.Node.ForeColor = Configurations.Default.DarkTheme
-					? Color.FromArgb(255, 230, 0)
-					: Color.FromArgb(255, 90, 0);
+				e.Node.ForeColor = this.HighlightColor3;
 
-			}
+            }
 		}
 
 		private void CareerTreeView_AfterSelect(object sender, TreeViewEventArgs e)

@@ -46,6 +46,7 @@
             this.ThemeLabel = new System.Windows.Forms.Label();
             this.ThemeButtonSaveAs = new System.Windows.Forms.Button();
             this.ThemeButtonCancel = new System.Windows.Forms.Button();
+            this.CheckDarkTheme = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +65,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.CheckDarkTheme);
             this.panel1.Controls.Add(this.ThemeColorsList);
             this.panel1.Controls.Add(this.ThemeVersionTextBox);
             this.panel1.Controls.Add(this.ThemeAuthorTextBox);
@@ -100,21 +102,21 @@
             // 
             // ThemeVersionTextBox
             // 
-            this.ThemeVersionTextBox.Location = new System.Drawing.Point(91, 110);
+            this.ThemeVersionTextBox.Location = new System.Drawing.Point(91, 94);
             this.ThemeVersionTextBox.Name = "ThemeVersionTextBox";
             this.ThemeVersionTextBox.Size = new System.Drawing.Size(367, 23);
             this.ThemeVersionTextBox.TabIndex = 2;
             // 
             // ThemeAuthorTextBox
             // 
-            this.ThemeAuthorTextBox.Location = new System.Drawing.Point(91, 81);
+            this.ThemeAuthorTextBox.Location = new System.Drawing.Point(91, 65);
             this.ThemeAuthorTextBox.Name = "ThemeAuthorTextBox";
             this.ThemeAuthorTextBox.Size = new System.Drawing.Size(367, 23);
             this.ThemeAuthorTextBox.TabIndex = 2;
             // 
             // ThemeNameTextBox
             // 
-            this.ThemeNameTextBox.Location = new System.Drawing.Point(91, 54);
+            this.ThemeNameTextBox.Location = new System.Drawing.Point(91, 38);
             this.ThemeNameTextBox.Name = "ThemeNameTextBox";
             this.ThemeNameTextBox.Size = new System.Drawing.Size(367, 23);
             this.ThemeNameTextBox.TabIndex = 2;
@@ -140,7 +142,7 @@
             // ThemeVersionLabel
             // 
             this.ThemeVersionLabel.AutoSize = true;
-            this.ThemeVersionLabel.Location = new System.Drawing.Point(3, 113);
+            this.ThemeVersionLabel.Location = new System.Drawing.Point(3, 97);
             this.ThemeVersionLabel.Name = "ThemeVersionLabel";
             this.ThemeVersionLabel.Size = new System.Drawing.Size(48, 15);
             this.ThemeVersionLabel.TabIndex = 0;
@@ -149,7 +151,7 @@
             // ThemeAuthorLabel
             // 
             this.ThemeAuthorLabel.AutoSize = true;
-            this.ThemeAuthorLabel.Location = new System.Drawing.Point(4, 84);
+            this.ThemeAuthorLabel.Location = new System.Drawing.Point(4, 68);
             this.ThemeAuthorLabel.Name = "ThemeAuthorLabel";
             this.ThemeAuthorLabel.Size = new System.Drawing.Size(47, 15);
             this.ThemeAuthorLabel.TabIndex = 0;
@@ -158,7 +160,7 @@
             // ThemeNameLabel
             // 
             this.ThemeNameLabel.AutoSize = true;
-            this.ThemeNameLabel.Location = new System.Drawing.Point(4, 57);
+            this.ThemeNameLabel.Location = new System.Drawing.Point(4, 41);
             this.ThemeNameLabel.Name = "ThemeNameLabel";
             this.ThemeNameLabel.Size = new System.Drawing.Size(81, 15);
             this.ThemeNameLabel.TabIndex = 0;
@@ -197,6 +199,18 @@
             this.ThemeButtonCancel.UseVisualStyleBackColor = false;
             this.ThemeButtonCancel.Click += this.ThemeButtonCancel_Click;
             // 
+            // CheckDarkTheme
+            // 
+            this.CheckDarkTheme.AutoSize = true;
+            this.CheckDarkTheme.Location = new System.Drawing.Point(6, 128);
+            this.CheckDarkTheme.Name = "CheckDarkTheme";
+            this.CheckDarkTheme.Size = new System.Drawing.Size(50, 19);
+            this.CheckDarkTheme.TabIndex = 4;
+            this.CheckDarkTheme.Text = "Dark";
+            this.ThemeToolTip.SetToolTip(this.CheckDarkTheme, "Makes the theme use dark image resources.");
+            this.CheckDarkTheme.UseVisualStyleBackColor = true;
+            this.CheckDarkTheme.CheckedChanged += this.CheckDarkTheme_CheckedChanged;
+            // 
             // ThemeSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -222,10 +236,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox ModderPassTextBox;
-		private System.Windows.Forms.PictureBox ModderPassPictureBox;
 		private System.Windows.Forms.ToolTip ThemeToolTip;
-		private System.Windows.Forms.Button ModderPassButtonConfirm;
 		private System.Windows.Forms.Button ThemeButtonOK;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label ThemeLabel;
@@ -241,5 +252,6 @@
         private System.Windows.Forms.Label ThemeColorsLabel;
         private System.Windows.Forms.ListView ThemeColorsList;
         private System.Windows.Forms.ColumnHeader Color;
+        private System.Windows.Forms.CheckBox CheckDarkTheme;
     }
 }

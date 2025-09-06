@@ -5,13 +5,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>binarius.ico</ApplicationIcon>
-    <Version>2.10.1</Version>
+    <Version>2.10.2</Version>
     <Authors>MaxHwoy</Authors>
     <PublisherName>MaxHwoy, rx, avail, Sh2dow and nlgxzef</PublisherName>
     <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and various forks of it by rx and Sh2dow.</Description>
     <Copyright>© 2025 MaxHwoy, rx, avail, Sh2dow and nlgxzef. No rights reserved.</Copyright>
-    <AssemblyVersion>2.10.1.0</AssemblyVersion>
-    <FileVersion>2.10.1.0</FileVersion>
+    <AssemblyVersion>2.10.2</AssemblyVersion>
+    <FileVersion>2.10.2</FileVersion>
     <Platforms>AnyCPU;x64</Platforms>
     <PlatformTarget>x86</PlatformTarget>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -56,6 +56,12 @@
     <Compile Update="Interact\CustomAttribCreator.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Interact\LanMakerFileSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Interact\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Prompt\Info.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="UI\Custom\Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -95,6 +106,10 @@
       <LastGenOutput>Configurations.Designer.cs</LastGenOutput>
     </None>
     <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="UI\Custom\Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>

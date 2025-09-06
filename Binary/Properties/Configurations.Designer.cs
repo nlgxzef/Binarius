@@ -25,19 +25,7 @@ namespace Binary.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DarkTheme {
-            get {
-                return ((bool)(this["DarkTheme"]));
-            }
-            set {
-                this["DarkTheme"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BinaryLight.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("StackedDeck.json")]
         public string ThemeFile {
             get {
                 return ((string)(this["ThemeFile"]));
@@ -116,6 +104,18 @@ namespace Binary.Properties {
             }
             set {
                 this["CurrentGame"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableAdminWarning {
+            get {
+                return ((bool)(this["DisableAdminWarning"]));
+            }
+            set {
+                this["DisableAdminWarning"] = value;
             }
         }
     }

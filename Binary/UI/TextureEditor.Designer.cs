@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(TextureEditor));
-            this.TexEditorMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.TexEditorMenuStrip = new System.Windows.Forms.CustomMenuStrip();
             this.TexEditorTexturesStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.TexEditorAddTextureItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TexEditorRemoveTextureItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -272,7 +272,7 @@
             this.TexEditorPropertyGrid.Location = new System.Drawing.Point(14, 3);
             this.TexEditorPropertyGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.TexEditorPropertyGrid.Name = "TexEditorPropertyGrid";
-            this.TexEditorPropertyGrid.Size = new System.Drawing.Size(512, 287);
+            this.TexEditorPropertyGrid.Size = new System.Drawing.Size(512, 286);
             this.TexEditorPropertyGrid.TabIndex = 0;
             this.TexEditorPropertyGrid.PropertyValueChanged += this.TexEditorPropertyGrid_PropertyValueChanged;
             // 
@@ -283,7 +283,7 @@
             this.panel1.Controls.Add(this.TexEditorImage);
             this.panel1.Location = new System.Drawing.Point(6, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(565, 570);
+            this.panel1.Size = new System.Drawing.Size(564, 570);
             this.panel1.TabIndex = 1;
             // 
             // TexEditorImage
@@ -343,7 +343,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip TexEditorMenuStrip;
+        private System.Windows.Forms.CustomMenuStrip TexEditorMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem TexEditorTexturesStrip;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.SplitContainer splitContainer2;

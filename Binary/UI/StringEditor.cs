@@ -35,7 +35,10 @@ namespace Binary.UI
 		private static readonly Color _highlight_light = Color.FromArgb(60, 255, 60);
 		private static readonly Color _highlight_dark = Color.FromArgb(160, 20, 30);
 
-		public StringEditor(STRBlock str, string path)
+        private Color HighlightColor { get; set; }
+        private Color ModifiedColor { get; set; }
+
+        public StringEditor(STRBlock str, string path)
 		{
 			this.InitializeComponent();
 			this.splitContainer1.FixedPanel = FixedPanel.Panel1;
@@ -44,7 +47,7 @@ namespace Binary.UI
 			this._openforms = new List<Form>();
 			this._modified = new HashSet<string>();
 			this.Commands = new List<string>();
-			this.Text = $"{this.STR.CollectionName} Editor";
+			this.Text = $"String Editor : {this.STR.CollectionName}";
 			this.StrEditorListView.Columns[^1].Width = -2;
 			this.ToggleTheme();
 			this.LoadListView();
@@ -56,9 +59,6 @@ namespace Binary.UI
         private void ToggleTheme()
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
-
-            // Renderers
-            this.StrEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
 			this.BackColor = theme.Colors.MainBackColor;
@@ -83,10 +83,23 @@ namespace Binary.UI
 			this.StringEditorTextBox.BackColor = theme.Colors.TextBoxBackColor;
 			this.StringEditorTextBox.ForeColor = theme.Colors.TextBoxForeColor;
 
-			// Menu strip and menu items
-			this.StrEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
-
-			this.AddStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            // Menu strip and menu items
+            this.StrEditorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.StrEditorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.StrEditorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.StrEditorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.StrEditorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.StrEditorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.StrEditorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.StrEditorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.StrEditorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.StrEditorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.StrEditorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.StrEditorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.StrEditorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.StrEditorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.StrEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.AddStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.AddStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RemoveStringToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RemoveStringToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
@@ -102,7 +115,16 @@ namespace Binary.UI
 			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
-		}
+
+            this.HighlightColor = theme.DarkTheme
+                ? _highlight_dark
+                : _highlight_light;
+
+            this.ModifiedColor = theme.DarkTheme
+                ? _modified_dark
+                : _modified_light;
+
+        }
 
 		#endregion
 
@@ -125,14 +147,14 @@ namespace Binary.UI
 
 				item.SubItems.Add($"0x{record.Key:X8}");
 				item.SubItems.Add(record.Label);
-				item.SubItems.Add(Utils.UTF8toISO(record.Text));
+				item.SubItems.Add(record.Text);
 
 				if (this._modified.Contains(item.SubItems[1].Text))
 				{
 
-					item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+                    item.BackColor = this.ModifiedColor;
 
-				}
+                }
 
 				this.StrEditorListView.Items.Add(item);
 
@@ -234,7 +256,7 @@ namespace Binary.UI
 					try
 					{
 
-						var text = Utils.ISOtoUTF8(creator.Value);
+						var text = creator.Value;
 						this.STR.AddRecord(creator.Key, creator.Label, text);
 						this.GenerateAddStringCommand(creator.Key, creator.Label, text);
 						this._modified.Add(creator.Key);
@@ -310,7 +332,7 @@ namespace Binary.UI
 					try
 					{
 
-						var text = Utils.ISOtoUTF8(creator.Value);
+						var text = creator.Value;
 						record.SetValue("Key", creator.Key);
 						record.SetValue("Label", creator.Label);
 						record.SetValue("Text", text);
@@ -327,7 +349,7 @@ namespace Binary.UI
 						item.SubItems[2].Text = creator.Label;
 						item.SubItems[3].Text = creator.Value;
 						this.StringEditorTextBox.Text = creator.Value;
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 						this.GenericFindSelection();
 						break;
@@ -388,11 +410,11 @@ namespace Binary.UI
 						{
 
 							this._modified.Add(item.SubItems[1].Text);
-							item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+							item.BackColor = this.ModifiedColor;
 
 						}
 
-						item.SubItems[3].Text = Utils.UTF8toISO(record.Text);
+						item.SubItems[3].Text = record.Text;
 
 					}
 
@@ -413,7 +435,7 @@ namespace Binary.UI
 			var index = this.StrEditorListView.SelectedIndices.Count == 0
 				? this.StrEditorListView.Items.Count - 1 : this.StrEditorListView.SelectedIndices[0] - 1;
 
-			var match = Configurations.Default.DarkTheme ? _highlight_dark : _highlight_light;
+			var match = this.HighlightColor;
 
 			for (int i = index; i >= 0; --i)
 			{
@@ -450,7 +472,7 @@ namespace Binary.UI
 			var index = this.StrEditorListView.SelectedIndices.Count == 0
 				? 0 : this.StrEditorListView.SelectedIndices[0] + 1;
 
-			var match = Configurations.Default.DarkTheme ? _highlight_dark : _highlight_light;
+			var match = this.HighlightColor;
 
 			for (int i = index; i < this.StrEditorListView.Items.Count; ++i)
 			{
@@ -602,7 +624,7 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
@@ -627,14 +649,14 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
 					if (item.SubItems[1].Text.ToUpperInvariant().Contains(find))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _highlight_dark : _highlight_light;
+						item.BackColor = this.HighlightColor;
 
 					}
 
@@ -665,7 +687,7 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
@@ -690,14 +712,14 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
 					if (item.SubItems[2].Text.ToUpperInvariant().Contains(find))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _highlight_dark : _highlight_light;
+						item.BackColor = this.HighlightColor;
 
 					}
 
@@ -728,7 +750,7 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
@@ -753,14 +775,14 @@ namespace Binary.UI
 					if (this._modified.Contains(item.SubItems[1].Text))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+						item.BackColor = this.ModifiedColor;
 
 					}
 
 					if (item.SubItems[3].Text.ToUpperInvariant().Contains(find))
 					{
 
-						item.BackColor = Configurations.Default.DarkTheme ? _highlight_dark : _highlight_light;
+						item.BackColor = this.HighlightColor;
 
 					}
 
@@ -793,12 +815,12 @@ namespace Binary.UI
 			{
 
 				this._modified.Add(selected.SubItems[1].Text);
-				selected.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+				selected.BackColor = this.ModifiedColor;
 
 			}
 
 			selected.SubItems[3].Text = this.StringEditorTextBox.Text ?? String.Empty;
-			record.Text = Utils.ISOtoUTF8(selected.SubItems[3].Text);
+			record.Text = selected.SubItems[3].Text;
 
 			var upper = record.Text.ToUpperInvariant();
 
@@ -807,9 +829,7 @@ namespace Binary.UI
 
 				selected.BackColor = !upper.Contains(this.TextBoxText.Text.ToUpperInvariant())
 					? this.StrEditorListView.BackColor
-					: Configurations.Default.DarkTheme
-						? _highlight_dark
-						: _highlight_light;
+					: this.HighlightColor;
 
 			}
 		}
@@ -874,7 +894,7 @@ namespace Binary.UI
 			if (selected.SubItems[3].Text == this.StringEditorTextBox.Text) return;
 
 			this.GenerateUpdateStringCommand(selected.SubItems[1].Text, TText, record.Text);
-			selected.BackColor = Configurations.Default.DarkTheme ? _modified_dark : _modified_light;
+			selected.BackColor = this.ModifiedColor;
 			this._modified.Add(selected.SubItems[1].Text);
 		}
 	}

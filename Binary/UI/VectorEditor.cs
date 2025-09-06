@@ -17,13 +17,15 @@ namespace Binary.UI
     public partial class VectorEditor : Form
     {
         private VectorVinyl Vector { get; }
+        private Color HighlightColor1 { get; set; }
+        private Color HighlightColor2 { get; set; }
 
         public VectorEditor(VectorVinyl vinyl)
         {
             this.InitializeComponent();
             this.ToggleTheme();
             this.Vector = vinyl;
-            this.Text = $"{this.Vector.CollectionName} Editor";
+            this.Text = $"Vector Editor : {this.Vector.CollectionName}";
             this.LoadTreeView();
             this.ToggleMenuStripControls(null);
         }
@@ -33,9 +35,6 @@ namespace Binary.UI
         private void ToggleTheme()
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
-
-            // Renderers
-            this.VectorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
             // Primary colors and controls
             this.BackColor = theme.Colors.MainBackColor;
@@ -64,7 +63,20 @@ namespace Binary.UI
             this.VectorPropertyGrid.HelpBorderColor = theme.Colors.RegBorderColor;
 
             // Menu strip and menu items
-            this.VectorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.VectorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.VectorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.VectorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.VectorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.VectorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.VectorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.VectorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.VectorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.VectorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.VectorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.VectorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.VectorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.VectorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.VectorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
             this.ImportSVGToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
             this.ImportSVGToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
             this.ExportSVGToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
@@ -79,6 +91,15 @@ namespace Binary.UI
             this.MoveUpPathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
             this.MoveDownPathSetToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
             this.MoveDownPathSetToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+
+            // Highlight colors
+            this.HighlightColor1 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 20, 20);
+
+            this.HighlightColor2 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 90, 0);
         }
 
         #endregion
@@ -207,7 +228,7 @@ namespace Binary.UI
                 CheckPathExists = true,
                 Filter = "Scalable Vector Graphics Files | *.svg",
                 Multiselect = false,
-                Title = "Select .svg file to import",
+                Title = "Import .svg File",
             };
 
             if (browser.ShowDialog() == DialogResult.OK)
@@ -276,11 +297,11 @@ namespace Binary.UI
                     AutoUpgradeEnabled = true,
                     CheckPathExists = true,
                     DefaultExt = ".svg",
-                    Filter = "Scalable Vector Graphics Files|*.svg|Any Files|*.*",
+                    Filter = "Scalable Vector Graphics Files|*.svg|All Files|*.*",
                     FileName = this.Vector.CollectionName,
                     OverwritePrompt = true,
                     SupportMultiDottedExtensions = true,
-                    Title = "Select filename where vector should be exported",
+                    Title = "Export .svg File",
                 };
 
                 if (dialog.ShowDialog() == DialogResult.OK)
@@ -417,17 +438,13 @@ namespace Binary.UI
 
                 this.VectorTreeView.SelectedNode.ForeColor = this.VectorTreeView.ForeColor;
 
-                e.Node.ForeColor = Configurations.Default.DarkTheme
-                    ? Color.FromArgb(255, 230, 0)
-                    : Color.FromArgb(255, 20, 20);
+                e.Node.ForeColor = this.HighlightColor1;
 
             }
             else
             {
 
-                e.Node.ForeColor = Configurations.Default.DarkTheme
-                    ? Color.FromArgb(255, 230, 0)
-                    : Color.FromArgb(255, 90, 0);
+                e.Node.ForeColor = this.HighlightColor2;
 
             }
         }

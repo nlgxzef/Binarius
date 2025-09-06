@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,10 @@ namespace Binary
         private const string empty = "\"\"";
         private const string space = " ";
         private bool _edited = false;
+
+        private Color HighlightColor1 { get; set; }
+        private Color HighlightColor2 { get; set; }
+        private Color HighlightColor3 { get; set; }
 
         public Editor()
         {
@@ -52,11 +57,6 @@ namespace Binary
         private void ToggleTheme()
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
-
-            // Renderers
-            this.EditorStatusStrip.Renderer = new Theme.StatStripRenderer();
-            this.EditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
-            this.EditorContextMenu.Renderer = new Theme.MenuStripRenderer();
 
             // Primary colors and controls
             this.BackColor = theme.Colors.MainBackColor;
@@ -84,8 +84,21 @@ namespace Binary
             this.EditorPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
 
             // Menu strip and menu items
-            this.EditorMenuStrip.BackColor = theme.Colors.MainBackColor;
-            this.EditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            this.EditorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.EditorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.EditorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.EditorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.EditorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.EditorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.EditorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.EditorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.EditorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.EditorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.EditorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.EditorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.EditorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.EditorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+
             this.EMSMainNewLauncher.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSMainNewLauncher.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSMainLoadFiles.BackColor = theme.Colors.MenuItemBackColor;
@@ -114,6 +127,8 @@ namespace Binary
             this.EMSOptionsSpeedReflect.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSOptionsToggle.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSOptionsToggle.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSOptionsSettings.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSOptionsSettings.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSScriptingProcess.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSScriptingProcess.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSScriptingRunAll.BackColor = theme.Colors.MenuItemBackColor;
@@ -124,6 +139,8 @@ namespace Binary
             this.EMSScriptingClear.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSWindowsRun.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSWindowsRun.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSWindowsOpenDir.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSWindowsOpenDir.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSWindowsNew.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSWindowsNew.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSHelpAbout.BackColor = theme.Colors.MenuItemBackColor;
@@ -181,14 +198,30 @@ namespace Binary
             this.toolStripSeparator4.BackColor = theme.Colors.MenuItemBackColor;
 
             // Status strip
-            this.EditorStatusStrip.ForeColor = theme.Colors.LabelTextColor;
-            this.EditorStatusStrip.BackColor = theme.Colors.StatusStripGradientBegin;
+            //this.EditorStatusStrip.BackColor = Color.Transparent;
+            this.EditorStatusStrip.StatusStripForeColor = theme.Colors.LabelTextColor;
+            this.EditorStatusStrip.StatusStripGradientBegin = theme.Colors.StatusStripGradientBegin;
+            this.EditorStatusStrip.StatusStripGradientEnd = theme.Colors.StatusStripGradientEnd;
 
             // Textboxes
             this.EditorCommandPrompt.BackColor = theme.Colors.PrimBackColor;
             this.EditorCommandPrompt.ForeColor = theme.Colors.PrimForeColor;
             this.EditorFindTextBox.BackColor = theme.Colors.TextBoxBackColor;
             this.EditorFindTextBox.ForeColor = theme.Colors.TextBoxForeColor;
+
+            // Highlight colors
+            this.HighlightColor1 = theme.DarkTheme
+                        ? Color.FromArgb(160, 20, 30)
+                        : Color.FromArgb(60, 255, 60);
+
+            this.HighlightColor2 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 20, 20);
+
+            this.HighlightColor3 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 90, 0);
+
         }
 
         #endregion
@@ -258,6 +291,7 @@ namespace Binary
             this.EMSOptionsUnlock.Enabled = enable;
             this.EMSOptionsSpeedReflect.Enabled = enable;
             this.EMSWindowsRun.Enabled = enable;
+            this.EMSWindowsOpenDir.Enabled = enable;
         }
 
         private void ManageButtonOpenEditor(IReflective reflective)
@@ -486,9 +520,9 @@ namespace Binary
                 AutoUpgradeEnabled = true,
                 CheckFileExists = true,
                 CheckPathExists = true,
-                Filter = "Endscript Files | *.end",
+                Filter = "Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher",
                 Multiselect = false,
-                Title = "Select Version 1 .end launcher to load",
+                Title = "Load End Launcher",
             };
 
             if (!String.IsNullOrEmpty(m_loadFilesLastDir))
@@ -544,9 +578,9 @@ namespace Binary
             using var dialog = new OpenFileDialog()
             {
                 CheckFileExists = true,
-                Filter = "Endscript Files|*.end",
+                Filter = "Binary Endscript Files|*.end|Binarius Endscript Files|*.endscript",
                 Multiselect = false,
-                Title = "Select main Endscript (.end) file to import",
+                Title = "Import Endscript",
             };
 
             if (!String.IsNullOrEmpty(m_importEndscriptLastDir))
@@ -787,12 +821,19 @@ namespace Binary
         {
             var themes = new ThemeSelector() { StartPosition = FormStartPosition.CenterScreen };
             this._openforms.Add(themes);
-            themes.Show();
+            themes.ShowDialog();
 
             if (themes.DialogResult == DialogResult.OK)
             {
                 this.ToggleTheme();
             }
+        }
+
+        private void EMSOptionsSettings_Click(object sender, EventArgs e)
+        {
+            var settings = new Interact.Options() { StartPosition = FormStartPosition.CenterScreen };
+            this._openforms.Add(settings);
+            settings.ShowDialog();
         }
 
         private void EMSScriptingProcess_Click(object sender, EventArgs e)
@@ -1044,6 +1085,35 @@ namespace Binary
 
 				}
 #endif
+        }
+
+
+        private void EMSWindowsOpenDir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                // Considering at least ONE file is currently open
+                if (this.Profile.Count > 0)
+                {
+                    string path = this.Profile[0].Folder;
+                    Process.Start("explorer.exe", path);
+
+                }
+                else
+                {
+
+                    throw new Exception("No files are open and directory is not chosen");
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _ = MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
 
         #endregion
@@ -1316,7 +1386,7 @@ namespace Binary
                     FileName = cname,
                     OverwritePrompt = true,
                     SupportMultiDottedExtensions = true,
-                    Title = "Select filename where collection should be exported",
+                    Title = "Export Collection",
                 };
 
                 if (!String.IsNullOrEmpty(m_exportNodeLastDir))
@@ -1384,7 +1454,7 @@ namespace Binary
                     Filter = "Binary Files|*.bin|All Files|*.*",
                     Multiselect = false,
                     SupportMultiDottedExtensions = true,
-                    Title = "Select file with collection to import"
+                    Title = "Import Collection from File"
                 };
 
                 if (!String.IsNullOrEmpty(m_importNodeLastDir))
@@ -1534,9 +1604,7 @@ namespace Binary
 
                 node.BackColor = String.IsNullOrEmpty(match) || !node.Text.Contains(match, StringComparison.OrdinalIgnoreCase)
                     ? this.EditorTreeView.BackColor
-                    : Configurations.Default.DarkTheme
-                        ? Color.FromArgb(160, 20, 30)
-                        : Color.FromArgb(60, 255, 60);
+                    : this.HighlightColor1;
 
                 if (node.Nodes.Count > 0)
                 {
@@ -1746,17 +1814,13 @@ namespace Binary
 
                 this.EditorTreeView.SelectedNode.ForeColor = this.EditorTreeView.ForeColor;
 
-                e.Node.ForeColor = Configurations.Default.DarkTheme
-                    ? Color.FromArgb(255, 230, 0)
-                    : Color.FromArgb(255, 20, 20);
+                e.Node.ForeColor = this.HighlightColor2;
 
             }
             else
             {
 
-                e.Node.ForeColor = Configurations.Default.DarkTheme
-                    ? Color.FromArgb(255, 230, 0)
-                    : Color.FromArgb(255, 90, 0);
+                e.Node.ForeColor = this.HighlightColor3;
 
             }
         }
@@ -1989,5 +2053,6 @@ namespace Binary
         }
 
         #endregion
+
     }
 }

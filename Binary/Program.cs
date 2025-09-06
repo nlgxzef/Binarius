@@ -1,3 +1,5 @@
+using Binary.Properties;
+
 using CoreExtensions.IO;
 using CoreExtensions.Management;
 using CoreExtensions.Native;
@@ -12,8 +14,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.Properties;
 
 namespace Binary
 {
@@ -30,10 +34,23 @@ namespace Binary
 #if DEBUG
             debugMode = true;
 #endif
-
+            
             if (debugMode || args.Length > 0)
             {
                 NativeCallerX.AllocConsole();
+            }
+            else if (!Debugger.IsAttached && Configurations.Default.DisableAdminWarning) // Warn the user if not ran in console & admin mode
+            {
+                using var identity = WindowsIdentity.GetCurrent();
+                var principal = new WindowsPrincipal(identity);
+
+                if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+                {
+
+                    MessageBox.Show("Binarius is currently running in User Mode. To prevent issues while working with games installed in restricted places, it's highly recommended to run Binarius as Administrator.", "Warning",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
             }
 
             if (args.Length > 0)

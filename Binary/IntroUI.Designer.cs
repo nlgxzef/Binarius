@@ -31,59 +31,73 @@
             this.components = new System.ComponentModel.Container();
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(IntroUI));
             this.IntroPanelModder = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.LabelModderModeDesc = new System.Windows.Forms.Label();
+            this.LabelModderMode = new System.Windows.Forms.Label();
             this.IntroPictureModder = new System.Windows.Forms.PictureBox();
             this.IntroPanelUser = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.LabelUserModeDesc = new System.Windows.Forms.Label();
+            this.LabelUserMode = new System.Windows.Forms.Label();
             this.IntroPictureUser = new System.Windows.Forms.PictureBox();
             this.IntroToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.LabelBinary = new System.Windows.Forms.Label();
             this.PictureBoxUpdates = new System.Windows.Forms.PictureBox();
-            this.PictureBoxMaximized = new System.Windows.Forms.PictureBox();
-            this.PictureBoxDiscord = new System.Windows.Forms.PictureBox();
-            this.PictureBoxAutoBackups = new System.Windows.Forms.PictureBox();
-            this.PictureBoxSoon = new System.Windows.Forms.PictureBox();
+            this.PictureBoxTools = new System.Windows.Forms.PictureBox();
             this.PictureBoxTheme = new System.Windows.Forms.PictureBox();
+            this.ToolsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.newLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.raiderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.swatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IntroPanelModder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)this.IntroPictureModder).BeginInit();
             this.IntroPanelUser.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)this.IntroPictureUser).BeginInit();
             ((System.ComponentModel.ISupportInitialize)this.PictureBoxUpdates).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxMaximized).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxDiscord).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxAutoBackups).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxSoon).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.PictureBoxTools).BeginInit();
             ((System.ComponentModel.ISupportInitialize)this.PictureBoxTheme).BeginInit();
+            this.ToolsMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // IntroPanelModder
             // 
             this.IntroPanelModder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.IntroPanelModder.Controls.Add(this.label1);
+            this.IntroPanelModder.Controls.Add(this.LabelModderModeDesc);
+            this.IntroPanelModder.Controls.Add(this.LabelModderMode);
             this.IntroPanelModder.Controls.Add(this.IntroPictureModder);
-            this.IntroPanelModder.Location = new System.Drawing.Point(322, 77);
+            this.IntroPanelModder.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.IntroPanelModder.Location = new System.Drawing.Point(16, 223);
             this.IntroPanelModder.Name = "IntroPanelModder";
-            this.IntroPanelModder.Size = new System.Drawing.Size(300, 300);
+            this.IntroPanelModder.Size = new System.Drawing.Size(610, 132);
             this.IntroPanelModder.TabIndex = 0;
+            this.IntroPanelModder.Click += this.IntroPictureModder_Click;
             // 
-            // label1
+            // LabelModderModeDesc
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(96, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 21);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Modder Mode";
+            this.LabelModderModeDesc.AutoSize = true;
+            this.LabelModderModeDesc.Location = new System.Drawing.Point(138, 33);
+            this.LabelModderModeDesc.Name = "LabelModderModeDesc";
+            this.LabelModderModeDesc.Size = new System.Drawing.Size(78, 15);
+            this.LabelModderModeDesc.TabIndex = 2;
+            this.LabelModderModeDesc.Text = "Create a mod";
+            // 
+            // LabelModderMode
+            // 
+            this.LabelModderMode.AutoSize = true;
+            this.LabelModderMode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LabelModderMode.Location = new System.Drawing.Point(136, 8);
+            this.LabelModderMode.Name = "LabelModderMode";
+            this.LabelModderMode.Size = new System.Drawing.Size(118, 21);
+            this.LabelModderMode.TabIndex = 1;
+            this.LabelModderMode.Text = "Modder Mode";
             // 
             // IntroPictureModder
             // 
             this.IntroPictureModder.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.IntroPictureModder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.IntroPictureModder.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.IntroPictureModder.Location = new System.Drawing.Point(0, 30);
+            this.IntroPictureModder.Location = new System.Drawing.Point(1, 1);
             this.IntroPictureModder.Name = "IntroPictureModder";
-            this.IntroPictureModder.Size = new System.Drawing.Size(298, 268);
+            this.IntroPictureModder.Size = new System.Drawing.Size(128, 128);
             this.IntroPictureModder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.IntroPictureModder.TabIndex = 0;
             this.IntroPictureModder.TabStop = false;
@@ -92,31 +106,42 @@
             // IntroPanelUser
             // 
             this.IntroPanelUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.IntroPanelUser.Controls.Add(this.label2);
+            this.IntroPanelUser.Controls.Add(this.LabelUserModeDesc);
+            this.IntroPanelUser.Controls.Add(this.LabelUserMode);
             this.IntroPanelUser.Controls.Add(this.IntroPictureUser);
-            this.IntroPanelUser.Location = new System.Drawing.Point(16, 77);
+            this.IntroPanelUser.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.IntroPanelUser.Location = new System.Drawing.Point(16, 85);
             this.IntroPanelUser.Name = "IntroPanelUser";
-            this.IntroPanelUser.Size = new System.Drawing.Size(300, 300);
+            this.IntroPanelUser.Size = new System.Drawing.Size(610, 132);
             this.IntroPanelUser.TabIndex = 1;
+            this.IntroPanelUser.Click += this.IntroPictureUser_Click;
             // 
-            // label2
+            // LabelUserModeDesc
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(103, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 21);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "User Mode";
+            this.LabelUserModeDesc.AutoSize = true;
+            this.LabelUserModeDesc.Location = new System.Drawing.Point(138, 34);
+            this.LabelUserModeDesc.Name = "LabelUserModeDesc";
+            this.LabelUserModeDesc.Size = new System.Drawing.Size(75, 15);
+            this.LabelUserModeDesc.TabIndex = 2;
+            this.LabelUserModeDesc.Text = "Install a mod";
+            // 
+            // LabelUserMode
+            // 
+            this.LabelUserMode.AutoSize = true;
+            this.LabelUserMode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LabelUserMode.Location = new System.Drawing.Point(136, 8);
+            this.LabelUserMode.Name = "LabelUserMode";
+            this.LabelUserMode.Size = new System.Drawing.Size(92, 21);
+            this.LabelUserMode.TabIndex = 1;
+            this.LabelUserMode.Text = "User Mode";
             // 
             // IntroPictureUser
             // 
             this.IntroPictureUser.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.IntroPictureUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.IntroPictureUser.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.IntroPictureUser.Location = new System.Drawing.Point(0, 30);
+            this.IntroPictureUser.Location = new System.Drawing.Point(1, 1);
             this.IntroPictureUser.Name = "IntroPictureUser";
-            this.IntroPictureUser.Size = new System.Drawing.Size(298, 268);
+            this.IntroPictureUser.Size = new System.Drawing.Size(128, 128);
             this.IntroPictureUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.IntroPictureUser.TabIndex = 0;
             this.IntroPictureUser.TabStop = false;
@@ -126,10 +151,10 @@
             // 
             this.LabelBinary.AutoSize = true;
             this.LabelBinary.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LabelBinary.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LabelBinary.Location = new System.Drawing.Point(233, 18);
+            this.LabelBinary.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LabelBinary.Location = new System.Drawing.Point(84, 16);
             this.LabelBinary.Name = "LabelBinary";
-            this.LabelBinary.Size = new System.Drawing.Size(172, 46);
+            this.LabelBinary.Size = new System.Drawing.Size(163, 54);
             this.LabelBinary.TabIndex = 2;
             this.LabelBinary.Text = "Binarius";
             this.LabelBinary.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -138,7 +163,7 @@
             // PictureBoxUpdates
             // 
             this.PictureBoxUpdates.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxUpdates.Location = new System.Drawing.Point(418, 9);
+            this.PictureBoxUpdates.Location = new System.Drawing.Point(16, 11);
             this.PictureBoxUpdates.Name = "PictureBoxUpdates";
             this.PictureBoxUpdates.Size = new System.Drawing.Size(64, 64);
             this.PictureBoxUpdates.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -146,54 +171,21 @@
             this.PictureBoxUpdates.TabStop = false;
             this.PictureBoxUpdates.Click += this.PictureBoxUpdates_Click;
             // 
-            // PictureBoxMaximized
+            // PictureBoxTools
             // 
-            this.PictureBoxMaximized.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxMaximized.Location = new System.Drawing.Point(558, 9);
-            this.PictureBoxMaximized.Name = "PictureBoxMaximized";
-            this.PictureBoxMaximized.Size = new System.Drawing.Size(64, 64);
-            this.PictureBoxMaximized.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PictureBoxMaximized.TabIndex = 3;
-            this.PictureBoxMaximized.TabStop = false;
-            this.PictureBoxMaximized.Click += this.PictureBoxMaximized_Click;
-            // 
-            // PictureBoxDiscord
-            // 
-            this.PictureBoxDiscord.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxDiscord.Location = new System.Drawing.Point(156, 9);
-            this.PictureBoxDiscord.Name = "PictureBoxDiscord";
-            this.PictureBoxDiscord.Size = new System.Drawing.Size(64, 64);
-            this.PictureBoxDiscord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PictureBoxDiscord.TabIndex = 3;
-            this.PictureBoxDiscord.TabStop = false;
-            this.PictureBoxDiscord.Click += this.PictureBoxDiscord_Click;
-            // 
-            // PictureBoxAutoBackups
-            // 
-            this.PictureBoxAutoBackups.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxAutoBackups.Location = new System.Drawing.Point(16, 9);
-            this.PictureBoxAutoBackups.Name = "PictureBoxAutoBackups";
-            this.PictureBoxAutoBackups.Size = new System.Drawing.Size(64, 64);
-            this.PictureBoxAutoBackups.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PictureBoxAutoBackups.TabIndex = 3;
-            this.PictureBoxAutoBackups.TabStop = false;
-            this.PictureBoxAutoBackups.Click += this.PictureBoxAutoBackups_Click;
-            // 
-            // PictureBoxSoon
-            // 
-            this.PictureBoxSoon.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxSoon.Location = new System.Drawing.Point(488, 9);
-            this.PictureBoxSoon.Name = "PictureBoxSoon";
-            this.PictureBoxSoon.Size = new System.Drawing.Size(64, 64);
-            this.PictureBoxSoon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PictureBoxSoon.TabIndex = 3;
-            this.PictureBoxSoon.TabStop = false;
-            this.PictureBoxSoon.Click += this.PictureBoxSoon_Click;
+            this.PictureBoxTools.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PictureBoxTools.Location = new System.Drawing.Point(492, 11);
+            this.PictureBoxTools.Name = "PictureBoxTools";
+            this.PictureBoxTools.Size = new System.Drawing.Size(64, 64);
+            this.PictureBoxTools.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PictureBoxTools.TabIndex = 3;
+            this.PictureBoxTools.TabStop = false;
+            this.PictureBoxTools.Click += this.PictureBoxTools_Click;
             // 
             // PictureBoxTheme
             // 
             this.PictureBoxTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxTheme.Location = new System.Drawing.Point(86, 9);
+            this.PictureBoxTheme.Location = new System.Drawing.Point(562, 11);
             this.PictureBoxTheme.Name = "PictureBoxTheme";
             this.PictureBoxTheme.Size = new System.Drawing.Size(64, 64);
             this.PictureBoxTheme.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -201,16 +193,61 @@
             this.PictureBoxTheme.TabStop = false;
             this.PictureBoxTheme.Click += this.PictureBoxTheme_Click;
             // 
+            // ToolsMenu
+            // 
+            this.ToolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.newLauncherToolStripMenuItem, this.hasherToolStripMenuItem, this.raiderToolStripMenuItem, this.swatcherToolStripMenuItem, this.settingsToolStripMenuItem });
+            this.ToolsMenu.Name = "ToolsMenu";
+            this.ToolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.ToolsMenu.Size = new System.Drawing.Size(203, 136);
+            // 
+            // newLauncherToolStripMenuItem
+            // 
+            this.newLauncherToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.newLauncherToolStripMenuItem.Name = "newLauncherToolStripMenuItem";
+            this.newLauncherToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N;
+            this.newLauncherToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.newLauncherToolStripMenuItem.Text = "New Launcher...";
+            this.newLauncherToolStripMenuItem.Click += this.newLauncherToolStripMenuItem_Click;
+            // 
+            // hasherToolStripMenuItem
+            // 
+            this.hasherToolStripMenuItem.Name = "hasherToolStripMenuItem";
+            this.hasherToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H;
+            this.hasherToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.hasherToolStripMenuItem.Text = "Hasher...";
+            this.hasherToolStripMenuItem.Click += this.hasherToolStripMenuItem_Click;
+            // 
+            // raiderToolStripMenuItem
+            // 
+            this.raiderToolStripMenuItem.Name = "raiderToolStripMenuItem";
+            this.raiderToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.R;
+            this.raiderToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.raiderToolStripMenuItem.Text = "Raider...";
+            this.raiderToolStripMenuItem.Click += this.raiderToolStripMenuItem_Click;
+            // 
+            // swatcherToolStripMenuItem
+            // 
+            this.swatcherToolStripMenuItem.Name = "swatcherToolStripMenuItem";
+            this.swatcherToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S;
+            this.swatcherToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.swatcherToolStripMenuItem.Text = "Swatcher...";
+            this.swatcherToolStripMenuItem.Click += this.swatcherToolStripMenuItem_Click;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O;
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.settingsToolStripMenuItem.Text = "Settings...";
+            this.settingsToolStripMenuItem.Click += this.settingsToolStripMenuItem_Click;
+            // 
             // IntroUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(638, 388);
+            this.ClientSize = new System.Drawing.Size(638, 372);
+            this.Controls.Add(this.PictureBoxTools);
             this.Controls.Add(this.PictureBoxTheme);
-            this.Controls.Add(this.PictureBoxDiscord);
-            this.Controls.Add(this.PictureBoxSoon);
-            this.Controls.Add(this.PictureBoxAutoBackups);
-            this.Controls.Add(this.PictureBoxMaximized);
             this.Controls.Add(this.PictureBoxUpdates);
             this.Controls.Add(this.LabelBinary);
             this.Controls.Add(this.IntroPanelUser);
@@ -229,11 +266,9 @@
             this.IntroPanelUser.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)this.IntroPictureUser).EndInit();
             ((System.ComponentModel.ISupportInitialize)this.PictureBoxUpdates).EndInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxMaximized).EndInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxDiscord).EndInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxAutoBackups).EndInit();
-            ((System.ComponentModel.ISupportInitialize)this.PictureBoxSoon).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.PictureBoxTools).EndInit();
             ((System.ComponentModel.ISupportInitialize)this.PictureBoxTheme).EndInit();
+            this.ToolsMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,12 +283,17 @@
 		private System.Windows.Forms.ToolTip IntroToolTip;
 		private System.Windows.Forms.Label LabelBinary;
 		private System.Windows.Forms.PictureBox PictureBoxUpdates;
-		private System.Windows.Forms.PictureBox PictureBoxMaximized;
-		private System.Windows.Forms.PictureBox PictureBoxDiscord;
-		private System.Windows.Forms.PictureBox PictureBoxAutoBackups;
-		private System.Windows.Forms.PictureBox PictureBoxSoon;
+		private System.Windows.Forms.PictureBox PictureBoxTools;
 		private System.Windows.Forms.PictureBox PictureBoxTheme;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-	}
+		private System.Windows.Forms.Label LabelModderMode;
+		private System.Windows.Forms.Label LabelUserMode;
+        private System.Windows.Forms.Label LabelModderModeDesc;
+        private System.Windows.Forms.Label LabelUserModeDesc;
+        private System.Windows.Forms.ContextMenuStrip ToolsMenu;
+        private System.Windows.Forms.ToolStripMenuItem newLauncherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hasherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem raiderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem swatcherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+    }
 }

@@ -32,7 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.CarPartsTreeView = new System.Windows.Forms.TreeView();
             this.CarPartsPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.CarPartsEditorMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.CarPartsEditorMenuStrip = new System.Windows.Forms.CustomMenuStrip();
             this.CarPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddPartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemovePartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -313,7 +313,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.TreeView CarPartsTreeView;
 		private System.Windows.Forms.PropertyGrid CarPartsPropertyGrid;
-		private System.Windows.Forms.MenuStrip CarPartsEditorMenuStrip;
+		private System.Windows.Forms.CustomMenuStrip CarPartsEditorMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem CarPartsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem AddPartToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem RemovePartToolStripMenuItem;

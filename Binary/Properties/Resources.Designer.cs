@@ -73,6 +73,36 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DarkModder {
+            get {
+                object obj = ResourceManager.GetObject("DarkModder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DarkTheme {
+            get {
+                object obj = ResourceManager.GetObject("DarkTheme", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DarkTools {
+            get {
+                object obj = ResourceManager.GetObject("DarkTools", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DarkTransparent {
             get {
                 object obj = ResourceManager.GetObject("DarkTransparent", resourceCulture);
@@ -83,9 +113,9 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DisableBackups {
+        internal static System.Drawing.Bitmap DarkUser {
             get {
-                object obj = ResourceManager.GetObject("DisableBackups", resourceCulture);
+                object obj = ResourceManager.GetObject("DarkUser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +123,9 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DisableMaximize {
+        internal static System.Drawing.Bitmap LightModder {
             get {
-                object obj = ResourceManager.GetObject("DisableMaximize", resourceCulture);
+                object obj = ResourceManager.GetObject("LightModder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +133,9 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DisableSoon {
+        internal static System.Drawing.Bitmap LightTheme {
             get {
-                object obj = ResourceManager.GetObject("DisableSoon", resourceCulture);
+                object obj = ResourceManager.GetObject("LightTheme", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,59 +143,9 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DisableTheme {
+        internal static System.Drawing.Bitmap LightTools {
             get {
-                object obj = ResourceManager.GetObject("DisableTheme", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Discord {
-            get {
-                object obj = ResourceManager.GetObject("Discord", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnableBackups {
-            get {
-                object obj = ResourceManager.GetObject("EnableBackups", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnableMaximize {
-            get {
-                object obj = ResourceManager.GetObject("EnableMaximize", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnableSoon {
-            get {
-                object obj = ResourceManager.GetObject("EnableSoon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnableTheme {
-            get {
-                object obj = ResourceManager.GetObject("EnableTheme", resourceCulture);
+                object obj = ResourceManager.GetObject("LightTools", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +163,9 @@ namespace Binary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Modder {
+        internal static System.Drawing.Bitmap LightUser {
             get {
-                object obj = ResourceManager.GetObject("Modder", resourceCulture);
+                object obj = ResourceManager.GetObject("LightUser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -196,16 +176,6 @@ namespace Binary.Properties {
         internal static System.Drawing.Bitmap Update {
             get {
                 object obj = ResourceManager.GetObject("Update", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap User {
-            get {
-                object obj = ResourceManager.GetObject("User", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

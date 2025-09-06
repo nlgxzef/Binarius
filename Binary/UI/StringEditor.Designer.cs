@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(StringEditor));
-            this.StrEditorMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.StrEditorMenuStrip = new System.Windows.Forms.CustomMenuStrip();
             this.StringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -355,7 +355,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip StrEditorMenuStrip;
+        private System.Windows.Forms.CustomMenuStrip StrEditorMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem StringToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem AddStringToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem RemoveStringToolStripMenuItem;

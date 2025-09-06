@@ -60,44 +60,6 @@ namespace Binary
             public Color MenuItemSelectedGradientEnd { get; set; }
         }
 
-        public class StatStripRenderer : ToolStripProfessionalRenderer
-        {
-            public StatStripRenderer() : base(new StatStripColors()) { }
-        }
-
-        public class MenuStripRenderer : ToolStripProfessionalRenderer
-        {
-            public MenuStripRenderer() : base(new MenuStripColors()) { }
-        }
-
-        private class StatStripColors : ProfessionalColorTable
-        {
-            //public override Color StatusStripGradientBegin => this.StatusStripGradientBegin;
-
-            //public override Color StatusStripGradientEnd => this.StatusStripGradientEnd;
-        }
-
-        private class MenuStripColors : ProfessionalColorTable
-        {
-            //public override Color MenuStripGradientBegin => this.MenuStripGradientBegin;
-            //public override Color MenuStripGradientEnd => this.MenuStripGradientEnd;
-            //public override Color MenuBorder => this.MenuBorder;
-            //
-            //public override Color MenuItemBorder => this.MenuItemBorder;
-            //
-            //public override Color MenuItemPressedGradientBegin => this.MenuItemPressedGradientBegin;
-            //
-            //public override Color MenuItemPressedGradientMiddle => this.MenuItemPressedGradientMiddle;
-            //
-            //public override Color MenuItemPressedGradientEnd => this.MenuItemPressedGradientEnd;
-            //
-            //public override Color MenuItemSelected => this.MenuItemSelected;
-            //
-            //public override Color MenuItemSelectedGradientBegin => this.MenuItemSelectedGradientBegin;
-            //
-            //public override Color MenuItemSelectedGradientEnd => this.MenuItemSelectedGradientEnd;
-        }
-
         private static readonly JsonSerializerOptions options = new JsonSerializerOptions()
         {
             AllowTrailingCommas = true,

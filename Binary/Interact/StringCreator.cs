@@ -32,7 +32,7 @@ namespace Binary.Interact
         {
             this.StringTextBoxKey.Text = $"0x{record.Key:X8}";
             this.StringTextBoxLabel.Text = record.Label;
-            this.StringTextBoxText.Text = Utils.UTF8toISO(record.Text);
+            this.StringTextBoxText.Text = record.Text;
 
             if (record.Key != record.Label.BinHash())
             {

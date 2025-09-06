@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(CareerEditor));
-            this.CareerEditorMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.CareerEditorMenuStrip = new System.Windows.Forms.CustomMenuStrip();
             this.MainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -236,7 +236,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip CareerEditorMenuStrip;
+        private System.Windows.Forms.CustomMenuStrip CareerEditorMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem MainToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem AddCollectionToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem RemoveCollectionToolStripMenuItem;

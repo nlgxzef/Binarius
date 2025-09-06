@@ -8,21 +8,22 @@ using Nikki.Reflection.Abstract;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace Binary.Interact
 {
-	public partial class ThemeSelector : Form
-	{
+    public partial class ThemeSelector : Form
+    {
         Theme CurrentTheme;
-		public ThemeSelector()
-		{
-			this.InitializeComponent();
+        public ThemeSelector()
+        {
+            this.InitializeComponent();
             this.GetThemes();
             this.ToggleTheme();
-		}
+        }
 
         private void GetThemes()
         {
@@ -44,7 +45,7 @@ namespace Binary.Interact
             // Set combo box
             int index = this.ThemeListComboBox.FindString(Configurations.Default.ThemeFile);
             this.ThemeListComboBox.SelectedIndex = index != -1 ? index : 0;
-            
+
             this.ThemeListComboBox.EndUpdate();
         }
 
@@ -58,10 +59,10 @@ namespace Binary.Interact
             Theme.Deserialize(filename, out var theme);
 
             this.BackColor = theme.Colors.MainBackColor;
-			this.ForeColor = theme.Colors.MainForeColor;
-			this.ThemeButtonOK.BackColor = theme.Colors.ButtonBackColor;
-			this.ThemeButtonOK.ForeColor = theme.Colors.ButtonForeColor;
-			this.ThemeButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
+            this.ForeColor = theme.Colors.MainForeColor;
+            this.ThemeButtonOK.BackColor = theme.Colors.ButtonBackColor;
+            this.ThemeButtonOK.ForeColor = theme.Colors.ButtonForeColor;
+            this.ThemeButtonOK.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
             this.ThemeButtonCancel.BackColor = theme.Colors.ButtonBackColor;
             this.ThemeButtonCancel.ForeColor = theme.Colors.ButtonForeColor;
             this.ThemeButtonCancel.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
@@ -83,21 +84,24 @@ namespace Binary.Interact
             this.ThemeVersionTextBox.BackColor = theme.Colors.TextBoxBackColor;
             this.ThemeColorsList.BackColor = theme.Colors.TextBoxBackColor;
             this.ThemeColorsList.ForeColor = theme.Colors.TextBoxForeColor;
+            this.CheckDarkTheme.ForeColor = theme.Colors.LabelTextColor;
 
             CurrentTheme = theme;
 
             this.ThemeColorsList.Items.Clear();
 
-            if (Configurations.Default.ThemeFile == "Automatic" || filename == "Automatic")
+            if (Configurations.Default.ThemeFile == "Automatic" || filename == "Automatic") // todo: make this better
             {
                 ThemeButtonSaveAs.Enabled = false;
                 ThemeNameTextBox.Enabled = false;
                 ThemeAuthorTextBox.Enabled = false;
                 ThemeVersionTextBox.Enabled = false;
+                CheckDarkTheme.Enabled = false;
 
                 ThemeNameTextBox.Text = "Automatic";
                 ThemeAuthorTextBox.Text = "N/A";
                 ThemeVersionTextBox.Text = "N/A";
+                CheckDarkTheme.Checked = false;
             }
             else
             {
@@ -105,10 +109,12 @@ namespace Binary.Interact
                 ThemeNameTextBox.Enabled = true;
                 ThemeAuthorTextBox.Enabled = true;
                 ThemeVersionTextBox.Enabled = true;
+                CheckDarkTheme.Enabled = true;
 
                 ThemeNameTextBox.Text = CurrentTheme.Name;
                 ThemeAuthorTextBox.Text = CurrentTheme.Author;
                 ThemeVersionTextBox.Text = CurrentTheme.Version;
+                CheckDarkTheme.Checked = CurrentTheme.DarkTheme;
 
                 this.ThemeColorsList.BeginUpdate();
 
@@ -126,7 +132,7 @@ namespace Binary.Interact
 
                 this.ThemeColorsList.EndUpdate();
             }
-            
+
         }
 
         private void ThemeColorsList_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -164,8 +170,8 @@ namespace Binary.Interact
             }
         }
 
-		private void ThemeButtonOK_Click(object sender, EventArgs e)
-		{
+        private void ThemeButtonOK_Click(object sender, EventArgs e)
+        {
             if (this.ThemeListComboBox.SelectedItem is string selectedTheme)
             {
                 Configurations.Default.ThemeFile = selectedTheme;
@@ -193,7 +199,7 @@ namespace Binary.Interact
                 Filter = "json Files|*.json",
                 OverwritePrompt = true,
                 SupportMultiDottedExtensions = true,
-                Title = "Select directory and filename of the theme to be saved",
+                Title = "Save Theme",
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -201,6 +207,7 @@ namespace Binary.Interact
                 CurrentTheme.Name = ThemeNameTextBox.Text;
                 CurrentTheme.Author = ThemeAuthorTextBox.Text;
                 CurrentTheme.Version = ThemeVersionTextBox.Text;
+                CurrentTheme.DarkTheme = CheckDarkTheme.Checked;
 
                 Theme.Serialize(dialog.FileName, CurrentTheme);
 
@@ -215,6 +222,11 @@ namespace Binary.Interact
         {
             string selectedTheme = this.ThemeListComboBox.SelectedItem?.ToString() ?? string.Empty;
             this.ToggleTheme(Path.Combine("Themes", selectedTheme));
+        }
+
+        private void CheckDarkTheme_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

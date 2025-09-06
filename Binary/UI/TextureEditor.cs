@@ -31,14 +31,16 @@ namespace Binary.UI
 		public List<string> Commands { get; }
 		private int _last_column_clicked = -1;
 
-		public TextureEditor(TPKBlock tpk, string path)
+        private Color HighlightColor { get; set; }
+
+        public TextureEditor(TPKBlock tpk, string path)
 		{
 			this.InitializeComponent();
 			this.TPK = tpk;
 			this._tpkpath = path;
 			this._openforms = new List<Form>();
 			this.Commands = new List<string>();
-			this.Text = $"{this.TPK.CollectionName} Editor";
+			this.Text = $"Texture Editor : {this.TPK.CollectionName}";
 			this.TexEditorImage.BackColor = Color.FromArgb(0, 0, 0, 0);
 			this.TexEditorImage.BorderStyle = BorderStyle.FixedSingle;
 			this.TexEditorImage.Width = this.panel1.Width;
@@ -56,15 +58,12 @@ namespace Binary.UI
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
 
-            // Renderers
-            this.TexEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
-
 			// Primary colors and controls
 			this.BackColor = theme.Colors.MainBackColor;
 			this.ForeColor = theme.Colors.MainForeColor;
 
 			// Image
-			this.panel1.BackgroundImage = Configurations.Default.DarkTheme
+			this.panel1.BackgroundImage = theme.DarkTheme
 				? Resources.DarkTransparent : Resources.LightTransparent;
 
 			// List view
@@ -87,9 +86,21 @@ namespace Binary.UI
 			this.TexEditorPropertyGrid.ViewForeColor = theme.Colors.PrimForeColor;
 
 			// Menu strip and menu items
-			this.TexEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
-			
-			this.TexEditorAddTextureItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.TexEditorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.TexEditorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.TexEditorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.TexEditorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.TexEditorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.TexEditorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.TexEditorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.TexEditorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.TexEditorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.TexEditorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.TexEditorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.TexEditorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.TexEditorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.TexEditorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.TexEditorAddTextureItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.TexEditorAddTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.TexEditorCopyTextureItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.TexEditorCopyTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
@@ -109,13 +120,18 @@ namespace Binary.UI
 			this.TexEditorRemoveTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.TexEditorReplaceTextureItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.TexEditorReplaceTextureItem.ForeColor = theme.Colors.MenuItemForeColor;
-		}
 
-		#endregion
+            // Highlight color
+            this.HighlightColor = theme.DarkTheme
+                ? Color.FromArgb(70, 0, 20) 
+                : Color.FromArgb(255, 100, 100);
+        }
 
-		#region Methods
+        #endregion
 
-		private void LoadListView(int index = -1)
+        #region Methods
+
+        private void LoadListView(int index = -1)
 		{
 			this.TexEditorListView.Items.Clear();
 			var list = this.TPK.GetTextures();
@@ -141,8 +157,7 @@ namespace Binary.UI
 				if (texture.BinKey != texture.CollectionName.BinHash())
 				{
 
-					item.BackColor = Configurations.Default.DarkTheme
-						? Color.FromArgb(70, 0, 20) : Color.FromArgb(255, 100, 100);
+					item.BackColor = HighlightColor;
 
 				}
 

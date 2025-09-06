@@ -23,13 +23,17 @@ namespace Binary.UI
 		private DBModelPart Model { get; }
 		private readonly List<Form> _openforms;
 
-		public CarPartsEditor(DBModelPart model)
+        private Color HighlightColor1 { get; set; }
+        private Color HighlightColor2 { get; set; }
+        private Color HighlightColor3 { get; set; }
+
+        public CarPartsEditor(DBModelPart model)
 		{
 			this._openforms = new List<Form>();
 			this.InitializeComponent();
 			this.ToggleTheme();
 			this.Model = model;
-			this.Text = $"{this.Model.CollectionName} Editor";
+			this.Text = $"Car Parts Editor : {this.Model.CollectionName}";
 			this.LoadTreeView();
 			this.ToggleMenuStripControls(null);
 
@@ -41,9 +45,6 @@ namespace Binary.UI
         private void ToggleTheme()
         {
             Theme.Deserialize(Theme.GetThemeFile(), out var theme);
-
-            // Renderers
-            this.CarPartsEditorMenuStrip.Renderer = new Theme.MenuStripRenderer();
 
 			// Primary colors and controls
 			this.BackColor = theme.Colors.MainBackColor;
@@ -71,8 +72,21 @@ namespace Binary.UI
 			this.CarPartsPropertyGrid.HelpForeColor = theme.Colors.PrimForeColor;
 			this.CarPartsPropertyGrid.HelpBorderColor = theme.Colors.RegBorderColor;
 
-			// Menu strip and menu items
-			this.CarPartsEditorMenuStrip.ForeColor = theme.Colors.LabelTextColor;
+            // Menu strip and menu items
+            this.CarPartsEditorMenuStrip.MenuStripGradientBegin = theme.Colors.MenuStripGradientBegin;
+            this.CarPartsEditorMenuStrip.MenuStripGradientEnd = theme.Colors.MenuStripGradientEnd;
+            this.CarPartsEditorMenuStrip.MenuStripForeColor = theme.Colors.LabelTextColor;
+            this.CarPartsEditorMenuStrip.MenuBorder = theme.Colors.MenuBorder;
+            this.CarPartsEditorMenuStrip.MenuItemBorder = theme.Colors.MenuItemBorder;
+            this.CarPartsEditorMenuStrip.MenuItemPressedGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.CarPartsEditorMenuStrip.MenuItemPressedGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.CarPartsEditorMenuStrip.MenuItemPressedGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
+            this.CarPartsEditorMenuStrip.MenuItemSelected = theme.Colors.MenuItemSelected;
+            this.CarPartsEditorMenuStrip.MenuItemSelectedGradientBegin = theme.Colors.MenuItemSelectedGradientBegin;
+            this.CarPartsEditorMenuStrip.MenuItemSelectedGradientEnd = theme.Colors.MenuItemSelectedGradientEnd;
+            this.CarPartsEditorMenuStrip.ImageMarginGradientBegin = theme.Colors.MenuItemPressedGradientBegin;
+            this.CarPartsEditorMenuStrip.ImageMarginGradientMiddle = theme.Colors.MenuItemPressedGradientMiddle;
+            this.CarPartsEditorMenuStrip.ImageMarginGradientEnd = theme.Colors.MenuItemPressedGradientEnd;
 			this.AddPartToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.AddPartToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RemovePartToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
@@ -111,7 +125,20 @@ namespace Binary.UI
 			this.HasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
-		}
+
+            // Highlight colors
+            this.HighlightColor1 = theme.DarkTheme
+                        ? Color.FromArgb(160, 20, 30)
+                        : Color.FromArgb(60, 255, 60);
+
+            this.HighlightColor2 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 20, 20);
+
+            this.HighlightColor3 = theme.DarkTheme
+                        ? Color.FromArgb(255, 230, 0)
+                        : Color.FromArgb(255, 90, 0);
+        }
 
 		#endregion
 
@@ -204,11 +231,9 @@ namespace Binary.UI
 			foreach (TreeNode node in nodes)
 			{
 
-				node.BackColor = String.IsNullOrEmpty(match) || !node.Text.Contains(match)
-					? this.CarPartsTreeView.BackColor
-					: Configurations.Default.DarkTheme
-						? Color.FromArgb(160, 20, 30)
-						: Color.FromArgb(60, 255, 60);
+                node.BackColor = String.IsNullOrEmpty(match) || !node.Text.Contains(match)
+                    ? this.CarPartsTreeView.BackColor
+                    : this.HighlightColor1;
 
 				if (node.Nodes.Count > 0) this.RecursiveTreeHiglights(match, node.Nodes);
 
@@ -697,17 +722,13 @@ namespace Binary.UI
 
 				this.CarPartsTreeView.SelectedNode.ForeColor = this.CarPartsTreeView.ForeColor;
 
-				e.Node.ForeColor = Configurations.Default.DarkTheme
-					? Color.FromArgb(255, 230, 0)
-					: Color.FromArgb(255, 20, 20);
+                e.Node.ForeColor = this.HighlightColor2;
 
 			}
 			else
 			{
 
-				e.Node.ForeColor = Configurations.Default.DarkTheme
-					? Color.FromArgb(255, 230, 0)
-					: Color.FromArgb(255, 90, 0);
+                e.Node.ForeColor = this.HighlightColor3;
 
 			}
 		}

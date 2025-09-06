@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(VectorEditor));
-            this.VectorMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.VectorMenuStrip = new System.Windows.Forms.CustomMenuStrip();
             this.MainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportSVGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportSVGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -190,7 +190,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip VectorMenuStrip;
+        private System.Windows.Forms.CustomMenuStrip VectorMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem MainToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem ImportSVGToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem ExportSVGToolStripMenuItem;
