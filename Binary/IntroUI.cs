@@ -137,7 +137,7 @@ namespace Binary
             using var dialog = new OpenFileDialog()
             {
                 CheckFileExists = true,
-                Filter = "Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher",
+                Filter = "Binary/ius End Launcher Files|*.end;*.endlauncher|Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher|All Files|*.*",
                 Multiselect = false,
                 Title = "Select End Launcher",
             };

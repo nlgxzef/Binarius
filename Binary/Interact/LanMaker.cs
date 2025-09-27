@@ -98,7 +98,7 @@ namespace Binary.Interact
                 AutoUpgradeEnabled = true,
                 CheckPathExists = true,
                 DefaultExt = ".endlauncher",
-                Filter = "Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher",
+                Filter = "Binary/ius End Launcher Files|*.end;*.endlauncher|Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher|All Files|*.*",
                 OverwritePrompt = true,
                 SupportMultiDottedExtensions = true,
                 Title = "Save End Launcher",
@@ -196,7 +196,7 @@ namespace Binary.Interact
                 AutoUpgradeEnabled = true,
                 CheckPathExists = true,
                 DefaultExt = ".endlauncher",
-                Filter = "Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher",
+                Filter = "Binary/ius End Launcher Files|*.end;*.endlauncher|Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher|All Files|*.*",
                 SupportMultiDottedExtensions = true,
                 Title = "Open End Launcher",
             };

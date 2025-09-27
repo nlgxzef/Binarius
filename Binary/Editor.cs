@@ -520,7 +520,7 @@ namespace Binary
                 AutoUpgradeEnabled = true,
                 CheckFileExists = true,
                 CheckPathExists = true,
-                Filter = "Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher",
+                Filter = "Binary/ius End Launcher Files|*.end;*.endlauncher|Binary End Launcher Files|*.end|Binarius End Launcher Files|*.endlauncher|All Files|*.*",
                 Multiselect = false,
                 Title = "Load End Launcher",
             };
@@ -578,7 +578,7 @@ namespace Binary
             using var dialog = new OpenFileDialog()
             {
                 CheckFileExists = true,
-                Filter = "Binary Endscript Files|*.end|Binarius Endscript Files|*.endscript",
+                Filter = "Binary/ius Endscript Files|*.end;*.endscript|Binary Endscript Files|*.end|Binarius Endscript Files|*.endscript|All Files|*.*",
                 Multiselect = false,
                 Title = "Import Endscript",
             };
