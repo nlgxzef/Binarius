@@ -43,6 +43,7 @@ namespace Binary.Interact
             this.OptionsCheckStartMaximized.ForeColor = theme.Colors.MainForeColor;
             this.OptionsCheckSoonFeature.ForeColor = theme.Colors.MainForeColor;
             this.OptionsCheckDisableAdminWarning.ForeColor = theme.Colors.MainForeColor;
+            this.OptionsCheckHideEmptyManagers.ForeColor = theme.Colors.MainForeColor;
 
         }
 
@@ -54,6 +55,7 @@ namespace Binary.Interact
             this.OptionsCheckStartMaximized.Checked = Configurations.Default.StartMaximized;
             this.OptionsCheckSoonFeature.Checked = Configurations.Default.SoonFeature;
             this.OptionsCheckDisableAdminWarning.Checked = Configurations.Default.DisableAdminWarning;
+            this.OptionsCheckHideEmptyManagers.Checked = Configurations.Default.HideEmptyManagers;
 
         }
 
@@ -65,6 +67,9 @@ namespace Binary.Interact
             Configurations.Default.StartMaximized = this.OptionsCheckStartMaximized.Checked;
             Configurations.Default.SoonFeature = this.OptionsCheckSoonFeature.Checked;
             Configurations.Default.DisableAdminWarning = this.OptionsCheckDisableAdminWarning.Checked;
+            Configurations.Default.HideEmptyManagers = this.OptionsCheckHideEmptyManagers.Checked;
+
+            Configurations.Default.Save();
         }
 
         private void OptionsButtonOK_Click(object sender, EventArgs e)

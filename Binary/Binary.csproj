@@ -5,38 +5,27 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>binarius.ico</ApplicationIcon>
-    <Version>2.10.2</Version>
+    <Version>2.10.4</Version>
     <Authors>MaxHwoy</Authors>
-    <PublisherName>MaxHwoy, rx, avail, Sh2dow and nlgxzef</PublisherName>
-    <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and various forks of it by rx and Sh2dow.</Description>
-    <Copyright>© 2025 MaxHwoy, rx, avail, Sh2dow and nlgxzef. No rights reserved.</Copyright>
-    <AssemblyVersion>2.10.2</AssemblyVersion>
-    <FileVersion>2.10.2</FileVersion>
-    <Platforms>AnyCPU;x64</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <PublisherName>MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef</PublisherName>
+    <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and also implemments some fixes and improvements done on the forks made by rx, Sh2dow and NI240SX.</Description>
+    <Copyright>© 2026 MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef. No rights reserved.</Copyright>
+    <AssemblyVersion>2.10.4</AssemblyVersion>
+    <FileVersion>2.10.4</FileVersion>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	<Product>Binarius</Product>
 	<AssemblyName>Binarius</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-
+	
   <ItemGroup>
     <Content Include="binarius.ico" />
   </ItemGroup>

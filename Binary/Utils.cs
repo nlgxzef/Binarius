@@ -19,6 +19,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
+using Binary.Properties;
+
 namespace Binary
 {
     internal static class Utils
@@ -212,6 +214,74 @@ namespace Binary
             }
 
             return result;
+        }
+
+        public static void toggleEmptyManagersInSDB(SynchronizedDatabase sdb, TreeNode sdbNode)
+        {
+            foreach (var manager in sdb.Database.Managers)
+            {
+                if (manager.Count == 0)
+                {
+                    bool found = false;
+                    foreach (TreeNode node in sdbNode.Nodes)
+                    {
+                        if (node != null && node.GetType() == typeof(TreeNode) && node.FullPath.EndsWith(manager.Name))
+                        {
+                            if (Configurations.Default.HideEmptyManagers) sdbNode.Nodes.Remove(node);
+                            found = true;
+                            break;
+                        }
+
+                    }
+
+                    if (!found && !Configurations.Default.HideEmptyManagers)
+                    {
+                        var managenode = new TreeNode(manager.Name);
+
+                        foreach (Collectable collection in manager)
+                        {
+
+                            managenode.Nodes.Add(GetCollectionNodes(collection));
+
+                        }
+
+                        sdbNode.Nodes.Insert(sdb.Database.Managers.IndexOf(manager), managenode);
+
+                    }
+                }
+            }
+        }
+
+        public static void MoveUp(TreeNode node)
+        {
+            TreeNode parent = node.Parent;
+            if (parent != null)
+            {
+                int index = parent.Nodes.IndexOf(node);
+                if (index > 0)
+                {
+                    parent.Nodes.RemoveAt(index);
+                    parent.Nodes.Insert(index - 1, node);
+
+                    node.TreeView.SelectedNode = node;
+                }
+            }
+        }
+
+        public static void MoveDown(TreeNode node)
+        {
+            TreeNode parent = node.Parent;
+            if (parent != null)
+            {
+                int index = parent.Nodes.IndexOf(node);
+                if (index < parent.Nodes.Count - 1)
+                {
+                    parent.Nodes.RemoveAt(index);
+                    parent.Nodes.Insert(index + 1, node);
+
+                    node.TreeView.SelectedNode = node;
+                }
+            }
         }
 
         public static string UTF8toISO(string convert)

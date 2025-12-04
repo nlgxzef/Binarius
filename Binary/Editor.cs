@@ -14,6 +14,7 @@ using Endscript.Profiles;
 using Nikki.Core;
 using Nikki.Reflection.Abstract;
 using Nikki.Reflection.Interface;
+using Nikki.Support.Carbon.Framework;
 using Nikki.Support.Shared.Class;
 using Nikki.Utils;
 
@@ -48,8 +49,8 @@ namespace Binary
             this.InitializeComponent();
             this.splitContainer2.FixedPanel = FixedPanel.Panel1;
             this.ToggleTheme();
+            this.ManageExperimentalFeatures();
             this.Text = $"Binarius - v{this.ProductVersion}";
-            //Configurations.Default.CurrentGame = 0;
         }
 
         #region Theme
@@ -148,29 +149,6 @@ namespace Binary
             this.EMSHelpTutorials.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSHelpTutorials.ForeColor = theme.Colors.MenuItemForeColor;
 
-            // Buttons
-            this.EditorButtonOpenEditor.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonOpenEditor.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonOpenEditor.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonAddNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonAddNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonAddNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonRemoveNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonRemoveNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonRemoveNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonCopyNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonCopyNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonCopyNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonExportNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonExportNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonExportNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonImportNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonImportNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonImportNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-            this.EditorButtonScriptNode.BackColor = theme.Colors.ButtonBackColor;
-            this.EditorButtonScriptNode.ForeColor = theme.Colors.ButtonForeColor;
-            this.EditorButtonScriptNode.FlatAppearance.BorderColor = theme.Colors.ButtonFlatColor;
-
             // Context menu
             this.EditorContextMenu.BackColor = theme.Colors.MainBackColor;
             this.EditorContextMenu.ForeColor = theme.Colors.LabelTextColor;
@@ -196,6 +174,16 @@ namespace Binary
             this.toolStripSeparator3.BackColor = theme.Colors.MenuItemBackColor;
             this.toolStripSeparator4.ForeColor = theme.Colors.MenuItemForeColor;
             this.toolStripSeparator4.BackColor = theme.Colors.MenuItemBackColor;
+            this.toolStripSeparator5.ForeColor = theme.Colors.MenuItemForeColor;
+            this.toolStripSeparator5.BackColor = theme.Colors.MenuItemBackColor;
+            this.moveNodeDownToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.moveNodeDownToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.moveNodeUpToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.moveNodeUpToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.moveNodeFirstToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.moveNodeFirstToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.moveNodeLastToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.moveNodeLastToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 
             // Status strip
             //this.EditorStatusStrip.BackColor = Color.Transparent;
@@ -294,17 +282,26 @@ namespace Binary
             this.EMSWindowsOpenDir.Enabled = enable;
         }
 
+        private void ManageExperimentalFeatures()
+        {
+            bool enable = Configurations.Default.SoonFeature;
+
+            this.toolStripSeparator5.Visible = enable;
+            this.moveNodeDownToolStripMenuItem.Visible = enable;
+            this.moveNodeUpToolStripMenuItem.Visible = enable;
+            this.moveNodeFirstToolStripMenuItem.Visible = enable;
+            this.moveNodeLastToolStripMenuItem.Visible = enable;
+        }
+
         private void ManageButtonOpenEditor(IReflective reflective)
         {
-            this.EditorButtonOpenEditor.Enabled =
+            this.openEditorToolStripMenuItem.Enabled =
                 reflective is FNGroup or
                 STRBlock or
                 TPKBlock or
                 DBModelPart or
                 GCareer or
                 VectorVinyl;
-
-            this.openEditorToolStripMenuItem.Enabled = this.EditorButtonOpenEditor.Enabled;
         }
 
         private void ManageButtonAddNode(TreeNode node)
@@ -312,8 +309,7 @@ namespace Binary
             if (node == null || node.Level != 1)
             {
 
-                this.EditorButtonAddNode.Enabled = false;
-                this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
+                this.addNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -323,15 +319,13 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonAddNode.Enabled = false;
-                this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
+                this.addNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Text);
-            this.EditorButtonAddNode.Enabled = manager != null && !manager.IsReadOnly;
-            this.addNodeToolStripMenuItem.Enabled = this.EditorButtonAddNode.Enabled;
+            this.addNodeToolStripMenuItem.Enabled = manager != null && !manager.IsReadOnly;
         }
 
         private void ManageButtonRemoveNode(TreeNode node)
@@ -339,8 +333,7 @@ namespace Binary
             if (node == null || node.Level != 2)
             {
 
-                this.EditorButtonRemoveNode.Enabled = false;
-                this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
+                this.removeNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -350,15 +343,13 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonRemoveNode.Enabled = false;
-                this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
+                this.removeNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
-            this.EditorButtonRemoveNode.Enabled = manager != null && !manager.IsReadOnly;
-            this.removeNodeToolStripMenuItem.Enabled = this.EditorButtonRemoveNode.Enabled;
+            this.removeNodeToolStripMenuItem.Enabled = manager != null && !manager.IsReadOnly;
         }
 
         private void ManageButtonCopyNode(TreeNode node)
@@ -366,8 +357,7 @@ namespace Binary
             if (node == null || node.Level != 2)
             {
 
-                this.EditorButtonCopyNode.Enabled = false;
-                this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
+                this.copyNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -377,15 +367,13 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonCopyNode.Enabled = false;
-                this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
+                this.copyNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
-            this.EditorButtonCopyNode.Enabled = manager != null && !manager.IsReadOnly;
-            this.copyNodeToolStripMenuItem.Enabled = this.EditorButtonCopyNode.Enabled;
+            this.copyNodeToolStripMenuItem.Enabled = manager != null && !manager.IsReadOnly;
         }
 
         private void ManageButtonExportNode(TreeNode node)
@@ -393,8 +381,7 @@ namespace Binary
             if (node == null || node.Level != 2)
             {
 
-                this.EditorButtonExportNode.Enabled = false;
-                this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
+                this.exportNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -404,15 +391,13 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonExportNode.Enabled = false;
-                this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
+                this.exportNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
-            this.EditorButtonExportNode.Enabled = manager != null;
-            this.exportNodeToolStripMenuItem.Enabled = this.EditorButtonExportNode.Enabled;
+            this.exportNodeToolStripMenuItem.Enabled = manager != null;
         }
 
         private void ManageButtonImportNode(TreeNode node)
@@ -420,8 +405,7 @@ namespace Binary
             if (node == null || node.Level != 1)
             {
 
-                this.EditorButtonImportNode.Enabled = false;
-                this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
+                this.importNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -431,15 +415,13 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonImportNode.Enabled = false;
-                this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
+                this.importNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Text);
-            this.EditorButtonImportNode.Enabled = manager != null;
-            this.importNodeToolStripMenuItem.Enabled = this.EditorButtonImportNode.Enabled;
+            this.importNodeToolStripMenuItem.Enabled = manager != null;
         }
 
         private void ManageButtonScriptNode(TreeNode node)
@@ -447,8 +429,7 @@ namespace Binary
             if (node == null || node.Level != 2)
             {
 
-                this.EditorButtonScriptNode.Enabled = false;
-                this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
+                this.scriptNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
@@ -458,19 +439,52 @@ namespace Binary
             if (sdb == null)
             {
 
-                this.EditorButtonScriptNode.Enabled = false;
-                this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
+                this.scriptNodeToolStripMenuItem.Enabled = false;
                 return;
 
             }
 
             var manager = sdb.Database.GetManager(node.Parent.Text);
-            this.EditorButtonScriptNode.Enabled =
+            this.scriptNodeToolStripMenuItem.Enabled =
                 manager != null &&
                 !typeof(DBModelPart).IsAssignableFrom(manager.CollectionType) &&
                 !typeof(FNGroup).IsAssignableFrom(manager.CollectionType) &&
                 !typeof(STRBlock).IsAssignableFrom(manager.CollectionType);
-            this.scriptNodeToolStripMenuItem.Enabled = this.EditorButtonScriptNode.Enabled;
+        }
+
+        private void ManageButtonMoveNode(TreeNode node)
+        {
+
+
+            if (node == null || node.Level != 2)
+            {
+
+                this.moveNodeDownToolStripMenuItem.Enabled = false;
+                this.moveNodeUpToolStripMenuItem.Enabled = false;
+                this.moveNodeFirstToolStripMenuItem.Enabled = false;
+                this.moveNodeLastToolStripMenuItem.Enabled = false;
+                return;
+
+            }
+
+            var sdb = this.Profile.Find(_ => _.Filename == node.Parent.Parent.Text);
+
+            if (sdb == null)
+            {
+
+                this.moveNodeDownToolStripMenuItem.Enabled = false;
+                this.moveNodeUpToolStripMenuItem.Enabled = false;
+                this.moveNodeFirstToolStripMenuItem.Enabled = false;
+                this.moveNodeLastToolStripMenuItem.Enabled = false;
+                return;
+
+            }
+
+            var manager = sdb.Database.GetManager(node.Parent.Text);
+            this.moveNodeDownToolStripMenuItem.Enabled = manager != null && !manager.IsReadOnly;
+            this.moveNodeUpToolStripMenuItem.Enabled = this.moveNodeDownToolStripMenuItem.Enabled;
+            this.moveNodeFirstToolStripMenuItem.Enabled = this.moveNodeDownToolStripMenuItem.Enabled;
+            this.moveNodeLastToolStripMenuItem.Enabled = this.moveNodeDownToolStripMenuItem.Enabled;
         }
 
         #endregion
@@ -781,39 +795,39 @@ namespace Binary
         private void EMSOptionsUnlock_Click(object sender, EventArgs e)
         {
 #if !DEBUG
-			try
-			{
+            try
+            {
 #endif
 
-            if (this.Profile?.Count > 0)
-            {
+                if (this.Profile?.Count > 0)
+                {
 
-                string path = this.Profile[0].Folder;
+                    string path = this.Profile[0].Folder;
 
-                MemoryUnlock.FastUnlock(path + @"\GLOBAL\CARHEADERSMEMORYFILE.BIN");
-                MemoryUnlock.FastUnlock(path + @"\GLOBAL\FRONTENDMEMORYFILE.BIN");
-                MemoryUnlock.FastUnlock(path + @"\GLOBAL\INGAMEMEMORYFILE.BIN");
-                MemoryUnlock.FastUnlock(path + @"\GLOBAL\PERMANENTMEMORYFILE.BIN");
-                MemoryUnlock.LongUnlock(path + @"\GLOBAL\GLOBALMEMORYFILE.BIN");
+                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\CARHEADERSMEMORYFILE.BIN");
+                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\FRONTENDMEMORYFILE.BIN");
+                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\INGAMEMEMORYFILE.BIN");
+                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\PERMANENTMEMORYFILE.BIN");
+                    MemoryUnlock.LongUnlock(path + @"\GLOBAL\GLOBALMEMORYFILE.BIN");
 
-                MessageBox.Show("Memory files were successfully unlocked for modding.", "Success");
+                    MessageBox.Show("Memory files were successfully unlocked for modding.", "Success");
 
-            }
-            else
-            {
+                }
+                else
+                {
 
-                throw new Exception("No files are open and directory is not chosen");
+                    throw new Exception("No files are open and directory is not chosen");
 
-            }
+                }
 
 #if !DEBUG
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
 
-				MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-			}
+            }
 #endif
         }
 
@@ -834,6 +848,25 @@ namespace Binary
             var settings = new Interact.Options() { StartPosition = FormStartPosition.CenterScreen };
             this._openforms.Add(settings);
             settings.ShowDialog();
+
+            if (settings.DialogResult == DialogResult.OK)
+            {
+                // Refresh tree view if Hide Empty Managers option was changed
+                foreach (var sdb in this.Profile)
+                {
+                    foreach (TreeNode n in this.EditorTreeView.Nodes)
+                    {
+                        if (n.FullPath == sdb.Filename)
+                        {
+                            Utils.toggleEmptyManagersInSDB(sdb, n);
+                            break;
+                        }
+                    }
+                }
+
+                // Check experimental features
+                this.ManageExperimentalFeatures();
+            }
         }
 
         private void EMSScriptingProcess_Click(object sender, EventArgs e)
@@ -856,21 +889,21 @@ namespace Binary
             eCommandType result;
 
 #if !DEBUG
-			try
-			{
+            try
+            {
 #endif
 
-            result = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
+                result = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
 
 #if !DEBUG
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
 
-				MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
+                MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
 
-			}
+            }
 #endif
 
             if (result == eCommandType.empty)
@@ -1043,47 +1076,47 @@ namespace Binary
         private void EMSOptionsSpeedReflect_Click(object sender, EventArgs e)
         {
 #if !DEBUG
-			try
-			{
+            try
+            {
 #endif
 
-            if (this.Profile?.Count > 0)
-            {
-                string dir = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-                string speedfrom = Path.Combine(dir, "SpeedReflect.asi");
+                if (this.Profile?.Count > 0)
+                {
+                    string dir = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                    string speedfrom = Path.Combine(dir, "SpeedReflect.asi");
 
-                if (!File.Exists(speedfrom))
+                    if (!File.Exists(speedfrom))
+                    {
+
+                        MessageBox.Show("SpeedReflect.asi was not found in the Binary directory.", "Error");
+                        return;
+
+                    }
+
+                    string path = this.Profile[0].Folder;
+
+                    string speedto = Path.Combine(this.Profile.Directory, @"scripts\SpeedReflect.asi");
+                    Directory.CreateDirectory(Path.Combine(this.Profile.Directory, "scripts"));
+                    File.Copy(speedfrom, speedto, true);
+
+                    MessageBox.Show("Succesfully installed SpeedReflect.asi.", "Success");
+
+                }
+                else
                 {
 
-                    MessageBox.Show("SpeedReflect.asi was not found in the Binary directory.", "Error");
-                    return;
+                    throw new Exception("No files are open and directory is not chosen");
 
                 }
 
-                string path = this.Profile[0].Folder;
-
-                string speedto = Path.Combine(this.Profile.Directory, @"scripts\SpeedReflect.asi");
-                Directory.CreateDirectory(Path.Combine(this.Profile.Directory, "scripts"));
-                File.Copy(speedfrom, speedto, true);
-
-                MessageBox.Show("Succesfully installed SpeedReflect.asi.", "Success");
-
+#if !DEBUG
             }
-            else
+            catch (Exception ex)
             {
 
-                throw new Exception("No files are open and directory is not chosen");
+                MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-
-#if !DEBUG
-			}
-				catch (Exception ex)
-				{
-
-					MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				}
 #endif
         }
 
@@ -1367,6 +1400,7 @@ namespace Binary
 
             var sdb = this.Profile.Find(_ => _.Filename == fname);
             var manager = sdb.Database.GetManager(mname);
+            var collection = manager[manager.FindIndex(cname)];
 
             using var exporter = new Exporter(manager.AllowsNoSerialization)
             {
@@ -1381,8 +1415,8 @@ namespace Binary
                     AddExtension = true,
                     AutoUpgradeEnabled = true,
                     CheckPathExists = true,
-                    DefaultExt = ".BIN",
-                    Filter = "Binary Files|*.BIN|All Files|*.*",
+                    DefaultExt = ".bin",
+                    Filter = "Binary Files|*.bin|All Files|*.*",
                     FileName = cname,
                     OverwritePrompt = true,
                     SupportMultiDottedExtensions = true,
@@ -1394,30 +1428,41 @@ namespace Binary
                     dialog.InitialDirectory = m_exportNodeLastDir;
                 }
 
+                if (collection is FNGroup fng)
+                {
+                    dialog.DefaultExt = ".fng";
+                    dialog.Filter = "FNG Files|*.fng|" + dialog.Filter;
+                }
+                else if (collection is TPKBlock tpk)
+                {
+                    dialog.DefaultExt = ".tpk";
+                    dialog.Filter = "Texture Packages|*.tpk|" + dialog.Filter;
+                }
+
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
 
                     m_exportNodeLastDir = Path.GetDirectoryName(dialog.FileName);
 
 #if !DEBUG
-					try
-					{
+                    try
+                    {
 #endif
 
-                    using var bw = new BinaryWriter(File.Open(dialog.FileName, FileMode.Create));
-                    manager.Export(cname, bw, exporter.Serialized);
-                    MessageBox.Show($"Collection {cname} has been exported to path {dialog.FileName}", "Info",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        using var bw = new BinaryWriter(File.Open(dialog.FileName, FileMode.Create));
+                        manager.Export(cname, bw, exporter.Serialized);
+                        MessageBox.Show($"Collection {cname} has been exported to path {dialog.FileName}", "Info",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 #if !DEBUG
-					}
-					catch (Exception ex)
-					{
+                    }
+                    catch (Exception ex)
+                    {
 
-						MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
+                        MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
 
-					}
+                    }
 #endif
 
                 }
@@ -1451,6 +1496,7 @@ namespace Binary
                     AutoUpgradeEnabled = true,
                     CheckFileExists = true,
                     CheckPathExists = true,
+                    DefaultExt = ".bin",
                     Filter = "Binary Files|*.bin|All Files|*.*",
                     Multiselect = false,
                     SupportMultiDottedExtensions = true,
@@ -1462,33 +1508,45 @@ namespace Binary
                     dialog.InitialDirectory = m_importNodeLastDir;
                 }
 
+                if (typeof(FNGroup).IsAssignableFrom(manager.CollectionType))
+                {
+                    dialog.DefaultExt = ".fng";
+                    dialog.Filter = "FNG Files|*.fng|" + dialog.Filter;
+                }
+                else if (typeof(TPKBlock).IsAssignableFrom(manager.CollectionType))
+                {
+                    dialog.DefaultExt = ".tpk";
+                    dialog.Filter = "Texture Packages|*.tpk|" + dialog.Filter;
+                }
+
+
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
 
                     m_importNodeLastDir = Path.GetDirectoryName(dialog.FileName);
 
 #if !DEBUG
-					try
-					{
+                    try
+                    {
 #endif
 
-                    var type = (Nikki.Reflection.Enum.SerializeType)importer.SerializationIndex;
-                    using var br = new BinaryReader(File.Open(dialog.FileName, FileMode.Open));
-                    manager.Import(type, br);
-                    MessageBox.Show($"File {dialog.FileName} has been imported with type {type}", "Info",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.LoadTreeView(this.EditorTreeView.SelectedNode.FullPath);
-                    this._edited = true;
+                        var type = (Nikki.Reflection.Enum.SerializeType)importer.SerializationIndex;
+                        using var br = new BinaryReader(File.Open(dialog.FileName, FileMode.Open));
+                        manager.Import(type, br);
+                        MessageBox.Show($"File {dialog.FileName} has been imported with type {type}", "Info",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.LoadTreeView(this.EditorTreeView.SelectedNode.FullPath);
+                        this._edited = true;
 
 #if !DEBUG
-					}
-					catch (Exception ex)
-					{
-					
-						MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
-					
-					}
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+
+                    }
 #endif
 
                 }
@@ -1573,6 +1631,165 @@ namespace Binary
             this.WriteLineToEndCommandPrompt(lines);
         }
 
+        private void moveNodeUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fname = this.EditorTreeView.SelectedNode.Parent.Parent.Text;
+            string mname = this.EditorTreeView.SelectedNode.Parent.Text;
+            string cname = this.EditorTreeView.SelectedNode.Text;
+            var index1 = this.EditorTreeView.SelectedNode.Index;
+            var index2 = index1 - 1;
+
+            if (index2 < 0)
+            {
+
+                MessageBox.Show("Unable to move up because selected node is the up most node",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            this.EditorTreeView.BeginUpdate();
+
+            var sdb = this.Profile.Find(_ => _.Filename == fname);
+            var manager = sdb.Database.GetManager(mname);
+
+            try
+            {
+
+                this.EditorPropertyGrid.SelectedObject = null;
+                manager.Switch(index1, index2);
+                string str = this.GenerateEndCommand(eCommandType.move_collection_up, this.EditorTreeView.SelectedNode.FullPath);
+                this.WriteLineToEndCommandPrompt(str);
+                Utils.MoveUp(this.EditorTreeView.SelectedNode);
+                this._edited = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                _ = MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            this.EditorTreeView.EndUpdate();
+        }
+
+        private void moveNodeDownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fname = this.EditorTreeView.SelectedNode.Parent.Parent.Text;
+            string mname = this.EditorTreeView.SelectedNode.Parent.Text;
+            string cname = this.EditorTreeView.SelectedNode.Text;
+            var index1 = this.EditorTreeView.SelectedNode.Index;
+            var index2 = index1 + 1;
+
+            if (index2 >= this.EditorTreeView.SelectedNode.Parent.Nodes.Count)
+            {
+
+                MessageBox.Show("Unable to move down because selected node is the down most node",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            this.EditorTreeView.BeginUpdate();
+
+            var sdb = this.Profile.Find(_ => _.Filename == fname);
+            var manager = sdb.Database.GetManager(mname);
+
+            try
+            {
+
+                this.EditorPropertyGrid.SelectedObject = null;
+                manager.Switch(index1, index2);
+                string str = this.GenerateEndCommand(eCommandType.move_collection_down, this.EditorTreeView.SelectedNode.FullPath);
+                this.WriteLineToEndCommandPrompt(str);
+                Utils.MoveDown(this.EditorTreeView.SelectedNode);
+                this._edited = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                _ = MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            this.EditorTreeView.EndUpdate();
+        }
+
+        private void moveNodeFirstToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fname = this.EditorTreeView.SelectedNode.Parent.Parent.Text;
+            string mname = this.EditorTreeView.SelectedNode.Parent.Text;
+            string cname = this.EditorTreeView.SelectedNode.Text;
+            var index1 = this.EditorTreeView.SelectedNode.Index;
+
+            this.EditorTreeView.BeginUpdate();
+
+            var sdb = this.Profile.Find(_ => _.Filename == fname);
+            var manager = sdb.Database.GetManager(mname);
+
+            try
+            {
+
+                this.EditorPropertyGrid.SelectedObject = null;
+                for (int index2 = index1 - 1; index2 >= 0; index1--, index2--)
+                {
+                    manager.Switch(index1, index2);
+                    Utils.MoveUp(this.EditorTreeView.SelectedNode);
+                }
+                string str = this.GenerateEndCommand(eCommandType.move_collection_first, this.EditorTreeView.SelectedNode.FullPath);
+                this.WriteLineToEndCommandPrompt(str);
+
+                this._edited = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                _ = MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            this.EditorTreeView.EndUpdate();
+        }
+
+        private void moveNodeLastToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fname = this.EditorTreeView.SelectedNode.Parent.Parent.Text;
+            string mname = this.EditorTreeView.SelectedNode.Parent.Text;
+            string cname = this.EditorTreeView.SelectedNode.Text;
+            var index1 = this.EditorTreeView.SelectedNode.Index;
+
+            this.EditorTreeView.BeginUpdate();
+
+            var sdb = this.Profile.Find(_ => _.Filename == fname);
+            var manager = sdb.Database.GetManager(mname);
+
+            try
+            {
+
+                this.EditorPropertyGrid.SelectedObject = null;
+                for (int index2 = index1 + 1; index2 < this.EditorTreeView.SelectedNode.Parent.Nodes.Count; index1++, index2++)
+                {
+                    manager.Switch(index1, index2);
+                    Utils.MoveDown(this.EditorTreeView.SelectedNode);
+                }
+                string str = this.GenerateEndCommand(eCommandType.move_collection_last, this.EditorTreeView.SelectedNode.FullPath);
+                this.WriteLineToEndCommandPrompt(str);
+                this._edited = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                _ = MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            this.EditorTreeView.EndUpdate();
+        }
+
         private void RecursiveNodeSelection(string path, TreeNodeCollection nodes)
         {
             foreach (TreeNode node in nodes)
@@ -1621,85 +1838,85 @@ namespace Binary
         private void LoadProfile(string filename, bool showerrors)
         {
 #if !DEBUG
-			try
-			{
+            try
+            {
 #endif
 
-            this._edited = false;
-            Launch.Deserialize(filename, out var launch);
-            launch.ThisDir = Path.GetDirectoryName(filename);
+                this._edited = false;
+                Launch.Deserialize(filename, out var launch);
+                launch.ThisDir = Path.GetDirectoryName(filename);
 
-            FixLaunchDirectory(launch, filename);
+                FixLaunchDirectory(launch, filename);
 
-            if (launch.UsageID != eUsage.Modder)
-            {
+                if (launch.UsageID != eUsage.Modder)
+                {
 
-                throw new Exception($"Usage type of the endscript is stated to be {launch.Usage}, while should be Modder");
+                    throw new Exception($"Usage type of the endscript is stated to be {launch.Usage}, while should be Modder");
 
-            }
+                }
 
-            if (launch.GameID == GameINT.None)
-            {
+                if (launch.GameID == GameINT.None)
+                {
 
-                throw new Exception($"Invalid stated game type named {launch.Game}");
+                    throw new Exception($"Invalid stated game type named {launch.Game}");
 
-            }
+                }
 
-            if (!Directory.Exists(launch.Directory))
-            {
+                if (!Directory.Exists(launch.Directory))
+                {
 
-                throw new DirectoryNotFoundException($"Directory named {launch.Directory} does not exist");
+                    throw new DirectoryNotFoundException($"Directory named {launch.Directory} does not exist");
 
-            }
+                }
 
-            this.EditorPropertyGrid.SelectedObject = null;
-            this.Profile = BaseProfile.NewProfile(launch.GameID, launch.Directory);
-            this.EditorStatusLabel.Text = "Loading... Please wait...";
+                this.EditorPropertyGrid.SelectedObject = null;
+                this.Profile = BaseProfile.NewProfile(launch.GameID, launch.Directory);
+                this.EditorStatusLabel.Text = "Loading... Please wait...";
 
-            var watch = new Stopwatch();
-            watch.Start();
+                var watch = new Stopwatch();
+                watch.Start();
 
-            string[] exceptions = this.Profile.Load(launch);
+                string[] exceptions = this.Profile.Load(launch);
 
-            watch.Stop();
+                watch.Stop();
 
-            foreach (string exception in exceptions)
-            {
+                foreach (string exception in exceptions)
+                {
 
-                MessageBox.Show(exception, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
+                }
 
-            this.EditorStatusLabel.Text = Utils.GetStatusString(launch.Files.Count, watch.ElapsedMilliseconds, filename, "Loading");
-            this.LoadTreeView();
-            this.ToggleControlsAfterLoad(true);
+                this.EditorStatusLabel.Text = Utils.GetStatusString(launch.Files.Count, watch.ElapsedMilliseconds, filename, "Loading");
+                this.LoadTreeView();
+                this.ToggleControlsAfterLoad(true);
 
-            if (Configurations.Default.AutoBackups)
-            {
-                this.CreateBackupsForFiles(false);
-            }
+                if (Configurations.Default.AutoBackups)
+                {
+                    this.CreateBackupsForFiles(false);
+                }
 
-            Configurations.Default.LaunchFile = filename;
-            Configurations.Default.CurrentGame = (int)this.Profile.GameINT;
-            Configurations.Default.Save();
-            this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}";
-            this.ToggleTheme();
+                Configurations.Default.LaunchFile = filename;
+                Configurations.Default.CurrentGame = (int)this.Profile.GameINT;
+                Configurations.Default.Save();
+                this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}";
+                this.ToggleTheme();
 
 #if !DEBUG
             }
-			catch (Exception e)
-			{
-			
-				if (showerrors)
-				{
-			
-					MessageBox.Show(e.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			
-				}
-			
-				this.ToggleControlsAfterLoad(false);
-			
-			}
+            catch (Exception e)
+            {
+
+                if (showerrors)
+                {
+
+                    MessageBox.Show(e.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+
+                this.ToggleControlsAfterLoad(false);
+
+            }
 #endif
         }
 
@@ -1733,8 +1950,10 @@ namespace Binary
 
             foreach (var sdb in this.Profile)
             {
-
-                _ = this.EditorTreeView.Nodes.Add(Utils.GetTreeNodesFromSDB(sdb));
+                var n = Utils.GetTreeNodesFromSDB(sdb);
+                this.EditorTreeView.Nodes.Add(n);
+                Utils.toggleEmptyManagersInSDB(sdb, n);
+                //_ = this.EditorTreeView.Nodes.Add(Utils.GetTreeNodesFromSDB(sdb));
 
             }
 
@@ -1754,6 +1973,7 @@ namespace Binary
                 this.ManageButtonExportNode(null);
                 this.ManageButtonImportNode(null);
                 this.ManageButtonScriptNode(null);
+                this.ManageButtonMoveNode(null);
 
             }
 
@@ -1769,37 +1989,37 @@ namespace Binary
         private void SaveProfile()
         {
 #if !DEBUG
-			try
-			{
+            try
+            {
 #endif
 
-            this.EditorStatusLabel.Text = "Saving... Please wait...";
-            var watch = new Stopwatch();
-            watch.Start();
+                this.EditorStatusLabel.Text = "Saving... Please wait...";
+                var watch = new Stopwatch();
+                watch.Start();
 
-            string[] exceptions = this.Profile.Save();
+                string[] exceptions = this.Profile.Save();
 
-            watch.Stop();
+                watch.Stop();
 
-            foreach (string exception in exceptions)
-            {
+                foreach (string exception in exceptions)
+                {
 
-                MessageBox.Show(exception, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
+                }
 
-            string filename = Configurations.Default.LaunchFile;
-            this.EditorStatusLabel.Text = Utils.GetStatusString(this.Profile.Count, watch.ElapsedMilliseconds, filename, "Saving");
-            this._edited = false;
+                string filename = Configurations.Default.LaunchFile;
+                this.EditorStatusLabel.Text = Utils.GetStatusString(this.Profile.Count, watch.ElapsedMilliseconds, filename, "Saving");
+                this._edited = false;
 
 #if !DEBUG
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
 
-				MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-			}
+            }
 #endif
         }
 
@@ -1837,6 +2057,7 @@ namespace Binary
             this.ManageButtonExportNode(e.Node);
             this.ManageButtonImportNode(e.Node);
             this.ManageButtonScriptNode(e.Node);
+            this.ManageButtonMoveNode(e.Node);
 
             this.EditorPropertyGrid.SelectedObject = selected;
             this.EditorNodeInfo.Text = $"| Index: {e.Node.Index} | {e.Node.Nodes.Count} subnodes";
@@ -1844,12 +2065,17 @@ namespace Binary
 
         private void EditorTreeView_DoubleClick(object sender, EventArgs e)
         {
-            if (this.EditorButtonOpenEditor.Enabled && this.openEditorToolStripMenuItem.Enabled)
+            if (this.openEditorToolStripMenuItem.Enabled)
             {
 
                 this.EditorButtonOpenEditor_Click(null, EventArgs.Empty);
 
             }
+        }
+
+        private void EditorTreeView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right) EditorTreeView.SelectedNode = EditorTreeView.GetNodeAt(e.X, e.Y);
         }
 
         #endregion
@@ -2054,5 +2280,8 @@ namespace Binary
 
         #endregion
 
+
+
+        
     }
 }

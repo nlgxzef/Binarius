@@ -34,12 +34,20 @@ namespace Binary
 #if DEBUG
             debugMode = true;
 #endif
-            
+
+            // Upgrade settings if necessary
+            if (Configurations.Default.UpgradeRequired)
+            {
+                Configurations.Default.Upgrade();
+                Configurations.Default.UpgradeRequired = false;
+                Configurations.Default.Save();
+            }
+
             if (debugMode || args.Length > 0)
             {
                 NativeCallerX.AllocConsole();
             }
-            else if (!Debugger.IsAttached && Configurations.Default.DisableAdminWarning) // Warn the user if not ran in console & admin mode
+            else if (!Debugger.IsAttached && !Configurations.Default.DisableAdminWarning) // Warn the user if not ran in console & admin mode
             {
                 using var identity = WindowsIdentity.GetCurrent();
                 var principal = new WindowsPrincipal(identity);

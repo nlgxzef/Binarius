@@ -23,7 +23,7 @@ namespace Binary.UI
         #if DEBUG
             this.labelVersion.Text += " (Debug)";
         #endif
-            this.labelCopyright.Text = "© 2025 MaxHwoy, rx, avail, Sh2dow and nlgxzef.\r\nNo rights reserved.";
+            this.labelCopyright.Text = "© 2026 MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef.\r\nNo rights reserved.";
             this.textBoxDescription.Text = AssemblyDescription + "\r\n"
                 + "Powered with Endscript and Darius.";
         }
