@@ -1,4 +1,6 @@
+using Binary.Args;
 using Binary.Properties;
+using Binary.Terminal;
 
 using CoreExtensions.IO;
 using CoreExtensions.Management;
@@ -61,7 +63,7 @@ namespace Binary
                 }
             }
 
-            if (args.Length > 0)
+            /*if (args.Length > 0)
             {
                 var usage = eUsage.Invalid;
 
@@ -88,12 +90,12 @@ namespace Binary
 
                 var cli = new CLI();
 
-                cli.LoadProfile(args[1]);
-                cli.ImportEndscript(args[2]);
+                cli.LoadProfile(usage, args[1], args[2]);
+                cli.ImportEndscript(args[1]);
                 cli.Save();
 
                 return;
-            }
+            }*/
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
@@ -112,6 +114,42 @@ namespace Binary
             if (!File.Exists("EndError.log")) { using var str = File.Create("EndError.log"); }
             string path = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
             SetDependencyPaths(path);
+
+            if (args.Length > 0)
+            {
+                Terminal.Screen.Init();
+                try
+                {
+                    var parser = new ArgParser()
+                        .AddOption("mode", "Specify mode", "<user/modder>", 'm', true, new EnumArgType<eUsage>())
+                        .AddOption("script", "Script to run", "<script_path>", 's', true, ArgTypes.String)
+                        .AddOption("game", "Game path", "<game_path>", 'g', true, ArgTypes.String)
+                        .AddOption("options", "Specifies options to be silently selected separated by a comma.\n\tCombo box values should be provided as numbers starting from \x1B[1m\x1B[4m0\x1B[0m.\n\tCheckbox values can be provided as \x1B[1m\x1B[4m0 / n / false\x1B[0m or \x1B[1m\x1B[4m1 / y / true\x1B[0m.", "<value_1[,value_2,value_3...]>", 'o', false, ArgTypes.String)
+                        .AddOption("help", "Shows this message", null, 'h');
+
+                    if (args.Contains("--help") || args.Contains("-h"))
+                    {
+                        parser.ShowHelp();
+                        Environment.Exit(-1);
+                    }
+
+                    var options = parser.Parse(args);
+                    new CLI(options).RunCliMode();
+                    Environment.Exit(0);
+                }
+                catch (ArgumentException e)
+                {
+                    Console.Error.WriteLine(e.Message);
+
+                    string name = Path.GetFileNameWithoutExtension(typeof(Program).Assembly.Location);
+                    Console.Error.WriteLine($"Run \"{name}\" --help to get help");
+#if DEBUG
+                    throw;
+#else
+                    Environment.Exit(-1);
+#endif
+                }
+            }
 
             Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionHandler);
             Application.Run(new IntroUI());
