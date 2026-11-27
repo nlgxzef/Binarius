@@ -43,7 +43,18 @@ namespace Binary
                 Configurations.Default.Save();
             }
 
-            if (debugMode || args.Length > 0)
+            Utils.ApplySaveSettings(); // before anything can save, CLI mode included
+
+            // Context menus draw disabled items from the theme's colors too
+            ToolStripManager.Renderer = new ThemedToolStripRenderer();
+
+            // These reopen a launcher after restarting as administrator, everything else is the command line mode
+            string editLauncher = args.Length == 2 && args[0] == SaveLocation.EditorArgument ? args[1] : null;
+            string installLauncher = args.Length == 3 && args[0] == SaveLocation.InstallArgument ? args[1] : null;
+            string installDirectory = installLauncher is null ? null : args[2];
+            bool cliMode = args.Length > 0 && editLauncher is null && installLauncher is null;
+
+            if (debugMode || cliMode)
             {
                 NativeCallerX.AllocConsole();
             }
@@ -61,7 +72,7 @@ namespace Binary
                 }
             }
 
-            if (args.Length > 0)
+            if (cliMode)
             {
                 var usage = eUsage.Invalid;
 
@@ -88,7 +99,7 @@ namespace Binary
 
                 var cli = new CLI();
 
-                cli.LoadProfile(args[1]);
+                if (!cli.LoadProfile(args[1])) return;
                 cli.ImportEndscript(args[2]);
                 cli.Save();
 
@@ -114,7 +125,8 @@ namespace Binary
             SetDependencyPaths(path);
 
             Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionHandler);
-            Application.Run(new IntroUI());
+            Binary.UI.ThemedBorders.Install();
+            Application.Run(new IntroUI(editLauncher, installLauncher, installDirectory));
 
             if (debugMode)
             {
@@ -139,6 +151,12 @@ namespace Binary
             string userug2 = Path.Combine(thispath, @"userkeys\underground2.txt");
             string usercustattr = Path.Combine(thispath, @"userkeys\CustomAttributes.txt");
 
+            // Optional vault (attrib) key lists, loaded only if present
+            MostWantedProfile.AttribHashList = Path.Combine(thispath, @"mainkeys\mostwanted_attrib.txt");
+            CarbonProfile.AttribHashList = Path.Combine(thispath, @"mainkeys\carbon_attrib.txt");
+            ProstreetProfile.AttribHashList = Path.Combine(thispath, @"mainkeys\prostreet_attrib.txt");
+            UndercoverProfile.AttribHashList = Path.Combine(thispath, @"mainkeys\undercover_attrib.txt");
+
             CarbonProfile.MainHashList = mainc;
             CarbonProfile.CustomHashList = userc;
             MostWantedProfile.MainHashList = mainmw;
@@ -158,13 +176,13 @@ namespace Binary
                 _ = Directory.CreateDirectory(userdir);
             }
 
-            if (!File.Exists(userc)) { _ = File.Create(userc); }
-            if (!File.Exists(usermw)) { _ = File.Create(usermw); }
-            if (!File.Exists(userps)) { _ = File.Create(userps); }
-            if (!File.Exists(useruc)) { _ = File.Create(useruc); }
-            if (!File.Exists(userug1)) { _ = File.Create(userug1); }
-            if (!File.Exists(userug2)) { _ = File.Create(userug2); }
-            if (!File.Exists(usercustattr)) { _ = File.Create(usercustattr); }
+            if (!File.Exists(userc)) { File.Create(userc).Dispose(); }
+            if (!File.Exists(usermw)) { File.Create(usermw).Dispose(); }
+            if (!File.Exists(userps)) { File.Create(userps).Dispose(); }
+            if (!File.Exists(useruc)) { File.Create(useruc).Dispose(); }
+            if (!File.Exists(userug1)) { File.Create(userug1).Dispose(); }
+            if (!File.Exists(userug2)) { File.Create(userug2).Dispose(); }
+            if (!File.Exists(usercustattr)) { File.Create(usercustattr).Dispose(); }
         }
 
         public static void ThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)

@@ -93,7 +93,7 @@
             this.MaximizeBox = false;
             this.Name = "CheckError";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Prompt Selection";
+            this.Text = "Error";
             this.ResumeLayout(false);
         }
 

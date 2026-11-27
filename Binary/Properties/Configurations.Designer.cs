@@ -85,18 +85,6 @@ namespace Binary.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SoonFeature {
-            get {
-                return ((bool)(this["SoonFeature"]));
-            }
-            set {
-                this["SoonFeature"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int CurrentGame {
             get {
@@ -140,6 +128,54 @@ namespace Binary.Properties {
             }
             set {
                 this["HideEmptyManagers"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SafeSave {
+            get {
+                return ((bool)(this["SafeSave"]));
+            }
+            set {
+                this["SafeSave"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Game")]
+        public string TempLocation {
+            get {
+                return ((string)(this["TempLocation"]));
+            }
+            set {
+                this["TempLocation"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TempCustomPath {
+            get {
+                return ((string)(this["TempCustomPath"]));
+            }
+            set {
+                this["TempCustomPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KeepTempFiles {
+            get {
+                return ((bool)(this["KeepTempFiles"]));
+            }
+            set {
+                this["KeepTempFiles"] = value;
             }
         }
     }

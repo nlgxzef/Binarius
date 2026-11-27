@@ -30,6 +30,11 @@
     "MenuItemPressedGradientEnd": "64, 64, 64",
     "MenuItemSelected": "160, 36, 36",
     "MenuItemSelectedGradientBegin": "64, 64, 64",
-    "MenuItemSelectedGradientEnd": "64, 64, 64"
+    "MenuItemSelectedGradientEnd": "64, 64, 64",
+    "SearchHighlightBackColor": "160, 20, 30",
+    "SelectedNodeForeColor": "255, 230, 0",
+    "FirstSelectedNodeForeColor": "255, 230, 0",
+    "ModifiedItemBackColor": "160, 140, 0",
+    "TextBoxBorderColor": "180, 0, 0"
   }
 }

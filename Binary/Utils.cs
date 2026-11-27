@@ -25,6 +25,35 @@ namespace Binary
 {
     internal static class Utils
     {
+        /// <summary>
+        /// Passes the temporary file saving settings on to Endscript, which does the saving.
+        /// </summary>
+        public static void ApplySaveSettings()
+        {
+            SafeSave.Enabled = Configurations.Default.SafeSave;
+            SafeSave.KeepFiles = Configurations.Default.KeepTempFiles;
+            SafeSave.CustomDirectory = Configurations.Default.TempCustomPath;
+            SafeSave.Location = Enum.TryParse(Configurations.Default.TempLocation, out eTempLocation location)
+                ? location
+                : eTempLocation.Game;
+        }
+
+        /// <summary>
+        /// Asks whether to continue with an endscript made for a newer version or for another fork of Binary.
+        /// </summary>
+        /// <param name="owner">Window that owns the question.</param>
+        /// <param name="script">File name of the endscript.</param>
+        /// <param name="message">Reason, from the parser.</param>
+        /// <returns>True to continue.</returns>
+        public static bool AskVersionMismatch(IWin32Window owner, string script, string message)
+        {
+            using var prompt = new Binary.Prompt.Choice("Endscript Version",
+                $"{script}:" + Environment.NewLine + Environment.NewLine + message + Environment.NewLine + Environment.NewLine +
+                "Do you want to continue anyway?", new[] { "Continue", "Cancel" }, 1, 1);
+            prompt.ShowDialog(owner);
+            return prompt.Value == 0;
+        }
+
         public static IReflective GetReflective(string path, string separator, BaseProfile profile)
         {
             string[] splits = path.Split(separator);
@@ -170,22 +199,57 @@ namespace Binary
             return launch;
         }
 
+        /// <summary>
+        /// Stands in for the collections of a manager until it is expanded. Windows' tree view gets slow to fill and to
+        /// empty (which closing the editor does) with many thousands of items, so only the expanded managers have them.
+        /// </summary>
+        public sealed class PendingTreeNode : TreeNode
+        {
+            public PendingTreeNode() : base("...") { }
+        }
+
+        /// <summary>
+        /// A manager node with its collections not added yet.
+        /// </summary>
+        public static TreeNode GetManagerNode(IManager manager)
+        {
+            var node = new TreeNode(manager.Name);
+            if (manager.Count > 0) _ = node.Nodes.Add(new PendingTreeNode());
+            return node;
+        }
+
+        /// <summary>
+        /// True if a manager node's collections are not added yet.
+        /// </summary>
+        public static bool IsPending(TreeNode node) => node.Nodes.Count == 1 && node.Nodes[0] is PendingTreeNode;
+
+        /// <summary>
+        /// Adds the collections of a manager node that has not been expanded yet.
+        /// </summary>
+        /// <returns>True if it added them.</returns>
+        public static bool FillManagerNode(TreeNode node, IManager manager)
+        {
+            if (!IsPending(node)) return false;
+
+            var nodes = new TreeNode[manager.Count];
+            int i = 0;
+            foreach (Collectable collection in manager) nodes[i++] = GetCollectionNodes(collection);
+
+            node.TreeView?.BeginUpdate();
+            node.Nodes.Clear();
+            node.Nodes.AddRange(nodes);
+            node.TreeView?.EndUpdate();
+            return true;
+        }
+
         public static TreeNode GetTreeNodesFromSDB(SynchronizedDatabase sdb)
         {
             var result = new TreeNode(sdb.Filename);
 
             foreach (var manager in sdb.Database.Managers)
             {
-                var managenode = new TreeNode(manager.Name);
 
-                foreach (Collectable collection in manager)
-                {
-
-                    _ = managenode.Nodes.Add(GetCollectionNodes(collection));
-
-                }
-
-                _ = result.Nodes.Add(managenode);
+                _ = result.Nodes.Add(GetManagerNode(manager));
 
             }
 
@@ -236,17 +300,7 @@ namespace Binary
 
                     if (!found && !Configurations.Default.HideEmptyManagers)
                     {
-                        var managenode = new TreeNode(manager.Name);
-
-                        foreach (Collectable collection in manager)
-                        {
-
-                            managenode.Nodes.Add(GetCollectionNodes(collection));
-
-                        }
-
-                        sdbNode.Nodes.Insert(sdb.Database.Managers.IndexOf(manager), managenode);
-
+                        sdbNode.Nodes.Insert(sdb.Database.Managers.IndexOf(manager), GetManagerNode(manager));
                     }
                 }
             }
@@ -305,11 +359,32 @@ namespace Binary
 
                 logger.WriteLine($"File: {error.Filename}, Line: {error.Index}");
                 logger.WriteLine($"Command: [{error.Line}]");
-                logger.WriteLine($"Error: {error.Error}");
+                logger.WriteLine(error.IsWarning ? error.Error : $"Error: {error.Error}");
                 logger.WriteLine(String.Empty);
 
             }
 
+        }
+
+        // "2 errors and 12 warnings have been detected"
+        public static string DescribeErrors(IEnumerable<EndError> errors)
+        {
+            int failed = 0, warned = 0;
+
+            foreach (var error in errors)
+            {
+
+                if (error.IsWarning) ++warned;
+                else ++failed;
+
+            }
+
+            var parts = new List<string>();
+
+            if (failed > 0) parts.Add($"{failed} error{(failed == 1 ? "" : "s")}");
+            if (warned > 0) parts.Add($"{warned} warning{(warned == 1 ? "" : "s")}");
+
+            return $"{String.Join(" and ", parts)} {(failed + warned == 1 ? "has" : "have")} been detected";
         }
 
         public static string GetTruncatedPath(string path)

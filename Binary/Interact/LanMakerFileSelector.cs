@@ -29,6 +29,7 @@ namespace Binary.Interact
         public LanMakerFileSelector()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
         }
 

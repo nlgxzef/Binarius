@@ -14,11 +14,19 @@ namespace Binary.Prompt
         {
             this.InitializeComponent();
             this.ToggleTheme();
+
+            this.Text = "Information";
+            this.MinimizeBox = false;
         }
 
         public Info(string desc) : this()
         {
             this.InfoLabel.Text = desc ?? String.Empty;
+        }
+
+        public Info(string desc, string title) : this(desc)
+        {
+            if (!String.IsNullOrEmpty(title)) this.Text = title;
         }
 
         private void ToggleTheme()
@@ -34,5 +42,11 @@ namespace Binary.Prompt
         }
 
         private void InfoButtonOK_Click(object sender, EventArgs e) => this.Close();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PromptLayout.Arrange(this, null, new Control[] { this.InfoLabel }, new Button[] { this.InfoButtonOK });
+            base.OnLoad(e);
+        }
     }
 }

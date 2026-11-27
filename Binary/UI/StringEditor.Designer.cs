@@ -281,6 +281,7 @@
             this.StringEditorTextBox.Size = new System.Drawing.Size(394, 81);
             this.StringEditorTextBox.TabIndex = 0;
             this.StringEditorTextBox.TextChanged += this.StringEditorTextBox_TextChanged;
+            this.StringEditorTextBox.Validating += this.StringEditorTextBox_Validating;
             this.StringEditorTextBox.Validated += this.StringEditorTextBox_Validated;
             // 
             // StrEditorListView

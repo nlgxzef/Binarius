@@ -13,7 +13,7 @@ namespace System.Windows.Forms
             InitializeComponent();
 
             this.RenderMode = ToolStripRenderMode.Professional;
-            this.Renderer = new ToolStripProfessionalRenderer(new CustomToolStripColorTable());
+            this.Renderer = new ThemedToolStripRenderer(new CustomToolStripColorTable());
         }
         #endregion
 

@@ -45,6 +45,7 @@
             this.PictureBoxTheme = new System.Windows.Forms.PictureBox();
             this.ToolsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertLegacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raiderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.swatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,7 +196,7 @@
             // 
             // ToolsMenu
             // 
-            this.ToolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.newLauncherToolStripMenuItem, this.hasherToolStripMenuItem, this.raiderToolStripMenuItem, this.swatcherToolStripMenuItem, this.settingsToolStripMenuItem });
+            this.ToolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.newLauncherToolStripMenuItem, this.convertLegacyToolStripMenuItem, this.hasherToolStripMenuItem, this.raiderToolStripMenuItem, this.swatcherToolStripMenuItem, this.settingsToolStripMenuItem });
             this.ToolsMenu.Name = "ToolsMenu";
             this.ToolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.ToolsMenu.Size = new System.Drawing.Size(203, 136);
@@ -208,6 +209,13 @@
             this.newLauncherToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.newLauncherToolStripMenuItem.Text = "New Launcher...";
             this.newLauncherToolStripMenuItem.Click += this.newLauncherToolStripMenuItem_Click;
+            // 
+            // convertLegacyToolStripMenuItem
+            // 
+            this.convertLegacyToolStripMenuItem.Name = "convertLegacyToolStripMenuItem";
+            this.convertLegacyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.convertLegacyToolStripMenuItem.Text = "Convert Legacy Endscript...";
+            this.convertLegacyToolStripMenuItem.Click += this.convertLegacyToolStripMenuItem_Click;
             // 
             // hasherToolStripMenuItem
             // 
@@ -291,6 +299,7 @@
         private System.Windows.Forms.Label LabelUserModeDesc;
         private System.Windows.Forms.ContextMenuStrip ToolsMenu;
         private System.Windows.Forms.ToolStripMenuItem newLauncherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertLegacyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hasherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem raiderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem swatcherToolStripMenuItem;

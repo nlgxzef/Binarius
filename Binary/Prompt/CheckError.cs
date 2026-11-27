@@ -16,6 +16,11 @@ namespace Binary.Prompt
         {
             this.InitializeComponent();
             this.ToggleTheme();
+
+            // Result dialog: OK only
+            this.CheckButtonCancel.Visible = false;
+            this.CancelButton = this.CheckButtonOK;
+            this.MinimizeBox = false;
         }
 
         public CheckError(string desc, bool prompt) : this(desc, prompt, false)
@@ -61,5 +66,11 @@ namespace Binary.Prompt
         }
 
         private void CheckButtonCancel_Click(object sender, EventArgs e) => this.Close();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PromptLayout.Arrange(this, null, new Control[] { this.LabelDescription, this.CheckBoxSelection }, new Button[] { this.CheckButtonOK });
+            base.OnLoad(e);
+        }
     }
 }

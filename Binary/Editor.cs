@@ -21,6 +21,7 @@ using Nikki.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -35,9 +36,14 @@ namespace Binary
     {
         private BaseProfile Profile { get; set; }
         private readonly List<Form> _openforms;
-        private const string empty = "\"\"";
         private const string space = " ";
         private bool _edited = false;
+
+        /// <summary>
+        /// Launcher to load instead of the last one.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        internal string StartLauncher { get; set; }
 
         private Color HighlightColor1 { get; set; }
         private Color HighlightColor2 { get; set; }
@@ -47,9 +53,10 @@ namespace Binary
         {
             this._openforms = new List<Form>();
             this.InitializeComponent();
+            this.InitializeFileFeatures();
+            this.EMSScriptingConvertCarTypeInfo.Enabled = false; // until an Underground 1 or 2 launcher is loaded
             this.splitContainer2.FixedPanel = FixedPanel.Panel1;
             this.ToggleTheme();
-            this.ManageExperimentalFeatures();
             this.Text = $"Binarius - v{this.ProductVersion}";
         }
 
@@ -138,6 +145,8 @@ namespace Binary
             this.EMSScriptingGenerate.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSScriptingClear.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSScriptingClear.ForeColor = theme.Colors.MenuItemForeColor;
+            this.EMSScriptingConvertCarTypeInfo.BackColor = theme.Colors.MenuItemBackColor;
+            this.EMSScriptingConvertCarTypeInfo.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSWindowsRun.BackColor = theme.Colors.MenuItemBackColor;
             this.EMSWindowsRun.ForeColor = theme.Colors.MenuItemForeColor;
             this.EMSWindowsOpenDir.BackColor = theme.Colors.MenuItemBackColor;
@@ -152,6 +161,7 @@ namespace Binary
             // Context menu
             this.EditorContextMenu.BackColor = theme.Colors.MainBackColor;
             this.EditorContextMenu.ForeColor = theme.Colors.LabelTextColor;
+            this.ApplyFileMenuTheme(theme);
             this.addNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
             this.addNodeToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
             this.removeNodeToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
@@ -198,17 +208,9 @@ namespace Binary
             this.EditorFindTextBox.ForeColor = theme.Colors.TextBoxForeColor;
 
             // Highlight colors
-            this.HighlightColor1 = theme.DarkTheme
-                        ? Color.FromArgb(160, 20, 30)
-                        : Color.FromArgb(60, 255, 60);
-
-            this.HighlightColor2 = theme.DarkTheme
-                        ? Color.FromArgb(255, 230, 0)
-                        : Color.FromArgb(255, 20, 20);
-
-            this.HighlightColor3 = theme.DarkTheme
-                        ? Color.FromArgb(255, 230, 0)
-                        : Color.FromArgb(255, 90, 0);
+            this.HighlightColor1 = theme.Colors.SearchHighlightBackColor;
+            this.HighlightColor2 = theme.Colors.SelectedNodeForeColor;
+            this.HighlightColor3 = theme.Colors.FirstSelectedNodeForeColor;
 
         }
 
@@ -218,6 +220,8 @@ namespace Binary
 
         private void CreateBackupsForFiles(bool forced)
         {
+            if (!forced && SaveRedirect.Active) return; // the game files stay as they are, so they are the backups
+
             try
             {
 
@@ -230,10 +234,10 @@ namespace Binary
                         string from = sdb.FullPath;
                         string to = $"{sdb.FullPath}.bacc";
 
-                        if (forced || (!forced && !File.Exists(to)))
+                        if (forced || (!forced && !SaveRedirect.FileExists(to)))
                         {
 
-                            File.Copy(from, to, true);
+                            SafeSave.Copy(from, to);
 
                         }
 
@@ -280,17 +284,9 @@ namespace Binary
             this.EMSOptionsSpeedReflect.Enabled = enable;
             this.EMSWindowsRun.Enabled = enable;
             this.EMSWindowsOpenDir.Enabled = enable;
-        }
 
-        private void ManageExperimentalFeatures()
-        {
-            bool enable = Configurations.Default.SoonFeature;
-
-            this.toolStripSeparator5.Visible = enable;
-            this.moveNodeDownToolStripMenuItem.Visible = enable;
-            this.moveNodeUpToolStripMenuItem.Visible = enable;
-            this.moveNodeFirstToolStripMenuItem.Visible = enable;
-            this.moveNodeLastToolStripMenuItem.Visible = enable;
+            // The converter is for Underground 1 and 2 endscripts
+            this.EMSScriptingConvertCarTypeInfo.Enabled = enable && this.Profile != null && LegacyConverter.Supports(this.Profile.GameINT);
         }
 
         private void ManageButtonOpenEditor(IReflective reflective)
@@ -607,7 +603,10 @@ namespace Binary
                 return;
             }
 
-            var parser = new EndScriptParser(dialog.FileName);
+            var parser = new EndScriptParser(dialog.FileName)
+            {
+                VersionMismatchHandler = message => Utils.AskVersionMismatch(this, Path.GetFileName(dialog.FileName), message),
+            };
             BaseCommand[] commands;
 
             m_importEndscriptLastDir = Path.GetDirectoryName(dialog.FileName);
@@ -616,6 +615,12 @@ namespace Binary
             {
 
                 commands = parser.Read();
+
+            }
+            catch (Endscript.Exceptions.EndscriptCancelledException)
+            {
+
+                return;
 
             }
             catch (Exception ex)
@@ -690,8 +695,8 @@ namespace Binary
 
                 Utils.WriteErrorsToLog(manager.Errors, dialog.FileName);
 
-                using var prompt = new CheckError($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
-                    $"have been detected. Check EndError.log for more information. Do not forget to save changes!",
+                using var prompt = new CheckError($"Script {script} has been applied, however, {Utils.DescribeErrors(manager.Errors)}" +
+                    $". Check EndError.log for more information. Do not forget to save changes!",
                     "Open log", true, true);
 
                 _ = prompt.ShowDialog();
@@ -709,8 +714,8 @@ namespace Binary
             else
             {
 
-                _ = MessageBox.Show($"Script {script} has been successfully applied. Do not forget to save changes!",
-                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using var result = new Info($"Script {script} has been successfully applied. Do not forget to save changes!", "Success");
+                _ = result.ShowDialog();
 
             }
 
@@ -752,12 +757,19 @@ namespace Binary
 
                     int count = 0;
 
-                    foreach (var sdb in this.Profile)
+                    using (var save = new SaveTransaction(this.Profile.Directory))
                     {
 
-                        string from = $"{sdb.FullPath}.bacc";
-                        string to = sdb.FullPath;
-                        if (File.Exists(from)) { File.Copy(from, to, true); ++count; }
+                        foreach (var sdb in this.Profile)
+                        {
+
+                            string from = $"{sdb.FullPath}.bacc";
+                            string to = sdb.FullPath;
+                            if (SaveRedirect.FileExists(from)) { save.Copy(from, to); ++count; }
+
+                        }
+
+                        save.Commit();
 
                     }
 
@@ -804,11 +816,7 @@ namespace Binary
 
                     string path = this.Profile[0].Folder;
 
-                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\CARHEADERSMEMORYFILE.BIN");
-                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\FRONTENDMEMORYFILE.BIN");
-                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\INGAMEMEMORYFILE.BIN");
-                    MemoryUnlock.FastUnlock(path + @"\GLOBAL\PERMANENTMEMORYFILE.BIN");
-                    MemoryUnlock.LongUnlock(path + @"\GLOBAL\GLOBALMEMORYFILE.BIN");
+                    UnlockMemoryCommand.UnlockAll(path);
 
                     MessageBox.Show("Memory files were successfully unlocked for modding.", "Success");
 
@@ -863,9 +871,6 @@ namespace Binary
                         }
                     }
                 }
-
-                // Check experimental features
-                this.ManageExperimentalFeatures();
             }
         }
 
@@ -893,7 +898,19 @@ namespace Binary
             {
 #endif
 
-                result = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
+                try
+                {
+
+                    result = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
+
+                }
+                catch (Endscript.Exceptions.EndscriptWarningException warning)
+                {
+
+                    MessageBox.Show(warning.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    result = eCommandType.delete; // done, the only command that warns
+
+                }
 
 #if !DEBUG
             }
@@ -912,7 +929,17 @@ namespace Binary
             }
 
             // Analize and check if refreshing is required
-            if (result == eCommandType.update_collection)
+            if (result == eCommandType.increase_collection || result == eCommandType.decrease_collection)
+            {
+
+                this.EditorPropertyGrid.Refresh();
+                if (this.EditorPropertyGrid.SelectedObject is Collectable changed)
+                {
+                    this.RefreshCollectionNodes(this.EditorTreeView.SelectedNode, changed);
+                }
+
+            }
+            else if (result == eCommandType.update_collection)
             {
 
                 // Two options: we are updating current CollectionName or not
@@ -967,7 +994,20 @@ namespace Binary
                 {
 
                     command = line;
-                    _ = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
+
+                    try
+                    {
+
+                        _ = EndScriptParser.ExecuteSingleCommand(line, this.Profile);
+
+                    }
+                    catch (Endscript.Exceptions.EndscriptWarningException warning)
+                    {
+
+                        _ = MessageBox.Show(warning.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    }
+
                     ++count;
 
                 }
@@ -992,18 +1032,29 @@ namespace Binary
                 this.EditorPropertyGrid.SelectedGridItem.GridItemType == GridItemType.Property)
             {
 
+                var item = this.EditorPropertyGrid.SelectedGridItem;
                 string path = this.EditorTreeView.SelectedNode.FullPath;
-                string property = this.EditorPropertyGrid.SelectedGridItem.Label;
-                object value = this.EditorPropertyGrid.SelectedGridItem.Value;
+                string property = item.Label;
+                object value = item.Value ?? String.Empty;
                 var type = value.GetType();
+                var parentType = item.Parent?.GridItemType;
 
-                if (this.EditorPropertyGrid.SelectedGridItem.PropertyDescriptor.IsReadOnly)
+                if (item.PropertyDescriptor.IsReadOnly)
                 {
+                    this.EditorStatusLabel.Text = $"No command generated: {property} is read-only.";
+                    return;
+                }
+
+                // A field inside a list would be written as a top-level field of the same name
+                if (parentType == GridItemType.Property || parentType == GridItemType.ArrayValue)
+                {
+                    this.EditorStatusLabel.Text = $"Endscript can't script {DescribeGridItem(item)}: it is inside a list.";
                     return;
                 }
 
                 if (type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type))
                 {
+                    this.EditorStatusLabel.Text = $"Endscript can't script {property}: it is a list.";
                     return;
                 }
 
@@ -1015,6 +1066,13 @@ namespace Binary
 
         private void EMSScriptingClear_Click(object sender, EventArgs e) => this.EditorCommandPrompt.Text = String.Empty;
 
+        private void EMSScriptingConvertCarTypeInfo_Click(object sender, EventArgs e)
+        {
+            // For the game of the loaded launcher; the menu item is enabled only for Underground 1 and 2
+            if (this.Profile is null || !LegacyConverter.Supports(this.Profile.GameINT)) return;
+            LegacyConverter.Run(this, this.Profile.GameINT);
+        }
+
         private void EMSWindowsRun_Click(object sender, EventArgs e)
         {
             try
@@ -1023,6 +1081,16 @@ namespace Binary
                 // Considering at least ONE file is currently open
                 if (this.Profile.Count > 0)
                 {
+
+                    if (SaveRedirect.Active)
+                    {
+
+                        // Running the game now would show none of the changes
+                        using var info = new Info(SaveLocation.GetSavedText(), "Saving to Desktop");
+                        info.ShowDialog(this);
+                        return;
+
+                    }
 
                     string path = this.Profile[0].Folder;
                     var game = this.Profile[0].Database.GameINT;
@@ -1096,8 +1164,8 @@ namespace Binary
                     string path = this.Profile[0].Folder;
 
                     string speedto = Path.Combine(this.Profile.Directory, @"scripts\SpeedReflect.asi");
-                    Directory.CreateDirectory(Path.Combine(this.Profile.Directory, "scripts"));
-                    File.Copy(speedfrom, speedto, true);
+                    SaveRedirect.CreateDirectory(Path.Combine(this.Profile.Directory, "scripts"));
+                    SafeSave.Copy(speedfrom, speedto);
 
                     MessageBox.Show("Succesfully installed SpeedReflect.asi.", "Success");
 
@@ -1129,7 +1197,7 @@ namespace Binary
                 // Considering at least ONE file is currently open
                 if (this.Profile.Count > 0)
                 {
-                    string path = this.Profile[0].Folder;
+                    string path = SaveRedirect.Active ? SaveRedirect.Output : this.Profile[0].Folder;
                     Process.Start("explorer.exe", path);
 
                 }
@@ -1180,7 +1248,9 @@ namespace Binary
                         string str = this.GenerateEndCommand(eCommandType.add_collection, path, input.Value);
                         this.WriteLineToEndCommandPrompt(str);
                         var collection = manager[manager.IndexOf(input.Value)] as Collectable;
-                        _ = this.EditorTreeView.SelectedNode.Nodes.Add(Utils.GetCollectionNodes(collection));
+                        this.EnsureManagerNode(this.EditorTreeView.SelectedNode);
+                        if (!Utils.IsPending(this.EditorTreeView.SelectedNode) && this.EditorTreeView.SelectedNode.Nodes.Cast<TreeNode>().All(_ => _.Text != collection.CollectionName))
+                            _ = this.EditorTreeView.SelectedNode.Nodes.Add(Utils.GetCollectionNodes(collection));
                         this._edited = true;
                         break;
 
@@ -1264,6 +1334,7 @@ namespace Binary
                         var collection = manager[manager.IndexOf(input.Value)] as Collectable;
                         _ = this.EditorTreeView.SelectedNode.Parent.Nodes.Add(Utils.GetCollectionNodes(collection));
                         this._edited = true;
+                        this.AskReplaceInCopiedParts(fname, collection, cname);
                         break;
 
                     }
@@ -1303,7 +1374,7 @@ namespace Binary
             if (collection is DBModelPart model)
             {
 
-                using var editor = new CarPartsEditor(model)
+                using var editor = new CarPartsEditor(model, fname)
                 {
                     WindowState = this.WindowState
                 };
@@ -1312,6 +1383,7 @@ namespace Binary
                 _ = editor.ShowDialog();
                 this.EditorPropertyGrid.Refresh();
                 this.Show();
+                this.WriteLineToEndCommandPrompt(editor.Commands);
                 this._edited = true;
 
             }
@@ -1417,7 +1489,7 @@ namespace Binary
                     CheckPathExists = true,
                     DefaultExt = ".bin",
                     Filter = "Binary Files|*.bin|All Files|*.*",
-                    FileName = cname,
+                    FileName = cname + "-" + manager.Name,
                     OverwritePrompt = true,
                     SupportMultiDottedExtensions = true,
                     Title = "Export Collection",
@@ -1449,8 +1521,12 @@ namespace Binary
                     {
 #endif
 
-                        using var bw = new BinaryWriter(File.Open(dialog.FileName, FileMode.Create));
-                        manager.Export(cname, bw, exporter.Serialized);
+                        SafeSave.Write(dialog.FileName, target =>
+                        {
+                            using var bw = new BinaryWriter(File.Open(target, FileMode.Create));
+                            manager.Export(cname, bw, exporter.Serialized);
+                        });
+
                         MessageBox.Show($"Collection {cname} has been exported to path {dialog.FileName}", "Info",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -1531,7 +1607,7 @@ namespace Binary
 #endif
 
                         var type = (Nikki.Reflection.Enum.SerializeType)importer.SerializationIndex;
-                        using var br = new BinaryReader(File.Open(dialog.FileName, FileMode.Open));
+                        using var br = new EndiannessAwareBinaryReader(File.Open(dialog.FileName, FileMode.Open));
                         manager.Import(type, br);
                         MessageBox.Show($"File {dialog.FileName} has been imported with type {type}", "Info",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1584,7 +1660,7 @@ namespace Binary
                 string value = collection.GetValue(property);
                 if (String.IsNullOrEmpty(value))
                 {
-                    value = empty;
+                    value = String.Empty; // written as ""
                 }
 
                 lines.Add(this.GenerateEndCommand(eCommandType.update_collection, path, property, value));
@@ -1617,7 +1693,7 @@ namespace Binary
                         string value = part.GetValue(property);
                         if (String.IsNullOrEmpty(value))
                         {
-                            value = empty;
+                            value = String.Empty; // written as ""
                         }
 
                         lines.Add(this.GenerateEndCommand(eCommandType.update_collection, path, property, value));
@@ -1625,6 +1701,14 @@ namespace Binary
                     }
 
                 }
+
+            }
+
+            // Car parts: the lines that rebuild all its parts as they are
+            if (collection is DBModelPart model)
+            {
+
+                lines.AddRange(PartsScript.ScriptAllParts(fname, model));
 
             }
 
@@ -1803,10 +1887,12 @@ namespace Binary
                     return;
 
                 }
-                else
+                else if (path.StartsWith(node.FullPath + this.EditorTreeView.PathSeparator, StringComparison.Ordinal))
                 {
 
+                    this.EnsureManagerNode(node);
                     this.RecursiveNodeSelection(path, node.Nodes);
+                    return;
 
                 }
 
@@ -1842,7 +1928,6 @@ namespace Binary
             {
 #endif
 
-                this._edited = false;
                 Launch.Deserialize(filename, out var launch);
                 launch.ThisDir = Path.GetDirectoryName(filename);
 
@@ -1869,6 +1954,40 @@ namespace Binary
 
                 }
 
+                var location = SaveLocation.Resolve(this, launch, filename,
+                    new[] { SaveLocation.EditorArgument, Path.GetFullPath(filename) }, this.ConfirmRestart);
+
+                if (location != SaveLocation.Result.Continue)
+                {
+
+                    if (location == SaveLocation.Result.Restarted)
+                    {
+
+                        this._edited = false; // confirmed before restarting
+                        this.BeginInvoke(new Action(Application.Exit));
+
+                    }
+                    else if (this.Profile is null)
+                    {
+
+                        this.ToggleControlsAfterLoad(false);
+
+                    }
+
+                    return;
+
+                }
+
+                if (SaveRedirect.Read(filename) != filename) // an edited copy of the launcher is in the folder saved to
+                {
+
+                    Launch.Deserialize(filename, out launch);
+                    launch.ThisDir = Path.GetDirectoryName(filename);
+                    FixLaunchDirectory(launch, filename);
+
+                }
+
+                this._edited = false;
                 this.EditorPropertyGrid.SelectedObject = null;
                 this.Profile = BaseProfile.NewProfile(launch.GameID, launch.Directory);
                 this.EditorStatusLabel.Text = "Loading... Please wait...";
@@ -1890,6 +2009,7 @@ namespace Binary
                 this.EditorStatusLabel.Text = Utils.GetStatusString(launch.Files.Count, watch.ElapsedMilliseconds, filename, "Loading");
                 this.LoadTreeView();
                 this.ToggleControlsAfterLoad(true);
+                this.WarnEmptyFiles(this.Profile);
 
                 if (Configurations.Default.AutoBackups)
                 {
@@ -1899,7 +2019,8 @@ namespace Binary
                 Configurations.Default.LaunchFile = filename;
                 Configurations.Default.CurrentGame = (int)this.Profile.GameINT;
                 Configurations.Default.Save();
-                this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}";
+                this.Text = $"Binarius - v{this.ProductVersion} - {this.Profile.GameSTR}" +
+                    (SaveRedirect.Active ? $" - Saving to {SaveRedirect.Output}" : String.Empty);
                 this.ToggleTheme();
 
 #if !DEBUG
@@ -1918,6 +2039,13 @@ namespace Binary
 
             }
 #endif
+        }
+
+        private bool ConfirmRestart()
+        {
+            return !this._edited || MessageBox.Show(this,
+                "You have unsaved changes which will be lost when restarting. Restart anyway?",
+                "Prompt", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         public static void FixLaunchDirectory(Launch launch, string filename)
@@ -1998,13 +2126,26 @@ namespace Binary
                 watch.Start();
 
                 string[] exceptions = this.Profile.Save();
+                bool saved = this.Profile.LastSaveSucceeded;
 
                 watch.Stop();
+                this.ShowCollectionsAddedBySaving();
 
                 foreach (string exception in exceptions)
                 {
 
-                    MessageBox.Show(exception, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception, saved ? "Warning" : "Error", MessageBoxButtons.OK,
+                        saved ? MessageBoxIcon.Warning : MessageBoxIcon.Error);
+
+                }
+
+                if (!saved)
+                {
+
+                    // The changes exist only in memory, so keep asking before they get lost
+                    this._edited = true;
+                    this.EditorStatusLabel.Text = "Saving failed. The changes are still unsaved.";
+                    return;
 
                 }
 
@@ -2012,20 +2153,107 @@ namespace Binary
                 this.EditorStatusLabel.Text = Utils.GetStatusString(this.Profile.Count, watch.ElapsedMilliseconds, filename, "Saving");
                 this._edited = false;
 
+                if (SaveRedirect.Active) this.EditorStatusLabel.Text = $"Saved to {SaveRedirect.Output} | " + this.EditorStatusLabel.Text;
+
 #if !DEBUG
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.EditorStatusLabel.Text = "Saving failed. The changes are still unsaved.";
 
             }
 #endif
         }
 
+        // Saving can add collections, like the PerformanceConfigs of cars that had none, and put them in the
+        // order they are saved in, like PerformanceConfigs following CarTypeInfos
+        private void ShowCollectionsAddedBySaving()
+        {
+            foreach (var sdb in this.Profile)
+            {
+
+                var file = this.EditorTreeView.Nodes.Cast<TreeNode>().FirstOrDefault(_ => _.Text == sdb.Filename);
+                if (file is null) continue;
+
+                foreach (var manager in sdb.Database.Managers)
+                {
+
+                    var node = file.Nodes.Cast<TreeNode>().FirstOrDefault(_ => _.Text == manager.Name);
+                    var names = manager.Cast<Collectable>().Select(_ => _.CollectionName).ToList();
+
+                    if (node is null)
+                    {
+
+                        if (names.Count == 0) continue;
+
+                        // It was hidden for being empty
+                        this.LoadTreeView(this.EditorTreeView.SelectedNode?.FullPath);
+                        return;
+
+                    }
+
+                    if (Utils.IsPending(node) || node.Nodes.Cast<TreeNode>().Select(_ => _.Text).SequenceEqual(names)) continue;
+
+                    // A manager that had no collections gets the placeholder, to be filled when expanded
+                    if (node.Nodes.Count == 0 && names.Count > 0)
+                    {
+                        _ = node.Nodes.Add(new Utils.PendingTreeNode());
+                        continue;
+                    }
+
+                    // Existing nodes are reused, so that they stay expanded and selected as the user left them
+                    var existing = new Dictionary<string, TreeNode>();
+                    foreach (TreeNode child in node.Nodes) existing.TryAdd(child.Text, child);
+
+                    var selected = this.EditorTreeView.SelectedNode;
+                    var ordered = manager.Cast<Collectable>()
+                        .Select(_ => existing.TryGetValue(_.CollectionName, out var reuse) ? reuse : Utils.GetCollectionNodes(_))
+                        .ToList();
+
+                    this.EditorTreeView.BeginUpdate();
+                    node.Nodes.Clear();
+                    foreach (var child in ordered) node.Nodes.Add(child);
+                    this.EditorTreeView.EndUpdate();
+
+                    if (selected?.TreeView == this.EditorTreeView) this.EditorTreeView.SelectedNode = selected;
+
+                }
+
+            }
+        }
+
         #endregion
 
         #region TreeView Controls
+
+        private void EditorTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e) => this.EnsureManagerNode(e.Node);
+
+        // The manager a manager node stands for
+        private IManager ManagerOf(TreeNode node)
+        {
+            if (node?.Parent is null || node.Parent.Parent != null || this.Profile is null) return null;
+
+            var sdb = this.Profile.Find(_ => _.Filename == node.Parent.Text);
+            return sdb?.Database.GetManager(node.Text);
+        }
+
+        /// <summary>
+        /// Adds the collections of a manager node if they are not there yet.
+        /// </summary>
+        private void EnsureManagerNode(TreeNode node)
+        {
+            if (node is null || !Utils.IsPending(node)) return;
+
+            var manager = this.ManagerOf(node);
+            if (manager is null) return;
+
+            if (Utils.FillManagerNode(node, manager) && !String.IsNullOrEmpty(this.EditorFindTextBox.Text))
+            {
+                this.RecursiveTreeHiglights(this.EditorFindTextBox.Text, node.Nodes);
+            }
+        }
 
         private void EditorTreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
@@ -2060,7 +2288,24 @@ namespace Binary
             this.ManageButtonMoveNode(e.Node);
 
             this.EditorPropertyGrid.SelectedObject = selected;
-            this.EditorNodeInfo.Text = $"| Index: {e.Node.Index} | {e.Node.Nodes.Count} subnodes";
+            var subnodes = Utils.IsPending(e.Node) ? this.ManagerOf(e.Node)?.Count ?? 0 : e.Node.Nodes.Count;
+            this.EditorNodeInfo.Text = $"| Index: {e.Node.Index} | {subnodes} subnodes";
+
+            // Show DBModelParts unique attribute storage usage (Carbon, ProStreet, Undercover)
+            var splits = e.Node.FullPath.Split(this.EditorTreeView.PathSeparator);
+            if (splits.Length == 2)
+            {
+                var sdb = this.Profile?.Find(_ => _.Filename == splits[0]);
+                var usage = sdb?.Database.GetManager(splits[1]) switch
+                {
+                    Nikki.Support.Carbon.Framework.DBModelPartManager parts => parts.UniquePartsUsed,
+                    Nikki.Support.Prostreet.Framework.DBModelPartManager parts => parts.UniquePartsUsed,
+                    Nikki.Support.Undercover.Framework.DBModelPartManager parts => parts.UniquePartsUsed,
+                    _ => null,
+                };
+
+                if (!String.IsNullOrEmpty(usage)) this.EditorNodeInfo.Text = usage + this.EditorNodeInfo.Text;
+            }
         }
 
         private void EditorTreeView_DoubleClick(object sender, EventArgs e)
@@ -2136,88 +2381,121 @@ namespace Binary
 
         private string GetCurrentSeparatedPath()
         {
-            string line = String.Empty;
             if (this.EditorTreeView.SelectedNode == null)
             {
-                return line;
+                return String.Empty;
             }
 
-            string[] splits = this.EditorTreeView.SelectedNode.FullPath.Split(this.EditorTreeView.PathSeparator);
-
-            for (int loop = 0; loop < splits.Length - 1; ++loop)
-            {
-
-                string split = splits[loop];
-                line += split.Contains(' ') ? $"\"{split}\"" + space : split + space;
-
-            }
-
-            line += splits[^1].Contains(' ') ? $"\"{splits[^1]}\"" : splits[^1];
-            return line;
+            var splits = this.EditorTreeView.SelectedNode.FullPath.Split(this.EditorTreeView.PathSeparator);
+            return String.Join(space, splits.Select(_ => EndArguments.Quote(_, false) ?? _));
         }
 
         private string GenerateEndCommand(eCommandType type, string nodepath)
         {
-            string line = type.ToString() + space;
-            string[] splits = nodepath.Split(this.EditorTreeView.PathSeparator);
-
-            for (int loop = 0; loop < splits.Length - 1; ++loop)
-            {
-
-                string split = splits[loop];
-                line += split.Contains(' ') ? $"\"{split}\"" + space : split + space;
-
-            }
-
-            line += splits[^1].Contains(' ') ? $"\"{splits[^1]}\"" : splits[^1];
-            return line;
+            return this.GenerateEndCommand(type, nodepath, Array.Empty<string>());
         }
 
+        // Arguments get quotes where needed. The value of update_collection is text, where quotes can be escaped.
         private string GenerateEndCommand(eCommandType type, string nodepath, params string[] args)
         {
-            string line = type.ToString() + space;
-            string[] splits = nodepath.Split(this.EditorTreeView.PathSeparator);
+            var names = nodepath.Split(this.EditorTreeView.PathSeparator).Concat(args).ToList();
+            var parts = names.Select((_, i) => EndArguments.Quote(_, type == eCommandType.update_collection && i == names.Count - 1)).ToList();
 
-            foreach (string split in splits)
+            if (parts.Any(_ => _ is null))
             {
-
-                line += split.Contains(' ') ? $"\"{split}\"" + space : split + space;
-
+                return $"// {type} {nodepath.Replace(this.EditorTreeView.PathSeparator, space)}: a value has a line break or a quote that can't be written in a script line";
             }
 
-            for (int loop = 0; loop < args.Length - 1; ++loop)
-            {
-
-                string arg = args[loop];
-                line += arg.Contains(' ') ? $"\"{arg}\"" + space : arg + space;
-
-            }
-
-            line += args[^1].Contains(' ') ? $"\"{args[^1]}\"" : args[^1];
-            return line;
+            return type.ToString() + space + String.Join(space, parts);
         }
 
         private void EditorPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            string value = e.ChangedItem.Value.ToString();
-            if (String.IsNullOrEmpty(value))
+            string value = e.ChangedItem.Value?.ToString() ?? String.Empty; // empty is written as ""
+
+            // Only top-level properties map to an update_collection command; nested entries
+            // (e.g. items of expandable lists in SkinRegion/EventSequence) cannot be scripted.
+            var parentType = e.ChangedItem.Parent?.GridItemType;
+            if (parentType != GridItemType.Property && parentType != GridItemType.ArrayValue)
             {
-                value = empty;
+                string str = this.GenerateEndCommand(eCommandType.update_collection, this.EditorTreeView.SelectedNode.FullPath,
+                    e.ChangedItem.Label, value);
+
+                this.WriteLineToEndCommandPrompt(str);
+            }
+            else
+            {
+                // Say so, instead of leaving the commands silently incomplete
+                var field = DescribeGridItem(e.ChangedItem);
+                var path = this.EditorTreeView.SelectedNode.FullPath.Replace(this.EditorTreeView.PathSeparator, space);
+
+                this.WriteLineToEndCommandPrompt($"// {path}: {field} was changed, but endscript commands can't reach fields inside lists, so this change is not in the commands.");
+                this.EditorStatusLabel.Text = $"Endscript can't script this change: {field} is inside a list.";
             }
 
-            string str = this.GenerateEndCommand(eCommandType.update_collection, this.EditorTreeView.SelectedNode.FullPath,
-                e.ChangedItem.Label, value);
-
-            this.WriteLineToEndCommandPrompt(str);
             this._edited = true;
 
             if (e.ChangedItem.Label == "CollectionName")
             {
 
                 this.EditorTreeView.SelectedNode.Text = e.ChangedItem.Value.ToString();
-                this.EditorPropertyGrid.Refresh();
 
             }
+
+            // A change can alter the nodes of a collection (e.g. NumConfigs of a PerformanceConfig)
+            if (this.EditorPropertyGrid.SelectedObject is Collectable collection)
+            {
+
+                this.RefreshCollectionNodes(this.EditorTreeView.SelectedNode, collection);
+
+            }
+
+            this.EditorPropertyGrid.Refresh();
+        }
+
+        // A nested field as its path in the property grid, like Skins > [2] > Name
+        private static string DescribeGridItem(GridItem item)
+        {
+            var names = new List<string>();
+
+            for (var current = item; current != null && current.GridItemType != GridItemType.Category &&
+                current.GridItemType != GridItemType.Root; current = current.Parent)
+            {
+
+                names.Insert(0, current.Label);
+
+            }
+
+            return String.Join(" > ", names);
+        }
+
+        private void RefreshCollectionNodes(TreeNode node, Collectable collection)
+        {
+            static string Shape(TreeNodeCollection nodes) => String.Join("|", nodes.Cast<TreeNode>()
+                .Select(n => n.Text + "(" + String.Join(",", n.Nodes.Cast<TreeNode>().Select(c => c.Text)) + ")"));
+
+            var fresh = Utils.GetCollectionNodes(collection);
+            if (node is null || Shape(node.Nodes) == Shape(fresh.Nodes))
+            {
+                return;
+            }
+
+            var expanded = node.Nodes.Cast<TreeNode>().Where(n => n.IsExpanded).Select(n => n.Text).ToHashSet();
+
+            this.EditorTreeView.BeginUpdate();
+            node.Nodes.Clear();
+
+            foreach (var child in fresh.Nodes.Cast<TreeNode>().ToList())
+            {
+
+                fresh.Nodes.Remove(child);
+                _ = node.Nodes.Add(child);
+                if (expanded.Contains(child.Text)) child.Expand();
+
+            }
+
+            this.EditorTreeView.EndUpdate();
+            this.EditorNodeInfo.Text = $"| Index: {node.Index} | {node.Nodes.Count} subnodes";
         }
 
         private void EditorFindTextBox_TextChanged(object sender, EventArgs e) => this.RecursiveTreeHiglights(this.EditorFindTextBox.Text, this.EditorTreeView.Nodes);
@@ -2228,14 +2506,14 @@ namespace Binary
 
         private void Editor_Load(object sender, EventArgs e)
         {
-            string file = Configurations.Default.LaunchFile;
+            string file = this.StartLauncher ?? Configurations.Default.LaunchFile;
             if (!File.Exists(file))
             {
                 return;
             }
             else
             {
-                this.LoadProfile(file, false);
+                this.LoadProfile(file, this.StartLauncher != null);
             }
         }
 

@@ -58,7 +58,26 @@ namespace Binary
             public Color MenuItemSelected { get; set; }
             public Color MenuItemSelectedGradientBegin { get; set; }
             public Color MenuItemSelectedGradientEnd { get; set; }
+
+            // Highlight colors (were hardcoded per dark/light theme)
+            public Color SearchHighlightBackColor { get; set; }
+            public Color SelectedNodeForeColor { get; set; }
+            public Color FirstSelectedNodeForeColor { get; set; }
+            public Color ModifiedItemBackColor { get; set; }
+
+            // Border of text boxes and combo boxes (empty = native border)
+            public Color TextBoxBorderColor { get; set; }
+
+            public ColorSet Clone() => (ColorSet)this.MemberwiseClone();
         }
+
+        /// <summary>
+        /// Theme used to fill in colors that a theme file does not define (the default ThemeFile setting).
+        /// </summary>
+        public const string DefaultThemeFile = "StackedDeck.json";
+
+        private static readonly Dictionary<string, (DateTime Stamp, Theme Theme)> s_cache = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly object s_lock = new();
 
         private static readonly JsonSerializerOptions options = new JsonSerializerOptions()
         {
@@ -155,6 +174,11 @@ namespace Binary
             this.Colors.MenuItemSelected = SystemColors.Control;
             this.Colors.MenuItemSelectedGradientBegin = SystemColors.Control;
             this.Colors.MenuItemSelectedGradientEnd = SystemColors.Control;
+            this.Colors.SearchHighlightBackColor = Color.FromArgb(60, 255, 60);
+            this.Colors.SelectedNodeForeColor = Color.FromArgb(255, 20, 20);
+            this.Colors.FirstSelectedNodeForeColor = Color.FromArgb(255, 90, 0);
+            this.Colors.ModifiedItemBackColor = Color.FromArgb(60, 60, 255);
+            this.Colors.TextBoxBorderColor = Color.Empty; // System theme: keep native borders
         }
 
         public static void Serialize(string filename, Theme theme)
@@ -164,22 +188,110 @@ namespace Binary
             AddColorJsonConverter();
             var settings = JsonSerializer.Serialize(theme, options);
 
-            using var sw = new StreamWriter(File.Open(filename, FileMode.Create));
-            sw.Write(settings);
-            sw.WriteLine();
+            Endscript.Core.SafeSave.Write(filename, target =>
+            {
+                using var sw = new StreamWriter(File.Open(target, FileMode.Create));
+                sw.Write(settings);
+                sw.WriteLine();
+            });
         }
 
+        /// <summary>
+        /// Loads a theme. Colors that are missing or invalid in the file are taken from the default theme
+        /// (<see cref="DefaultThemeFile"/>); if the default theme lacks them too, system colors are used.
+        /// A missing theme file loads the default theme; "System" loads system colors.
+        /// </summary>
         public static void Deserialize(string filename, out Theme theme)
         {
-            if (filename == "System" || !File.Exists(filename))
+            if (String.IsNullOrEmpty(filename) || Path.GetFileName(filename) == "System")
             {
                 theme = new Theme("System", "N/A", "1.0", false);
                 return;
             }
 
-            var settings = File.ReadAllText(filename);
-            AddColorJsonConverter();
-            theme = JsonSerializer.Deserialize<Theme>(settings, options);
+            var defaultPath = Path.Combine("Themes", DefaultThemeFile);
+            var isDefault = String.Equals(Path.GetFullPath(filename), Path.GetFullPath(defaultPath), StringComparison.OrdinalIgnoreCase);
+            var fallback = isDefault ? new Theme("System", "N/A", "1.0", false) : LoadCached(defaultPath, null);
+
+            theme = LoadCached(filename, fallback) ?? Copy(fallback);
         }
+
+        private static Theme LoadCached(string filename, Theme fallback)
+        {
+            if (!File.Exists(filename)) return fallback is null ? new Theme("System", "N/A", "1.0", false) : null;
+
+            var key = Path.GetFullPath(filename);
+            var stamp = File.GetLastWriteTimeUtc(key);
+
+            lock (s_lock)
+            {
+                if (s_cache.TryGetValue(key, out var cached) && cached.Stamp == stamp && fallback is null) return Copy(cached.Theme);
+            }
+
+            var result = Parse(key, fallback ?? new Theme("System", "N/A", "1.0", false));
+
+            if (fallback is null)
+            {
+                lock (s_lock) s_cache[key] = (stamp, Copy(result));
+            }
+
+            return result;
+        }
+
+        private static Theme Parse(string filename, Theme fallback)
+        {
+            var result = Copy(fallback);
+
+            try
+            {
+                using var doc = JsonDocument.Parse(File.ReadAllText(filename), new JsonDocumentOptions()
+                {
+                    AllowTrailingCommas = true,
+                    CommentHandling = JsonCommentHandling.Skip,
+                });
+
+                var root = doc.RootElement;
+                if (root.TryGetProperty("Name", out var name) && name.ValueKind == JsonValueKind.String) result.Name = name.GetString();
+                if (root.TryGetProperty("Author", out var author) && author.ValueKind == JsonValueKind.String) result.Author = author.GetString();
+                if (root.TryGetProperty("Version", out var version) && version.ValueKind == JsonValueKind.String) result.Version = version.GetString();
+                if (root.TryGetProperty("DarkTheme", out var dark) && (dark.ValueKind == JsonValueKind.True || dark.ValueKind == JsonValueKind.False)) result.DarkTheme = dark.GetBoolean();
+
+                if (root.TryGetProperty("Colors", out var colors) && colors.ValueKind == JsonValueKind.Object)
+                {
+                    var converter = new ColorConverter();
+
+                    foreach (var property in typeof(ColorSet).GetProperties())
+                    {
+                        if (property.PropertyType != typeof(Color)) continue;
+
+                        foreach (var entry in colors.EnumerateObject())
+                        {
+                            if (!String.Equals(entry.Name, property.Name, StringComparison.OrdinalIgnoreCase)) continue;
+                            if (entry.Value.ValueKind != JsonValueKind.String) break;
+
+                            try { property.SetValue(result.Colors, (Color)converter.ConvertFromInvariantString(entry.Value.GetString())); }
+                            catch { } // invalid value: keep the fallback color
+
+                            break;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return Copy(fallback); // unreadable file: use the fallback theme
+            }
+
+            return result;
+        }
+
+        private static Theme Copy(Theme theme) => new Theme()
+        {
+            Name = theme.Name,
+            Author = theme.Author,
+            Version = theme.Version,
+            DarkTheme = theme.DarkTheme,
+            Colors = theme.Colors.Clone(),
+        };
     }
 }

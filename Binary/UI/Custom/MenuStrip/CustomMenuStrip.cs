@@ -16,7 +16,7 @@ namespace System.Windows.Forms
             InitializeComponent();
 
             this.RenderMode = ToolStripRenderMode.Professional;
-            this.Renderer = new ToolStripProfessionalRenderer(new CustomMenuStripColorTable());
+            this.Renderer = new ThemedToolStripRenderer(new CustomMenuStripColorTable());
         }
         #endregion
 
@@ -65,8 +65,8 @@ namespace System.Windows.Forms
         [DisplayName("MenuItemPressedGradientBegin")]
         public Color MenuItemPressedGradientBegin
         {
-            get { return Properties.Settings.Default.MenuStripGradientEnd; }
-            set { Properties.Settings.Default.MenuStripGradientEnd = value; }
+            get { return Properties.Settings.Default.MenuItemPressedGradientBegin; }
+            set { Properties.Settings.Default.MenuItemPressedGradientBegin = value; }
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace System.Windows.Forms
         [DisplayName("MenuItemPressedGradientMiddle")]
         public Color MenuItemPressedGradientMiddle
         {
-            get { return Properties.Settings.Default.MenuStripGradientEnd; }
-            set { Properties.Settings.Default.MenuStripGradientEnd = value; }
+            get { return Properties.Settings.Default.MenuItemPressedGradientMiddle; }
+            set { Properties.Settings.Default.MenuItemPressedGradientMiddle = value; }
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace System.Windows.Forms
         [DisplayName("MenuItemPressedGradientEnd")]
         public Color MenuItemPressedGradientEnd
         {
-            get { return Properties.Settings.Default.MenuStripGradientEnd; }
-            set { Properties.Settings.Default.MenuStripGradientEnd = value; }
+            get { return Properties.Settings.Default.MenuItemPressedGradientEnd; }
+            set { Properties.Settings.Default.MenuItemPressedGradientEnd = value; }
         }
 
         /// <summary>

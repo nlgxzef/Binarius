@@ -25,6 +25,7 @@ namespace Binary.Interact
         public LanMaker()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
 
             this.NewLan = Utils.GenerateSample();
@@ -111,26 +112,39 @@ namespace Binary.Interact
                 this.NewLan.Game = this.LanMakerGame.Text;
                 this.NewLan.Usage = this.LanMakerUsage.Text;
 
-                if (this.LanMakerUsage.Text == "User")
-
+                try
                 {
-                    this.NewLan.Endscript = this.LanMakerTextBoxEndScriptFile.Text;
-                    using var sw = new StreamWriter(File.Open(Path.Combine(Path.GetDirectoryName(dialog.FileName), this.NewLan.Endscript), FileMode.Create));
+                    // The launcher and its endscript get replaced together
+                    using var save = new SaveTransaction();
 
-                    var ext = Path.GetExtension(this.NewLan.Endscript).ToLower();
+                    if (this.LanMakerUsage.Text == "User")
 
-                    if (ext != ".endscript") // .endscript is not required to have versioning
                     {
-                        sw.WriteLine("[VERSN2]");
+                        this.NewLan.Endscript = this.LanMakerTextBoxEndScriptFile.Text;
+                        using var sw = new StreamWriter(File.Open(save.Stage(Path.Combine(Path.GetDirectoryName(dialog.FileName), this.NewLan.Endscript)), FileMode.Create));
+
+                        var ext = Path.GetExtension(this.NewLan.Endscript).ToLower();
+
+                        if (ext != ".endscript") // .endscript is not required to have versioning
+                        {
+                            sw.WriteLine("[VERSN2]");
+                        }
+                        sw.WriteLine();
                     }
-                    sw.WriteLine();
+                    else
+                    {
+                        this.NewLan.Endscript = String.Empty;
+                    }
+
+                    Launch.Serialize(dialog.FileName, this.NewLan, save);
+                    save.Commit();
                 }
-                else
+                catch (Exception ex)
                 {
-                    this.NewLan.Endscript = String.Empty;
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                Launch.Serialize(dialog.FileName, this.NewLan);
                 MessageBox.Show($"File {dialog.FileName} has been saved.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 

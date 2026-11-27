@@ -4,6 +4,7 @@ using Binary.Tools;
 
 using CoreExtensions.Management;
 
+using Endscript.Core;
 using Endscript.Enums;
 
 using Nikki.Reflection.Abstract;
@@ -111,17 +112,9 @@ namespace Binary.UI
 			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 
             // Highlight colors
-            this.HighlightColor1 = theme.DarkTheme
-                        ? Color.FromArgb(160, 20, 30)
-                        : Color.FromArgb(60, 255, 60);
-
-            this.HighlightColor2 = theme.DarkTheme
-                        ? Color.FromArgb(255, 230, 0)
-                        : Color.FromArgb(255, 20, 20);
-
-            this.HighlightColor3 = theme.DarkTheme
-                        ? Color.FromArgb(255, 230, 0)
-                        : Color.FromArgb(255, 90, 0);
+            this.HighlightColor1 = theme.Colors.SearchHighlightBackColor;
+            this.HighlightColor2 = theme.Colors.SelectedNodeForeColor;
+            this.HighlightColor3 = theme.Colors.FirstSelectedNodeForeColor;
         }
 
 		#endregion
@@ -499,15 +492,21 @@ namespace Binary.UI
 
 			// Always 2 options: 2-split path of 4-splits path
 			string command = String.Empty;
-			if (property.Contains(' ')) property = $"\"{property}\"";
-			if (value.Contains(' ')) property = $"\"{value}\"";
-			if (String.IsNullOrEmpty(value)) value = "\"\"";
+			property = EndArguments.Quote(property, false) ?? property;
+			value = EndArguments.Quote(value, true); // text: quotes can be escaped
+			for (int i = 0; i < splits.Length; ++i) splits[i] = EndArguments.Quote(splits[i], false) ?? splits[i];
+
+			if (value is null)
+			{
+
+				this.Commands.Add($"// {property} of {nodepath.Replace(this.CareerTreeView.PathSeparator, " ")}: the value has a line break, which a script line can't hold");
+				return;
+
+			}
 
 			if (splits.Length == 2)
 			{
 
-				if (splits[0].Contains(' ')) splits[0] = $"\"{splits[0]}\"";
-				if (splits[1].Contains(' ')) splits[1] = $"\"{splits[1]}\"";
 				command = $"{eCommandType.update_incareer} {this._careerpath} {splits[0]} " +
 					$"{splits[1]} {property} {value}";
 
@@ -515,10 +514,6 @@ namespace Binary.UI
 			else if (splits.Length == 4)
 			{
 
-				if (splits[0].Contains(' ')) splits[0] = $"\"{splits[0]}\"";
-				if (splits[1].Contains(' ')) splits[1] = $"\"{splits[1]}\"";
-				if (splits[2].Contains(' ')) splits[2] = $"\"{splits[2]}\"";
-				if (splits[3].Contains(' ')) splits[3] = $"\"{splits[3]}\"";
 				command = $"{eCommandType.update_incareer} {this._careerpath} {splits[0]} " +
 					$"{splits[1]} {splits[2]} {splits[3]} {property} {value}";
 
@@ -529,25 +524,25 @@ namespace Binary.UI
 
 		private void GenerateAddInCareerCommand(string root, string cname)
 		{
-			if (root.Contains(' ')) root = $"\"{root}\"";
-			if (cname.Contains(' ')) cname = $"\"{cname}\"";
+			root = EndArguments.Quote(root, false) ?? root;
+			cname = EndArguments.Quote(cname, false) ?? cname;
 			var command = $"{eCommandType.add_incareer} {this._careerpath} {root} {cname}";
 			this.Commands.Add(command);
 		}
 
 		private void GenerateRemoveInCareerCommand(string root, string cname)
 		{
-			if (root.Contains(' ')) root = $"\"{root}\"";
-			if (cname.Contains(' ')) cname = $"\"{cname}\"";
+			root = EndArguments.Quote(root, false) ?? root;
+			cname = EndArguments.Quote(cname, false) ?? cname;
 			var command = $"{eCommandType.remove_incareer} {this._careerpath} {root} {cname}";
 			this.Commands.Add(command);
 		}
 
 		private void GenerateCopyInCareerCommand(string root, string copyname, string newname)
 		{
-			if (root.Contains(' ')) root = $"\"{root}\"";
-			if (copyname.Contains(' ')) copyname = $"\"{copyname}\"";
-			if (newname.Contains(' ')) newname = $"\"{newname}\"";
+			root = EndArguments.Quote(root, false) ?? root;
+			copyname = EndArguments.Quote(copyname, false) ?? copyname;
+			newname = EndArguments.Quote(newname, false) ?? newname;
 			var command = $"{eCommandType.copy_incareer} {this._careerpath} {root} {copyname} {newname}";
 			this.Commands.Add(command);
 		}

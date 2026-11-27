@@ -27,9 +27,25 @@ namespace Binary
 {
     public partial class IntroUI : Form
     {
-        public IntroUI()
+        private readonly string _editLauncher;
+        private readonly string _installLauncher;
+        private readonly string _installDirectory;
+
+        public IntroUI() : this(null, null, null)
         {
+        }
+
+        /// <param name="editLauncher">Launcher to open in the editor right away.</param>
+        /// <param name="installLauncher">Launcher to install right away.</param>
+        /// <param name="installDirectory">Game folder to install it to.</param>
+        internal IntroUI(string editLauncher, string installLauncher, string installDirectory)
+        {
+            this._editLauncher = editLauncher;
+            this._installLauncher = installLauncher;
+            this._installDirectory = installDirectory;
+
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
 
             this.IntroToolTip.SetToolTip(this.IntroPictureUser, "Launch Binarius for Users");
             this.IntroToolTip.SetToolTip(this.IntroPictureModder, "Launch Binarius for Modders");
@@ -62,6 +78,8 @@ namespace Binary
             this.ToolsMenu.ForeColor = theme.Colors.LabelTextColor;
             this.newLauncherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
             this.newLauncherToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
+            this.convertLegacyToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
+            this.convertLegacyToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
             this.hasherToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
             this.hasherToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
             this.raiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
@@ -89,14 +107,32 @@ namespace Binary
 
         #endregion
 
-        private void IntroPictureUser_Click(object sender, EventArgs e)
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            if (this._editLauncher != null) this.BeginInvoke(new Action(() => this.ModderInteract(this._editLauncher)));
+            else if (this._installLauncher != null) this.BeginInvoke(new Action(() => this.RunUserMode(this._installLauncher, this._installDirectory)));
+        }
+
+        private void IntroPictureUser_Click(object sender, EventArgs e) => this.RunUserMode();
+
+        private void RunUserMode(string launcher = null, string directory = null)
         {
 #if !DEBUG
 			try
 			{
 #endif
 
-            this.UserInteract();
+            try
+            {
+                this.UserInteract(launcher, directory);
+            }
+            finally
+            {
+                SaveRedirect.Stop(); // only for this run
+            }
+
             ForcedX.GCCollect();
 
 #if !DEBUG
@@ -132,7 +168,7 @@ namespace Binary
             ForcedX.GCCollect();
         }
 
-        private void UserInteract()
+        private void UserInteract(string launcher = null, string directory = null)
         {
             using var dialog = new OpenFileDialog()
             {
@@ -142,7 +178,8 @@ namespace Binary
                 Title = "Select End Launcher",
             };
 
-            if (dialog.ShowDialog() != DialogResult.OK) return;
+            if (launcher != null) dialog.FileName = launcher; // already chosen before restarting
+            else if (dialog.ShowDialog() != DialogResult.OK) return;
 
             Launch.Deserialize(dialog.FileName, out Launch launch);
 
@@ -168,22 +205,42 @@ namespace Binary
                 AutoUpgradeEnabled = false,
             };
 
-            if (browser.ShowDialog() != DialogResult.OK) return;
+            if (directory is null)
+            {
+                if (browser.ShowDialog() != DialogResult.OK) return;
+                directory = browser.SelectedPath;
+            }
 
-            launch.Directory = browser.SelectedPath;
+            launch.Directory = directory;
             launch.ThisDir = Path.GetDirectoryName(dialog.FileName);
+
+            var location = SaveLocation.Resolve(this, launch, dialog.FileName,
+                new[] { SaveLocation.InstallArgument, Path.GetFullPath(dialog.FileName), Path.GetFullPath(directory) });
+
+            if (location == SaveLocation.Result.Restarted) this.BeginInvoke(new Action(Application.Exit));
+            if (location != SaveLocation.Result.Continue) return;
+
             launch.CheckEndscript();
             launch.CheckFiles();
             launch.LoadLinks();
 
             var endscript = Path.Combine(launch.ThisDir, launch.Endscript);
-            var parser = new EndScriptParser(endscript);
+            var parser = new EndScriptParser(endscript)
+            {
+                VersionMismatchHandler = message => Utils.AskVersionMismatch(this, Path.GetFileName(endscript), message),
+            };
             BaseCommand[] commands;
 
             try
             {
 
                 commands = parser.Read();
+
+            }
+            catch (Endscript.Exceptions.EndscriptCancelledException)
+            {
+
+                return;
 
             }
             catch (Exception ex)
@@ -286,16 +343,16 @@ namespace Binary
             {
 
                 Utils.WriteErrorsToLog(manager.Errors, dialog.FileName);
-                MessageBox.Show($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
-                    $"has been detected. Check EndError.log for more information", "Information",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                using var result = new Info($"Script {script} has been applied, however, {Utils.DescribeErrors(manager.Errors)}" +
+                    $". Check EndError.log for more information.", "Information");
+                result.ShowDialog();
 
             }
             else
             {
 
-                MessageBox.Show($"Script {script} has been successfully applied",
-                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using var result = new Info($"Script {script} has been successfully applied.", "Success");
+                result.ShowDialog();
 
             }
 
@@ -307,28 +364,39 @@ namespace Binary
 
                 var errors = profile.Save();
 
+                bool saved = profile.LastSaveSucceeded;
+
                 if (errors.Length > 0)
                 {
 
                     foreach (var error in errors)
                     {
 
-                        MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(error, saved ? "Warning" : "Error", MessageBoxButtons.OK,
+                            saved ? MessageBoxIcon.Warning : MessageBoxIcon.Error);
 
                     }
 
                 }
-                else
+
+                if (saved) // warnings don't change that
                 {
 
-                    this.AskForGameRun(profile);
+                    if (SaveRedirect.Active)
+                    {
+
+                        using var info = new Info(SaveLocation.GetSavedText(), "Saved to Desktop");
+                        info.ShowDialog(this);
+
+                    }
+                    else this.AskForGameRun(profile);
 
                 }
 
             }
         }
 
-        private void ModderInteract()
+        private void ModderInteract(string launcher = null)
         {
             this.Hide();
             var start = FormStartPosition.CenterScreen;
@@ -336,12 +404,15 @@ namespace Binary
                 ? FormWindowState.Maximized
                 : FormWindowState.Normal;
 
-            using (var editor = new Editor() { StartPosition = start, WindowState = state })
+            using (var editor = new Editor() { StartPosition = start, WindowState = state, StartLauncher = launcher })
             {
 
                 editor.ShowDialog();
 
             }
+
+            SaveRedirect.Stop();
+            if (this.IsDisposed || this.Disposing) return; // restarting as administrator closed everything
 
             this.Show();
             this.ToggleTheme();
@@ -349,12 +420,14 @@ namespace Binary
 
         private void EnsureBackups(BaseProfile profile)
         {
+            if (SaveRedirect.Active) return; // the game files stay as they are, so they are the backups
+
             foreach (var sdb in profile)
             {
 
                 var orig = sdb.FullPath;
                 var back = $"{orig}.bacc";
-                if (!File.Exists(back)) File.Copy(orig, back, true);
+                if (!File.Exists(back)) SafeSave.Copy(orig, back);
 
             }
         }
@@ -438,6 +511,9 @@ namespace Binary
             var about = new About() { StartPosition = FormStartPosition.CenterScreen };
             about.Show();
         }
+
+        // No launcher is loaded here, so it asks which game the endscript is for
+        private void convertLegacyToolStripMenuItem_Click(object sender, EventArgs e) => LegacyConverter.Run(this, null);
 
         private void newLauncherToolStripMenuItem_Click(object sender, EventArgs e)
         {

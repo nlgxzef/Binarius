@@ -28,6 +28,7 @@ namespace Binary.Interact
 		public AttribCreator(GameINT game)
 		{
 			this.InitializeComponent();
+			Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
 			this.ToggleTheme();
 			this.PopulateAttribTypesBasedOnGame(game);
 		}

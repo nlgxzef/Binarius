@@ -17,6 +17,7 @@ namespace Binary.Tools
         public Hasher()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
         }
 

@@ -4,16 +4,21 @@ using Binary.Properties;
 using Binary.Tools;
 
 using CoreExtensions.Management;
+using CoreExtensions.Text;
 
+using Endscript.Core;
 using Endscript.Enums;
 
 using Nikki.Support.Shared.Class;
+using Nikki.Support.Shared.Parts.STRParts;
 using Nikki.Utils;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -30,10 +35,10 @@ namespace Binary.UI
 		public List<string> Commands { get; }
 		private readonly string _strpath;
 
-		private static readonly Color _modified_light = Color.FromArgb(60, 60, 255);
-		private static readonly Color _modified_dark = Color.FromArgb(160, 140, 0);
-		private static readonly Color _highlight_light = Color.FromArgb(60, 255, 60);
-		private static readonly Color _highlight_dark = Color.FromArgb(160, 20, 30);
+		// The selected string before typing, and why what is typed can't be written
+		private StringRecord _original;
+		private string _refused;
+
 
         private Color HighlightColor { get; set; }
         private Color ModifiedColor { get; set; }
@@ -116,13 +121,8 @@ namespace Binary.UI
 			this.RaiderToolStripMenuItem.BackColor = theme.Colors.MenuItemBackColor;
 			this.RaiderToolStripMenuItem.ForeColor = theme.Colors.MenuItemForeColor;
 
-            this.HighlightColor = theme.DarkTheme
-                ? _highlight_dark
-                : _highlight_light;
-
-            this.ModifiedColor = theme.DarkTheme
-                ? _modified_dark
-                : _modified_light;
+            this.HighlightColor = theme.Colors.SearchHighlightBackColor;
+            this.ModifiedColor = theme.Colors.ModifiedItemBackColor;
 
         }
 
@@ -245,6 +245,8 @@ namespace Binary.UI
 
 		private void AddStringToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			this.CommitTyped();
+
 			using var creator = new StringCreator();
 
 			while (true)
@@ -292,7 +294,9 @@ namespace Binary.UI
 
 				var index = this.StrEditorListView.SelectedIndices[0];
 				var key = this.GetSelectedKey();
+				this.CommitTyped();
 				this.STR.RemoveRecord(key);
+				this._original = null;
 				this.GenerateRemoveStringCommand(this.StrEditorListView.Items[index].SubItems[1].Text);
 
 				if (this.STR.StringRecordCount == 0)
@@ -321,6 +325,7 @@ namespace Binary.UI
 		{
 			var prev = this.StrEditorListView.SelectedItems[0].SubItems[1].Text;
 			var record = this.STR.GetRecord(prev);
+			this.CommitTyped();
 			using var creator = new StringCreator(record);
 
 			while (true)
@@ -333,21 +338,31 @@ namespace Binary.UI
 					{
 
 						var text = creator.Value;
+						var previous = record.Text;
+
+						// Before anything is changed
+						var problem = record.CheckText(text);
+						if (problem != null) throw new ArgumentException(problem);
+
 						record.SetValue("Key", creator.Key);
 						record.SetValue("Label", creator.Label);
 						record.SetValue("Text", text);
 
                         var stringKey = Hashing.BinString(Convert.ToUInt32(prev, 16), LookupReturn.NULLREF);
 
-						this.GenerateUpdateStringCommand(stringKey ?? prev, TText, text);
-						this.GenerateUpdateStringCommand(stringKey ?? prev, Label, creator.Label);
-						this.GenerateUpdateStringCommand(stringKey ?? prev, Key, creator.Key);
+						var name = this.GetCommandKey(prev, stringKey);
+
+						if (text != previous) this.GenerateUpdateStringCommand(name, TText, text);
+						this.GenerateUpdateStringCommand(name, Label, creator.Label);
+						this.GenerateUpdateStringCommand(name, Key, creator.Key);
 						this._modified.Add(creator.Key);
 
 						var item = this.StrEditorListView.SelectedItems[0];
 						item.SubItems[1].Text = creator.Key;
 						item.SubItems[2].Text = creator.Label;
 						item.SubItems[3].Text = creator.Value;
+						this._original = record.PlainCopy() as StringRecord;
+						this._refused = null;
 						this.StringEditorTextBox.Text = creator.Value;
 						item.BackColor = this.ModifiedColor;
 
@@ -390,7 +405,9 @@ namespace Binary.UI
 				if (check.ShowDialog() == DialogResult.OK)
 				{
 
+					this.CommitTyped();
 					this.StrEditorListView.BeginUpdate();
+					var skipped = new List<string>();
 
 					for (int i = 0; i < this.StrEditorListView.Items.Count; ++i)
 					{
@@ -403,7 +420,21 @@ namespace Binary.UI
 							? RegexOptions.Multiline | RegexOptions.CultureInvariant
 							: RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
-						record.Text = Regex.Replace(record.Text, input.Value, with.Value, options);
+						var replaced = Regex.Replace(record.Text, input.Value, with.Value, options);
+
+						if (replaced == record.Text) continue;
+
+						var problem = record.CheckText(replaced);
+
+						if (problem != null)
+						{
+
+							skipped.Add(problem);
+							continue;
+
+						}
+
+						record.Text = replaced;
 						this.GenerateUpdateStringCommand(key, TText, record.Text);
 
 						if (record.Text != item.SubItems[3].Text)
@@ -420,6 +451,20 @@ namespace Binary.UI
 
 					this.GenericFindSelection();
 					this.StrEditorListView.EndUpdate();
+					this.ShowSelectedText();
+
+					if (skipped.Count > 0)
+					{
+
+						const int shown = 15;
+						var message = $"{skipped.Count} string(s) could not be replaced:" + Environment.NewLine + Environment.NewLine +
+							String.Join(Environment.NewLine, skipped.Take(shown));
+
+						if (skipped.Count > shown) message += Environment.NewLine + $"...and {skipped.Count - shown} more.";
+
+						MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+					}
 
 				}
 
@@ -521,6 +566,19 @@ namespace Binary.UI
 
 		private void StrEditorListView_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			// The box is left without losing focus when the selection is changed for it
+			this.CommitTyped();
+			this._original = null;
+
+			if (this._refused != null)
+			{
+
+				var refused = this._refused;
+				this._refused = null;
+				MessageBox.Show(refused, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+			}
+
 			if (this.StrEditorListView.SelectedItems.Count == 0)
 			{
 
@@ -535,6 +593,7 @@ namespace Binary.UI
 
 			if (record == null) return;
 
+			this._original = record.PlainCopy() as StringRecord;
 			this.StringEditorTextBox.Text = this.StrEditorListView.SelectedItems[0].SubItems[3].Text;
 			this.ToggleMenuStripControls();
 		}
@@ -546,7 +605,7 @@ namespace Binary.UI
 
 		private void StrEditorListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
 		{
-            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
             var brush = new SolidBrush(theme.Colors.TextBoxBackColor);
 			e.Graphics.FillRectangle(brush, e.Bounds);
 			e.DrawText();
@@ -810,8 +869,17 @@ namespace Binary.UI
 			if (record == null) return;
 
 			var selected = this.StrEditorListView.SelectedItems[0];
+			var typed = this.StringEditorTextBox.Text ?? String.Empty;
 
-			if (selected.SubItems[3].Text != this.StringEditorTextBox.Text)
+			if (this._original is null || this._original.Key != record.Key) this._original = record.PlainCopy() as StringRecord;
+
+			// While it can't be written it stays in the box only, and the string is what it was
+			this._refused = record.CheckText(typed);
+
+			if (this._refused != null || typed == this._original.Text) record.CopyTextFrom(this._original);
+			else record.Text = typed;
+
+			if (selected.SubItems[3].Text != record.Text)
 			{
 
 				this._modified.Add(selected.SubItems[1].Text);
@@ -819,8 +887,7 @@ namespace Binary.UI
 
 			}
 
-			selected.SubItems[3].Text = this.StringEditorTextBox.Text ?? String.Empty;
-			record.Text = selected.SubItems[3].Text;
+			selected.SubItems[3].Text = record.Text;
 
 			var upper = record.Text.ToUpperInvariant();
 
@@ -836,12 +903,10 @@ namespace Binary.UI
 
 		private void StringEditor_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (this.StringEditorTextBox.ContainsFocus)
-			{
+			// Staying to correct the text
+			if (e.Cancel) return;
 
-				this.StringEditorTextBox_Validated(this.StringEditorTextBox, EventArgs.Empty);
-
-			}
+			this.CommitTyped();
 
 			foreach (var form in this._openforms)
 			{
@@ -858,18 +923,53 @@ namespace Binary.UI
 
 		private void GenerateUpdateStringCommand(string key, string property, string value)
 		{
-			if (value.Contains(' ')) value = $"\"{value}\"";
-			var command = $"{eCommandType.update_string} {this._strpath} {key} {property} {value}";
+			var argument = ToArgument(value);
+
+			if (argument is null)
+			{
+
+				this.GenerateNote($"{property} of string {key}");
+				return;
+
+			}
+
+			var command = $"{eCommandType.update_string} {this._strpath} {key} {property} {argument}";
 			this.Commands.Add(command);
 		}
 
 		private void GenerateAddStringCommand(string key, string label, string text)
 		{
-			if (label.Contains(' ')) label = $"\"{label}\"";
-			if (text.Contains(' ')) text = $"\"{text}\"";
-			var command = $"{eCommandType.add_string} {this._strpath} {key} {label} {text}";
+			var labelArgument = ToArgument(label);
+			var textArgument = ToArgument(text);
+
+			if (labelArgument is null || textArgument is null)
+			{
+
+				this.GenerateNote($"The new string {key}");
+				return;
+
+			}
+
+			var command = $"{eCommandType.add_string} {this._strpath} {key} {labelArgument} {textArgument}";
 			this.Commands.Add(command);
 		}
+
+		// In place of a command that would do something else
+		private void GenerateNote(string what)
+		{
+			this.Commands.Add($"// {what} is not in this script: its line breaks can't be written in a script line.");
+		}
+
+		// A label to name the string with, where it leads to the same key
+		private string GetCommandKey(string key, string resolved)
+		{
+			if (String.IsNullOrEmpty(resolved) || resolved.BinHash() != Convert.ToUInt32(key, 16)) return key;
+
+			return ToArgument(resolved, false) ?? key; // in the place of a key, not text
+		}
+
+		// A value as an argument of a script line (quotes escaped where needed), or null for a line break
+		private static string ToArgument(string value, bool text = true) => EndArguments.Quote(value, text);
 
 		private void GenerateRemoveStringCommand(string key)
 		{
@@ -879,23 +979,52 @@ namespace Binary.UI
 
 		#endregion
 
-		private void StringEditorTextBox_Validated(object sender, EventArgs e)
+		private void StringEditorTextBox_Validating(object sender, CancelEventArgs e)
 		{
-			// Considering it is enabled because string record was selected
+			if (this._refused is null) return;
 
-			var key = this.GetSelectedKey();
-			var record = this.STR.GetRecord(key);
+			var message = this._refused + Environment.NewLine + Environment.NewLine +
+				"Retry to correct the text, or Cancel to keep the previous one.";
 
-			if (record == null) return;
+			if (MessageBox.Show(message, "Warning", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Retry)
+			{
+
+				e.Cancel = true;
+				return;
+
+			}
+
+			this._refused = null;
+			this.StringEditorTextBox.Text = this._original?.Text ?? String.Empty;
+		}
+
+		private void ShowSelectedText()
+		{
 			if (this.StrEditorListView.SelectedItems.Count == 0) return;
 
-			var selected = this.StrEditorListView.SelectedItems[0];
+			var record = this.STR.GetRecord(this.GetSelectedKey());
 
-			if (selected.SubItems[3].Text == this.StringEditorTextBox.Text) return;
+			if (record == null) return;
 
-			this.GenerateUpdateStringCommand(selected.SubItems[1].Text, TText, record.Text);
-			selected.BackColor = this.ModifiedColor;
-			this._modified.Add(selected.SubItems[1].Text);
+			this._original = record.PlainCopy() as StringRecord;
+
+			// Text that is being corrected stays
+			if (this._refused is null) this.StringEditorTextBox.Text = record.Text;
+		}
+
+		private void StringEditorTextBox_Validated(object sender, EventArgs e) => this.CommitTyped();
+
+		// The box changes the string while typing, so its command is made when the typing is over
+		private void CommitTyped()
+		{
+			if (this._original is null) return;
+
+			var record = this.STR.GetRecord(this._original.Key);
+
+			if (record == null || record.Text == this._original.Text) return;
+
+			this.GenerateUpdateStringCommand($"0x{record.Key:X8}", TText, record.Text);
+			this._original = record.PlainCopy() as StringRecord;
 		}
 	}
 }

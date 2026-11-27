@@ -66,5 +66,11 @@ namespace Binary.Prompt
         }
 
         private void InputButtonCancel_Click(object sender, EventArgs e) => this.Close();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PromptLayout.Arrange(this, null, new Control[] { this.InputLabel, this.InputTextBox }, new Button[] { this.InputButtonOK, this.InputButtonCancel });
+            base.OnLoad(e);
+        }
     }
 }

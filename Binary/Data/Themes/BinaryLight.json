@@ -30,6 +30,11 @@
     "MenuItemPressedGradientEnd": "180, 175, 205",
     "MenuItemSelected": "160, 155, 188",
     "MenuItemSelectedGradientBegin": "170, 165, 198",
-    "MenuItemSelectedGradientEnd": "170, 165, 198"
+    "MenuItemSelectedGradientEnd": "170, 165, 198",
+    "SearchHighlightBackColor": "60, 255, 60",
+    "SelectedNodeForeColor": "255, 20, 20",
+    "FirstSelectedNodeForeColor": "255, 90, 0",
+    "ModifiedItemBackColor": "60, 60, 255",
+    "TextBoxBorderColor": "160, 160, 160"
   }
 }

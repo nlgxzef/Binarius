@@ -54,6 +54,7 @@ namespace Binary
             this.EMSScriptingRunAll = new System.Windows.Forms.ToolStripMenuItem();
             this.EMSScriptingGenerate = new System.Windows.Forms.ToolStripMenuItem();
             this.EMSScriptingClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.EMSScriptingConvertCarTypeInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenuStripWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.EMSWindowsRun = new System.Windows.Forms.ToolStripMenuItem();
             this.EMSWindowsOpenDir = new System.Windows.Forms.ToolStripMenuItem();
@@ -279,7 +280,7 @@ namespace Binary
             // 
             // EditorMenuStripScripting
             // 
-            this.EditorMenuStripScripting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.EMSScriptingProcess, this.EMSScriptingRunAll, this.EMSScriptingGenerate, this.EMSScriptingClear });
+            this.EditorMenuStripScripting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.EMSScriptingProcess, this.EMSScriptingRunAll, this.EMSScriptingGenerate, this.EMSScriptingClear, this.EMSScriptingConvertCarTypeInfo });
             this.EditorMenuStripScripting.Name = "EditorMenuStripScripting";
             this.EditorMenuStripScripting.Size = new System.Drawing.Size(66, 20);
             this.EditorMenuStripScripting.Text = "Scripting";
@@ -315,6 +316,13 @@ namespace Binary
             this.EMSScriptingClear.Size = new System.Drawing.Size(200, 22);
             this.EMSScriptingClear.Text = "Clear Editor";
             this.EMSScriptingClear.Click += this.EMSScriptingClear_Click;
+            // 
+            // EMSScriptingConvertCarTypeInfo
+            // 
+            this.EMSScriptingConvertCarTypeInfo.Name = "EMSScriptingConvertCarTypeInfo";
+            this.EMSScriptingConvertCarTypeInfo.Size = new System.Drawing.Size(200, 22);
+            this.EMSScriptingConvertCarTypeInfo.Text = "Convert Legacy Endscript...";
+            this.EMSScriptingConvertCarTypeInfo.Click += this.EMSScriptingConvertCarTypeInfo_Click;
             // 
             // EditorMenuStripWindows
             // 
@@ -440,6 +448,7 @@ namespace Binary
             this.EditorTreeView.SelectedImageIndex = 0;
             this.EditorTreeView.Size = new System.Drawing.Size(294, 363);
             this.EditorTreeView.TabIndex = 0;
+            this.EditorTreeView.BeforeExpand += this.EditorTreeView_BeforeExpand;
             this.EditorTreeView.BeforeSelect += this.EditorTreeView_BeforeSelect;
             this.EditorTreeView.AfterSelect += this.EditorTreeView_AfterSelect;
             this.EditorTreeView.DoubleClick += this.EditorTreeView_DoubleClick;
@@ -720,6 +729,7 @@ namespace Binary
 		private System.Windows.Forms.ToolStripMenuItem EMSScriptingProcess;
 		private System.Windows.Forms.ToolStripMenuItem EMSScriptingGenerate;
 		private System.Windows.Forms.ToolStripMenuItem EMSScriptingClear;
+		private System.Windows.Forms.ToolStripMenuItem EMSScriptingConvertCarTypeInfo;
 		private System.Windows.Forms.ToolStripMenuItem EMSWindowsNew;
 		private System.Windows.Forms.TextBox EditorCommandPrompt;
 		private System.Windows.Forms.ImageList EditorImageList;

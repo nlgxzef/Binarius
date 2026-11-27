@@ -27,11 +27,12 @@ namespace Binary.Interact
 
 		public CarPartAttribType Type { get; private set; }
         public string Value { get; private set; }
-        public List<string> CustomAttribKeys { get; private set; }
+        public List<string> CustomAttribKeys { get; private set; } = new List<string>();
 
         public CustomAttribCreator(GameINT game)
 		{
 			this.InitializeComponent();
+			Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
 			this.ToggleTheme();
 			this.PopulateAttribTypesBasedOnGame(game);
 			this.LoadHashList();
@@ -58,6 +59,7 @@ namespace Binary.Interact
             catch { }
 
             this.AttribKeyComboBox.Items.Clear();
+            this.CustomAttribKeys ??= new List<string>(); // no userkeys\CustomAttributes.txt yet: start empty
             this.CustomAttribKeys.Sort();
             foreach (var label in this.CustomAttribKeys)
             {
@@ -84,17 +86,23 @@ namespace Binary.Interact
 
                 }
 
-                using var sw = new StreamWriter(File.Open(Map.CustomAttribFile, FileMode.Create));
-                foreach (var line in set) sw.WriteLine(line);
-                if (!set.Contains(this.Value)) sw.WriteLine(this.Value);
+                Endscript.Core.SafeSave.Write(Map.CustomAttribFile, target =>
+                {
+                    using var sw = new StreamWriter(File.Open(target, FileMode.Create));
+                    foreach (var line in set) sw.WriteLine(line);
+                    if (!set.Contains(this.Value)) sw.WriteLine(this.Value);
+                });
 
             }
             else
             {
 
                 System.IO.Directory.CreateDirectory(Path.GetDirectoryName(Map.CustomAttribFile));
-                using var sw = new StreamWriter(File.Open(Map.CustomAttribFile, FileMode.Create));
-                sw.WriteLine(this.Value);
+                Endscript.Core.SafeSave.Write(Map.CustomAttribFile, target =>
+                {
+                    using var sw = new StreamWriter(File.Open(target, FileMode.Create));
+                    sw.WriteLine(this.Value);
+                });
             }
         }
 
@@ -235,7 +243,18 @@ namespace Binary.Interact
 			this.Value = this.AttribKeyComboBox.Text.ToString();
             this.Type = type;
             this.DialogResult = DialogResult.OK;
-            this.SaveHashList();
+
+            try
+            {
+                this.SaveHashList();
+            }
+            catch (Exception ex)
+            {
+                // The attribute still gets added, only the remembered list of names is not updated
+                MessageBox.Show($"The list of custom attribute names could not be saved: {ex.Message}", "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             this.Close();
 		}
 	}

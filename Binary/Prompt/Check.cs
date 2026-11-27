@@ -52,5 +52,11 @@ namespace Binary.Prompt
         }
 
         private void CheckButtonCancel_Click(object sender, EventArgs e) => this.Close();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PromptLayout.Arrange(this, null, new Control[] { this.CheckBoxSelection }, new Button[] { this.CheckButtonOK, this.CheckButtonCancel });
+            base.OnLoad(e);
+        }
     }
 }

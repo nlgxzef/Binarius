@@ -17,16 +17,51 @@ namespace Binary.UI
         public About()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
             this.labelProductName.Text = "Binarius";
             this.labelVersion.Text = String.Format("v{0}", AssemblyVersion);
         #if DEBUG
             this.labelVersion.Text += " (Debug)";
         #endif
-            this.labelCopyright.Text = "© 2026 MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef.\r\nNo rights reserved.";
-            this.textBoxDescription.Text = AssemblyDescription + "\r\n"
-                + "Powered with Endscript and Darius.";
+            this.labelCopyright.UseMnemonic = false; // shows the & in the copyright
+            this.labelCopyright.Text = AssemblyCopyright;
+            this.textBoxDescription.Text = String.Join("\r\n", Credits);
         }
+
+        private static readonly string[] Credits =
+        {
+            "Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC).",
+            "Based on Binary by MaxHwoy and also implements various fixes and improvements done by the NFS Unlimiter Community.",
+            "Powered with Endscript and Darius.",
+            "",
+            "==== Binarius ====",
+            "Main developer:",
+            "- nlgxzef",
+            "",
+            "Thanks to:",
+            "- MaxHwoy for creating Binary in the first place.",
+            "- rx and avail for unofficial v2.9.0 (NFSCO-Binary), where this fork is started from.",
+            "- Sh2dow for their fork with some QoL improvements.",
+            "- NI240SX for their fork (Binercover) with QoL improvements and better NFS Undercover support.",
+            "- Felipe379 for NFS Carbon preset ride wheel paint support.",
+            "- NFS Unlimiter Community for great help; mods, ideas, requests and motivation.",
+            "",
+            "==== Original credits from Binary ====",
+            "Coded by:",
+            "- MaxHwoy",
+            "",
+            "Undercover support by:",
+            "- nlgxzef",
+            "",
+            "Biggest thanks to:",
+            "- 379Felipe for testing and resources.",
+            "- heyitsleo for great help.",
+            "- avail for great help.",
+            "",
+            "Testers:",
+            "379Felipe, ARCHIE, Aceofsquares3, Avalanche, CheapAssVideos, Elven, GhostRider, NFSBOI, rx, konigsseg, elaymm4, Lexal, Miles Dipperion, Miner, MrAdam, nlgxzef, RaTT, Red_Fire, RedCarDriver, rnz, trackmaniamatt, Neon, Zyr3X",
+        };
 
         #region Theme
 

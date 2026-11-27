@@ -56,5 +56,11 @@ namespace Binary.Prompt
         }
 
         private void ComboButtonCancel_Click(object sender, EventArgs e) => this.Close();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PromptLayout.Arrange(this, null, new Control[] { this.DescriptionLabel, this.ComboBoxSelection }, new Button[] { this.ComboButtonOK, this.ComboButtonCancel });
+            base.OnLoad(e);
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Binary.Tools
         public Raider()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
         }
 

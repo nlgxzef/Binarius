@@ -16,6 +16,7 @@ namespace Binary.Tools
         public Swatcher()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
             this.ColorPreview.BackColor = Color.Black;
         }
@@ -138,7 +139,7 @@ namespace Binary.Tools
         {
             var box = sender as GroupBox;
 
-            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
             this.DrawGroupBox(box, e.Graphics, theme.Colors.LabelTextColor, theme.Colors.LabelTextColor);
         }
 
@@ -146,7 +147,7 @@ namespace Binary.Tools
         {
             var box = sender as GroupBox; 
             
-            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
             this.DrawGroupBox(box, e.Graphics, theme.Colors.LabelTextColor, theme.Colors.LabelTextColor);
         }
 

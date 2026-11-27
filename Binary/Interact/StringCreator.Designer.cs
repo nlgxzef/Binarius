@@ -104,7 +104,7 @@
             this.StringCheckBoxReversed.Name = "StringCheckBoxReversed";
             this.StringCheckBoxReversed.Size = new System.Drawing.Size(151, 23);
             this.StringCheckBoxReversed.TabIndex = 3;
-            this.StringCheckBoxReversed.Text = "Show Reversed Key";
+            this.StringCheckBoxReversed.Text = "Swap Endianness";
             this.StringCheckBoxReversed.CheckedChanged += this.StringCheckBoxReversed_CheckedChanged;
             // 
             // StringButtonCancel

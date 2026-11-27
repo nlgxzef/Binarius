@@ -15,6 +15,7 @@ using Nikki.Utils.EA;
 using Nikki.Reflection.Enum;
 using Nikki.Support.Shared.Class;
 using ILWrapper.Enums;
+using Endscript.Core;
 using Endscript.Enums;
 using CoreExtensions.Management;
 using CoreExtensions.Text;
@@ -374,8 +375,7 @@ namespace Binary.UI
 					if (ext == ImageType.DDS)
 					{
 
-						using var bw = new BinaryWriter(File.Open(path, FileMode.Create));
-						bw.Write(texture.GetDDSArray(false));
+						Endscript.Core.SafeSave.Write(path, target => File.WriteAllBytes(target, texture.GetDDSArray(false)));
 
 					}
 					else
@@ -383,7 +383,7 @@ namespace Binary.UI
 
 						var data = texture.GetDDSArray(true);
 						var image = new ILWrapper.Image(data);
-						image.Save(path, ext);
+						Endscript.Core.SafeSave.Write(path, target => image.Save(target, ext));
 
 					}
 
@@ -411,14 +411,29 @@ namespace Binary.UI
 			if (browser.ShowDialog() == DialogResult.OK)
 			{
 
-				var textures = this.TPK.GetTextures() as IEnumerable;
-				foreach (Texture texture in textures)
+				try
 				{
 
-					var path = Path.Combine(browser.SelectedPath, texture.CollectionName) + ".dds";
-					var data = texture.GetDDSArray(false);
-					using var bw = new BinaryWriter(File.Open(path, FileMode.Create));
-					bw.Write(data);
+					using var save = new Endscript.Core.SaveTransaction();
+
+					var textures = this.TPK.GetTextures() as IEnumerable;
+					foreach (Texture texture in textures)
+					{
+
+						var path = Path.Combine(browser.SelectedPath, texture.CollectionName) + ".dds";
+						var data = texture.GetDDSArray(false);
+						File.WriteAllBytes(save.Stage(path), data);
+
+					}
+
+					save.Commit();
+
+				}
+				catch (Exception ex)
+				{
+
+					MessageBox.Show(ex.GetLowestMessage(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
 
 				}
 
@@ -529,7 +544,7 @@ namespace Binary.UI
 						var texture = this.TPK.Textures[i];
 						var key = $"0x{texture.BinKey:X8}";
 						var oname = texture.CollectionName;
-						if (oname.Contains(' ')) oname = $"\"{oname}\"";
+						oname = EndArguments.Quote(oname, false) ?? oname;
 
 						if (texture.BinKey != texture.CollectionName.BinHash()) continue;
 						var cname = Regex.Replace(texture.CollectionName, input.Value, with.Value, options);
@@ -629,7 +644,7 @@ namespace Binary.UI
 
 		private void TexEditorListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
 		{
-            Theme.Deserialize(Path.Combine("Themes", Configurations.Default.ThemeFile), out var theme);
+            Theme.Deserialize(Theme.GetThemeFile(), out var theme);
             var brush = new SolidBrush(theme.Colors.TextBoxBackColor);
             e.Graphics.FillRectangle(brush, e.Bounds);
 			e.DrawText();
@@ -801,16 +816,16 @@ namespace Binary.UI
 
 		private void GenerateUpdateTextureCommand(string key, string property, string value)
 		{
-			if (property.Contains(' ')) property = $"\"{property}\"";
-			if (value.Contains(' ')) property = $"\"{value}\"";
+			property = EndArguments.Quote(property, false) ?? property;
+			value = EndArguments.Quote(value, true) ?? value; // text: quotes can be escaped
 			var command = $"{eCommandType.update_texture} {this._tpkpath} {key} {property} {value}";
 			this.Commands.Add(command);
 		}
 
 		private void GenerateAddTextureCommand(string name, string file)
 		{
-			if (name.Contains(' ')) name = $"\"{name}\"";
-			if (file.Contains(' ')) file = $"\"{file}\"";
+			name = EndArguments.Quote(name, false) ?? name;
+			file = EndArguments.Quote(file, false) ?? file;
 			var command = $"{eCommandType.add_texture} {this._tpkpath} {name} {file}";
 			this.Commands.Add(command);
 		}
@@ -829,7 +844,7 @@ namespace Binary.UI
 
 		private void GenerateReplaceTextureCommand(string key, string file)
 		{
-			if (file.Contains(' ')) file = $"\"{file}\"";
+			file = EndArguments.Quote(file, false) ?? file;
 			var command = $"{eCommandType.replace_texture} {this._tpkpath} {key} {file}";
 			this.Commands.Add(command);
 		}
@@ -837,7 +852,7 @@ namespace Binary.UI
 		private void GenerateBindTexturesCommand(SerializeType type, string directory)
 		{
 			string import = type.ToString().ToLowerInvariant();
-			if (directory.Contains(' ')) directory = $"\"{directory}\"";
+			directory = EndArguments.Quote(directory, false) ?? directory;
 			var command = $"{eCommandType.bind_textures} {import} {this._tpkpath} {directory}";
 			this.Commands.Add(command);
 		}

@@ -311,7 +311,7 @@ namespace Binary.UI
                     {
 
                         string svg = this.Vector.GetSVGString(resolutions[selection.Value]);
-                        File.WriteAllText(dialog.FileName, svg);
+                        Endscript.Core.SafeSave.Write(dialog.FileName, target => File.WriteAllText(target, svg));
                         _ = MessageBox.Show($"Vector {this.Vector.CollectionName} has been successfully exported.", "Info",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
 

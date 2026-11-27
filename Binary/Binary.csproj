@@ -5,13 +5,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>binarius.ico</ApplicationIcon>
-    <Version>2.10.4</Version>
+    <Version>2.11.0</Version>
     <Authors>MaxHwoy</Authors>
     <PublisherName>MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef</PublisherName>
-    <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and also implemments some fixes and improvements done on the forks made by rx, Sh2dow and NI240SX.</Description>
-    <Copyright>© 2026 MaxHwoy, rx, avail, Sh2dow, NI240SX and nlgxzef. No rights reserved.</Copyright>
-    <AssemblyVersion>2.10.4</AssemblyVersion>
-    <FileVersion>2.10.4</FileVersion>
+    <Description>Tool for editing Need for Speed binary files (.BIN, .BUN, .LZC). Based on Binary by MaxHwoy and also implements various fixes and improvements done by the NFS Unlimiter Community.</Description>
+    <Copyright>© 2027 nlgxzef &amp; NFS Unlimiter Community - No rights reserved.</Copyright>
+    <AssemblyVersion>2.11.0</AssemblyVersion>
+    <FileVersion>2.11.0</FileVersion>
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	<Product>Binarius</Product>
 	<AssemblyName>Binarius</AssemblyName>

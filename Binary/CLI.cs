@@ -24,21 +24,21 @@ namespace Binary
         {
         }
 
-        void PrintExceptions(string[] exceptions)
+        void PrintExceptions(string[] exceptions, string kind = "Exception")
         {
             string print = "";
 
             foreach (string exception in exceptions)
             {
 
-                print += $"Exception: {exception}\n";
+                print += $"{kind}: {exception}\n";
 
             }
 
             Console.WriteLine(print);
         }
 
-        public void LoadProfile(string path)
+        public bool LoadProfile(string path)
         {
             Launch.Deserialize(path, out var launch);
             launch.ThisDir = Path.GetDirectoryName(path);
@@ -66,6 +66,17 @@ namespace Binary
 
             }
 
+            if (!SaveLocation.ResolveInConsole(launch, path)) return false;
+
+            if (SaveRedirect.Read(path) != path) // an edited copy of the launcher is in the folder saved to
+            {
+
+                Launch.Deserialize(path, out launch);
+                launch.ThisDir = Path.GetDirectoryName(path);
+                Editor.FixLaunchDirectory(launch, path);
+
+            }
+
             this.m_profile = BaseProfile.NewProfile(launch.GameID, launch.Directory);
 
             var watch = new Stopwatch();
@@ -77,11 +88,22 @@ namespace Binary
 
             this.PrintExceptions(exceptions);
             Console.WriteLine($"Completed in {watch.Elapsed.TotalSeconds} seconds");
+            return true;
         }
 
         public void ImportEndscript(string path)
         {
-            var parser = new EndScriptParser(path);
+            var parser = new EndScriptParser(path)
+            {
+                VersionMismatchHandler = message =>
+                {
+                    Console.WriteLine(message);
+                    Console.WriteLine("Do you want to continue anyway? [yes, no]: ");
+                    var answer = Console.ReadLine();
+                    return String.Equals(answer?.Trim(), "yes", StringComparison.OrdinalIgnoreCase) ||
+                           String.Equals(answer?.Trim(), "y", StringComparison.OrdinalIgnoreCase);
+                },
+            };
 
             BaseCommand[] commands;
 
@@ -89,6 +111,13 @@ namespace Binary
             {
 
                 commands = parser.Read();
+
+            }
+            catch (Endscript.Exceptions.EndscriptCancelledException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                return;
 
             }
             catch (Exception ex)
@@ -159,8 +188,8 @@ namespace Binary
             {
 
                 Utils.WriteErrorsToLog(manager.Errors, path);
-                Console.WriteLine($"Script {script} has been applied, however, {manager.Errors.Count()} errors " +
-                    $"have been detected. Check EndError.log for more information.");
+                Console.WriteLine($"Script {script} has been applied, however, {Utils.DescribeErrors(manager.Errors)}" +
+                    $". Check EndError.log for more information.");
 
             }
             else
@@ -222,8 +251,9 @@ namespace Binary
 
             watch.Stop();
 
-            this.PrintExceptions(exceptions);
-            Console.WriteLine($"Complete in {watch.Elapsed.TotalSeconds} seconds.");
+            this.PrintExceptions(exceptions, this.m_profile.LastSaveSucceeded ? "Warning" : "Exception");
+            if (this.m_profile.LastSaveSucceeded && SaveRedirect.Active) Console.WriteLine(SaveLocation.GetSavedText());
+            Console.WriteLine($"Completed in {watch.Elapsed.TotalSeconds} seconds");
         }
     }
 }

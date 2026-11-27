@@ -24,6 +24,7 @@ namespace Binary.Interact
         public StringCreator()
         {
             this.InitializeComponent();
+            Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
             this.ToggleTheme();
             this.StringTextBoxKey.Text = "0x00000000";
         }

@@ -15,6 +15,7 @@ namespace Binary.Interact
 		public Importer()
 		{
 			this.InitializeComponent();
+			Binary.UI.DialogLayout.Attach(this); // re-flow for the current DPI before showing
 			this.ToggleTheme();
 			this.ImporterType.SelectedIndex = 0;
 
